@@ -1,2 +1,2 @@
 # wordle-junior
-Wordle Junior - a kids friendly version of the popular Wordle game
+Wordle Junior - a kid-friendly version of the popular Wordle game
