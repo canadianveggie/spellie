@@ -30,6 +30,8 @@
   </body>
 
   <script type="module">
-    import { name, foo } from './public/ui.js';
-    alert(foo());
+    import { todaysPuzzle, GameState } from './public/gameState.js';
+    const target = todaysPuzzle();
+    const gameState = new GameState(target);
+    console.log(gameState);
   </script>

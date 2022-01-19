@@ -1,3 +1,7 @@
+export function todaysPuzzle() {
+  return 'PATH'; // hardcoded for now
+}
+
 export class GameState {
   constructor(target) {
     this.target = target
