@@ -12,6 +12,8 @@
 
     <style>
       body {
+        background:  #111;
+        color:  white;
         padding: 1rem;
         font-family: sans-serif;
         margin-bottom: 8rem;
@@ -21,17 +23,85 @@
         font-size: 1.1rem;
         box-sizing:  border-box;
       }
+
+      main {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .keyboard {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        max-width: 90%;
+        justify-content: center;
+        margin: 0 auto;
+      }
+      .key {
+        text-transform: uppercase;
+        border-radius:  4px;
+        background-color:  #818384;
+        color:  white;
+        font-weight:  bold;
+        width: 40px;
+        line-height: 62px;
+        text-align: center;
+        cursor:  pointer;
+      }
+
+      .guesses {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        min-height: 60px;
+        margin-bottom: 2rem;
+        text-transform:  uppercase;
+      }
+
+      .guesses-tile {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        border: 2px solid #333;
+        font-weight: bold;
+        font-size: 2rem;
+        background:  black;
+        width: 60px;
+        height: 60px;
+      }
     </style>
   </head>
 
   <body>
-    <h1 class="page-heading">Wordle Junior</h1>
-    <div>Coming soon</div>
+    <main>
+      <h1 class="title">Wordle Junior</h1>
+      <div class="guesses">
+        <div class="guesses-tile"></div>
+        <div class="guesses-tile"></div>
+        <div class="guesses-tile"></div>
+        <div class="guesses-tile"></div>
+      </div>
+      <div class="keyboard"></div>
+    </main>
   </body>
 
   <script type="module">
+    import { UI } from './public/ui.js';
     import { todaysPuzzle, GameState } from './public/gameState.js';
+
     const target = todaysPuzzle();
     const gameState = new GameState(target);
     console.log(gameState);
+
+    const ui = new UI(gameState, {
+      keyboard: '.keyboard',
+      guesses: '.guesses'
+    });
   </script>

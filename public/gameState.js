@@ -6,7 +6,23 @@ export class GameState {
   constructor(target) {
     this.target = target
     this.guesses = [];
+    this.currentGuess = '';
     this.keyboard = new Keyboard();
+  }
+
+  addLetter(letter) {
+    this.currentGuess += letter.toUpperCase();
+
+    // probably overkill
+    document.dispatchEvent(new CustomEvent('guess', { detail: null }));
+
+    if (this.currentGuess === todaysPuzzle()) {
+      setTimeout(this.victory, 1000);
+    }
+  }
+
+  victory() {
+    alert('You win!');
   }
 }
 
