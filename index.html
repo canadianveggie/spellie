@@ -170,9 +170,13 @@
       return {
         target,
         guesses,
+        solved: false,
         currentGuessIndex: 0,
         keyboard,
         addLetter(letterState) {
+          if (this.solved || this.currentGuessIndex >= this.guesses.length) {
+            return;
+          }
           if (letterState.type === "enter") {
             if (this.isCurrentWordComplete()) {
               this.currentGuess.forEach(
@@ -199,6 +203,7 @@
           result.forEach((letterResult, i) => {
             this.currentGuess[i].state = letterResult;
           });
+          this.solved = this.currentWord === this.target;
         },
         keyPressed(e) {
           if (e.key === "Enter") {
@@ -221,18 +226,18 @@
         },
         get currentWord() {
           return this.currentGuess
-            .map((letterGuess) => letterGuess.letter || " ")
+            ?.map((letterGuess) => letterGuess.letter || " ")
             .join("");
         },
         isCurrentWordComplete() {
           return (
-            this.currentWord.length === this.target.length &&
+            this.currentWord?.length === this.target.length &&
             this.currentWord.indexOf(" ") < 0
           );
         },
         get currentWordLastLetterIndex() {
           for (let i = this.target.length - 1; i >= 0; i--) {
-            if (this.currentGuess[i].letter) {
+            if (this.currentGuess?.[i].letter) {
               return i;
             }
           }
