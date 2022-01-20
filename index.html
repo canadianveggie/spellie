@@ -102,7 +102,7 @@
             <div
               class="key"
               x-text="letterState.label"
-              @click="addLetter(letterState.label)"
+              @click="addLetter(letterState)"
             ></div>
           </template>
         </div>
@@ -147,8 +147,8 @@
         guesses,
         currentGuessIndex: 0,
         keyboard,
-        addLetter(letter) {
-          if (letter === "guess") {
+        addLetter(letterState) {
+          if (letterState.type === "enter") {
             if (this.isCurrentWordComplete()) {
               this.currentGuess.forEach(
                 (letterGuess) => (letterGuess.state = "submitted")
@@ -156,7 +156,7 @@
               // TODO - check answers
               this.currentGuessIndex += 1;
             }
-          } else if (letter === "←") {
+          } else if (letterState.type === "back") {
             for (let i = this.target.length - 1; i >= 0; i--) {
               if (this.currentGuess[i].letter) {
                 this.currentGuess[i].letter = "";
@@ -168,13 +168,25 @@
               (letterGuess) => letterGuess.letter === ""
             );
             if (nextBlank) {
-              nextBlank.letter = letter;
+              nextBlank.letter = letterState.label;
             }
           }
         },
         keyPressed(e) {
-          // TODO ensure it's a letter and handle Enter and Backspace
-          this.addLetter(e.key.toUpperCase());
+          if (e.key === "Enter") {
+            this.addLetter({ type: "enter" });
+          } else if (e.key === "Backspace") {
+            this.addLetter({ type: "back" });
+          } else if (e.key === "?") {
+            console.log("Give a hint");
+          } else if (
+            /^[a-zA-Z]$/.test(e.key) &&
+            !e.altKey &&
+            !e.ctrlKey &&
+            !e.metaKey
+          ) {
+            this.addLetter({ type: "letter", label: e.key });
+          }
         },
         get currentGuess() {
           return this.guesses[this.currentGuessIndex];
