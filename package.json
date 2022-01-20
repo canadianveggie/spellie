@@ -2,10 +2,6 @@
   "name": "wordle-junior",
   "version": "0.0.1",
   "description": "Wordle for kids!",
-  "scripts": {
-    "start": "python -m SimpleHTTPServer",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/canadianveggie/wordle-junior.git"
@@ -16,10 +12,18 @@
     "puzzle",
     "kids"
   ],
-  "author": "",
-  "license": "",
-  "bugs": {
-    "url": "https://github.com/canadianveggie/wordle-junior/issues"
+  "homepage": "https://github.com/canadianveggie/wordle-junior#readme",
+  "scripts": {
+    "start": "python -m SimpleHTTPServer",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
-  "homepage": "https://github.com/canadianveggie/wordle-junior#readme"
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.2.1",
+    "prettier": "2.5.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }
