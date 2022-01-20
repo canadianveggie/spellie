@@ -59,6 +59,13 @@
       .key-back {
         font-size: 1.5rem;
       }
+      .key-back {
+        font-size: 1.5rem;
+      }
+      .key-unavailable {
+        background-color: #81837b6e;
+        cursor: auto;
+      }
 
       .guesses-word {
         display: flex;
@@ -89,20 +96,21 @@
       <h1 class="title">Wordle Junior</h1>
       <div x-data="gameState()" @keyup.document="keyPressed">
         <div class="guesses">
-          <template x-for="guess in guesses">
+          <template x-for="(guess, guess_index) in guesses">
             <div class="guesses-word">
-              <template x-for="letter in guess">
-                <div class="guesses-tile" x-text="letter.letter"></div>
+              <template x-for="(letter, letter_index) in guess">
+                <div x-text="letter.letter" class="guesses-tile"></div>
               </template>
             </div>
           </template>
         </div>
         <div class="keyboard">
-          <template x-for="letterState in keyboard">
+          <template x-for="letter in keyboard">
             <div
               class="key"
-              x-text="letterState.label"
-              @click="addLetter(letterState)"
+              x-text="letter.label"
+              :class="['key-' + letter.type, 'key-' + keyClass(letter)]"
+              @click="addLetter(letter)"
             ></div>
           </template>
         </div>
@@ -120,17 +128,14 @@
     const keyboard = a_z.map((letter) => ({
       type: "letter",
       label: letter,
-      state: "AVAILABLE",
     }));
     keyboard.push({
       type: "enter",
       label: "guess",
-      state: "UNAVAILABLE",
     });
     keyboard.push({
       type: "back",
       label: "←",
-      state: "UNAVAILABLE",
     });
     const guesses = [];
     for (let i = 0; i < maxGuesses; i++) {
@@ -157,11 +162,8 @@
               this.currentGuessIndex += 1;
             }
           } else if (letterState.type === "back") {
-            for (let i = this.target.length - 1; i >= 0; i--) {
-              if (this.currentGuess[i].letter) {
-                this.currentGuess[i].letter = "";
-                break;
-              }
+            if (this.currentWordLastLetterIndex >= 0) {
+              this.currentGuess[this.currentWordLastLetterIndex].letter = "";
             }
           } else {
             const nextBlank = this.currentGuess.find(
@@ -201,6 +203,26 @@
             this.currentWord.length === this.target.length &&
             this.currentWord.indexOf(" ") < 0
           );
+        },
+        get currentWordLastLetterIndex() {
+          for (let i = this.target.length - 1; i >= 0; i--) {
+            if (this.currentGuess[i].letter) {
+              return i;
+            }
+          }
+          return -1;
+        },
+        keyClass(letter) {
+          if (letter.type === "enter") {
+            return this.isCurrentWordComplete() ? "available" : "unavailable";
+          } else if (letter.type === "back") {
+            return this.currentWordLastLetterIndex >= 0
+              ? "available"
+              : "unavailable";
+          } else if (letter.type === "letter") {
+            return "available";
+          }
+          return "available";
         },
       };
     }
