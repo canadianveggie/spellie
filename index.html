@@ -52,7 +52,8 @@
         text-align: center;
         cursor: pointer;
       }
-      .key-enter, .key-back {
+      .key-enter,
+      .key-back {
         min-width: 60px;
       }
       .key-back {
@@ -89,7 +90,7 @@
       <div x-data="gameState()" @keyup.document="keyPressed">
         <div class="guesses">
           <template x-for="guess in guesses">
-            <div class="guesses-word" >
+            <div class="guesses-word">
               <template x-for="letter in guess">
                 <div class="guesses-tile" x-text="letter.letter"></div>
               </template>
@@ -98,14 +99,18 @@
         </div>
         <div class="keyboard">
           <template x-for="letterState in keyboard">
-            <div class="key" x-text="letterState.label" @click="addLetter(letterState.label)"></div>
+            <div
+              class="key"
+              x-text="letterState.label"
+              @click="addLetter(letterState.label)"
+            ></div>
           </template>
         </div>
       </div>
     </main>
   </body>
 
-  <script src="public/puzzles.js" ></script>
+  <script src="public/puzzles.js"></script>
   <script>
     const target = getTodayPuzzle();
     const wordLength = target.length;
@@ -113,25 +118,25 @@
 
     const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     const keyboard = a_z.map((letter) => ({
-        type: "letter",
-        label: letter,
-        state: 'AVAILABLE',
+      type: "letter",
+      label: letter,
+      state: "AVAILABLE",
     }));
     keyboard.push({
       type: "enter",
       label: "guess",
-      state: 'UNAVAILABLE',
+      state: "UNAVAILABLE",
     });
     keyboard.push({
       type: "back",
       label: "←",
-      state: 'UNAVAILABLE',
+      state: "UNAVAILABLE",
     });
     const guesses = [];
-    for (let i = 0 ; i < maxGuesses; i++) {
+    for (let i = 0; i < maxGuesses; i++) {
       const guess = [];
       for (let j = 0; j < wordLength; j++) {
-        guess.push({ letter: '', state: 'pending' });
+        guess.push({ letter: "", state: "pending" });
       }
       guesses.push(guess);
     }
@@ -142,22 +147,26 @@
         guesses,
         currentGuessIndex: 0,
         keyboard,
-        addLetter (letter) {
-          if (letter === 'guess') {
+        addLetter(letter) {
+          if (letter === "guess") {
             if (this.isCurrentWordComplete()) {
-              this.currentGuess.forEach((letterGuess) => letterGuess.state = 'submitted');
+              this.currentGuess.forEach(
+                (letterGuess) => (letterGuess.state = "submitted")
+              );
               // TODO - check answers
               this.currentGuessIndex += 1;
             }
-          } else if (letter === '←') {
+          } else if (letter === "←") {
             for (let i = this.target.length - 1; i >= 0; i--) {
               if (this.currentGuess[i].letter) {
-                this.currentGuess[i].letter = '';
+                this.currentGuess[i].letter = "";
                 break;
               }
             }
           } else {
-            const nextBlank = this.currentGuess.find((letterGuess) => letterGuess.letter === '')
+            const nextBlank = this.currentGuess.find(
+              (letterGuess) => letterGuess.letter === ""
+            );
             if (nextBlank) {
               nextBlank.letter = letter;
             }
@@ -165,18 +174,23 @@
         },
         keyPressed(e) {
           // TODO ensure it's a letter and handle Enter and Backspace
-          this.addLetter(e.key.toUpperCase())
+          this.addLetter(e.key.toUpperCase());
         },
         get currentGuess() {
           return this.guesses[this.currentGuessIndex];
         },
         get currentWord() {
-          return this.currentGuess.map((letterGuess) => letterGuess.letter || ' ').join('');
+          return this.currentGuess
+            .map((letterGuess) => letterGuess.letter || " ")
+            .join("");
         },
         isCurrentWordComplete() {
-          return this.currentWord.length === this.target.length && this.currentWord.indexOf(' ') < 0;
-        }
+          return (
+            this.currentWord.length === this.target.length &&
+            this.currentWord.indexOf(" ") < 0
+          );
+        },
       };
     }
-
   </script>
+</html>
