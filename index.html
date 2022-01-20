@@ -83,7 +83,7 @@
   <body>
     <main>
       <h1 class="title">Wordle Junior</h1>
-      <div x-data="gameState()">
+      <div x-data="gameState()" @keyup.document="keyPressed">
         <div class="guesses">
           <template x-for="guess in guesses">
             <div class="guesses-word" >
@@ -153,6 +153,10 @@
             }
           }
         },
+        keyPressed(e) {
+          // TODO ensure it's a letter and handle Enter and Backspace
+          this.addLetter(e.key.toUpperCase())
+        },
         get currentGuess() {
           return this.guesses[this.currentGuessIndex];
         },
@@ -164,5 +168,5 @@
         }
       };
     }
-    
+
   </script>
