@@ -88,6 +88,10 @@
         width: 60px;
         height: 60px;
       }
+
+      .cursor {
+        border: 5px solid #333;
+      }
     </style>
   </head>
 
@@ -99,7 +103,11 @@
           <template x-for="(guess, guess_index) in guesses">
             <div class="guesses-word">
               <template x-for="(letter, letter_index) in guess">
-                <div x-text="letter.letter" class="guesses-tile"></div>
+                <div
+                  x-text="letter.letter"
+                  class="guesses-tile"
+                  :class="guessClass(guess_index, letter_index)"
+                ></div>
               </template>
             </div>
           </template>
@@ -223,6 +231,18 @@
             return "available";
           }
           return "available";
+        },
+        isCursor(guess_index, letter_index) {
+          return (
+            guess_index === this.currentGuessIndex &&
+            letter_index === this.currentWordLastLetterIndex + 1
+          );
+        },
+        guessClass(guess_index, letter_index) {
+          if (this.isCursor(guess_index, letter_index)) {
+            return ["cursor"];
+          }
+          return [];
         },
       };
     }
