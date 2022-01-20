@@ -130,31 +130,34 @@
       return {
         target,
         guesses,
-        currentGuess: 0,
+        currentGuessIndex: 0,
         keyboard,
         addLetter (letter) {
           if (letter === 'Enter') {
             if (this.isCurrentWordComplete()) {
-              this.guesses[this.currentGuess].forEach((letterGuess) => letterGuess.state = 'submitted');
+              this.currentGuess.forEach((letterGuess) => letterGuess.state = 'submitted');
               // TODO - check answers
-              this.currentGuess += 1;
+              this.currentGuessIndex += 1;
             }
           } else if (letter === 'Back') {
             for (let i = this.target.length - 1; i >= 0; i--) {
-              if (this.guesses[this.currentGuess][i].letter) {
-                this.guesses[this.currentGuess][i].letter = '';
+              if (this.currentGuess[i].letter) {
+                this.currentGuess[i].letter = '';
                 break;
               }
             }
           } else {
-            const nextBlank = this.guesses[this.currentGuess].find((letterGuess) => letterGuess.letter === '')
+            const nextBlank = this.currentGuess.find((letterGuess) => letterGuess.letter === '')
             if (nextBlank) {
               nextBlank.letter = letter;
             }
           }
         },
+        get currentGuess() {
+          return this.guesses[this.currentGuessIndex];
+        },
         get currentWord() {
-          return this.guesses[this.currentGuess].map((letterGuess) => letterGuess.letter || ' ').join('');
+          return this.currentGuess.map((letterGuess) => letterGuess.letter || ' ').join('');
         },
         isCurrentWordComplete() {
           return this.currentWord.length === this.target.length && this.currentWord.indexOf(' ') < 0;
