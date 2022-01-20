@@ -9,6 +9,7 @@
       content="TODO"
     />
     <link rel="shortcut icon" href="./favicon.ico" />
+    <script src="//unpkg.com/alpinejs" defer></script>
 
     <style>
       body {
@@ -55,7 +56,7 @@
         cursor:  pointer;
       }
 
-      .guesses {
+      .guesses-word {
         display: flex;
         justify-content: center;
         gap: 8px;
@@ -82,26 +83,61 @@
   <body>
     <main>
       <h1 class="title">Wordle Junior</h1>
-      <div class="guesses">
-        <div class="guesses-tile"></div>
-        <div class="guesses-tile"></div>
-        <div class="guesses-tile"></div>
-        <div class="guesses-tile"></div>
+      <div x-data="gameState()">
+        <div class="guesses">
+          <template x-for="guess in guesses">
+            <div class="guesses-word" >
+              <template x-for="letter in guess">
+                <div class="guesses-tile" x-text="letter.letter"></div>
+              </template>
+            </div>
+          </template>
+        </div>
+        <div class="keyboard">
+          <template x-for="letterState in keyboard">
+            <div class="key" x-text="letterState.letter" @click="addLetter(letterState.letter)"></div>
+          </template>
+        </div>
       </div>
-      <div class="keyboard"></div>
     </main>
   </body>
 
-  <script type="module">
-    import { UI } from './public/ui.js';
-    import { todaysPuzzle, GameState } from './public/gameState.js';
+  <script>
+    function todaysPuzzle() {
+      return 'PATH'; // hardcoded for now
+    }
 
     const target = todaysPuzzle();
-    const gameState = new GameState(target);
-    console.log(gameState);
+    const wordLength = target.length;
+    const maxGuesses = 6;
 
-    const ui = new UI(gameState, {
-      keyboard: '.keyboard',
-      guesses: '.guesses'
-    });
+    const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    const keyboard = a_z.concat(controls).map((letter) => ({
+        letter,
+        state: 'AVAILABLE',
+    }));
+    const guesses = [];
+    for (let i = 0 ; i < maxGuesses; i++) {
+      const guess = [];
+      for (let j = 0; j < wordLength; j++) {
+        guess.push({ letter: '', state: 'pending' });
+      }
+      guesses.push(guess);
+    }
+
+    function gameState() {
+      return {
+        target,
+        guesses,
+        currentGuess: 0,
+        keyboard,
+        addLetter (letter) {
+          const nextBlank = this.guesses[this.currentGuess].find((letterGuess) => letterGuess.letter === '')
+          if (nextBlank) {
+            nextBlank.letter = letter;
+          }
+        },
+      };
+    }
+    
   </script>
