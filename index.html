@@ -4,108 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Wordle Junior</title>
-    <meta name="description" content="TODO" />
-    <link rel="shortcut icon" href="./favicon.ico" />
+    <meta
+      name="description"
+      content="A kid-friendly version of the popular Wordle game"
+    />
     <script src="//unpkg.com/alpinejs" defer></script>
-
-    <style>
-      body {
-        background: #111;
-        color: white;
-        padding: 1rem;
-        font-family: sans-serif;
-        margin-bottom: 8rem;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      main {
-        max-width: 500px;
-        margin: 0 auto;
-      }
-
-      .title {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        text-align: center;
-      }
-
-      .keyboard {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        max-width: 90%;
-        justify-content: center;
-        margin: 0 auto;
-        font-size: 14px;
-      }
-      .key {
-        text-transform: uppercase;
-        border-radius: 4px;
-        background-color: #818384;
-        color: white;
-        font-weight: bold;
-        width: 40px;
-        line-height: 62px;
-        text-align: center;
-        cursor: pointer;
-      }
-      .key-enter,
-      .key-back {
-        min-width: 60px;
-      }
-      .key-back {
-        font-size: 1.5rem;
-      }
-      .key-back {
-        font-size: 1.5rem;
-      }
-
-      .guesses-word {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        min-height: 60px;
-        margin-bottom: 2rem;
-        text-transform: uppercase;
-      }
-
-      .guesses-tile {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-
-        border: 2px solid #333;
-        font-weight: bold;
-        font-size: 2rem;
-        background: black;
-        width: 60px;
-        height: 60px;
-      }
-
-      .unavailable {
-        background-color: #81837b6e;
-        cursor: auto;
-      }
-
-      .cursor {
-        border: 5px solid #333;
-      }
-
-      .miss {
-        background-color: #81837b6e;
-      }
-
-      .present {
-        background-color: #b59f3b;
-      }
-
-      .match {
-        background-color: #538d4e;
-      }
-    </style>
+    <link href="./public/main.css" rel="stylesheet" />
   </head>
 
   <body>
