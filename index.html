@@ -37,16 +37,17 @@
       <div
         class="game-content"
         x-data="gameState()"
+        x-init="initialLoad()"
         @keyup.document="keyPressed"
       >
         <div class="guesses">
-          <template x-for="(guess, guess_index) in guesses">
+          <template x-for="(guess, guessIndex) in guesses">
             <div class="guesses-word">
-              <template x-for="(letter, letter_index) in guess">
+              <template x-for="(letter, letterIndex) in guess">
                 <div
                   class="guesses-tile"
-                  :class="[letter.state, isCursor(guess_index, letter_index) ? 'cursor' : '']"
-                  @click="selectTile(guess_index, letter_index)"
+                  :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
+                  @click="selectTile(guessIndex, letterIndex)"
                 >
                   <span
                     x-show="letter.letter"
@@ -93,55 +94,56 @@
 
   <script src="public/puzzles.js"></script>
   <script>
-    const target = getTodayPuzzle();
+    const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
 
-    const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    const keyboard = a_z.map((letter) => ({
-      type: "letter",
-      label: letter,
-      state: "available",
-    }));
-    keyboard.push({
-      type: "back",
-      label: "←",
-      state: "unavailable",
-    });
-    keyboard.push({
-      type: "enter",
-      label: "guess",
-      state: "unavailable",
-    });
-    const guesses = [];
-    for (let i = 0; i < maxGuesses; i++) {
-      const guess = [];
-      for (let j = 0; j < target.length; j++) {
-        guess.push({ letter: "", state: "pending" });
-      }
-      guesses.push(guess);
+    function initialKeyboard() {
+      const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      const keyboard = a_z.map((letter) => ({
+        type: "letter",
+        label: letter,
+        state: "available",
+      }));
+      keyboard.push({
+        type: "back",
+        label: "←",
+        state: "unavailable",
+      });
+      keyboard.push({
+        type: "enter",
+        label: "guess",
+        state: "unavailable",
+      });
+      return keyboard;
     }
 
-    let initialState = {};
-    try {
-      initialState = JSON.parse(localStorage.getItem("game-state") || "{}");
-      if (initialState.target !== target) {
-        // Don't use yesterday's state
-        initialState = {};
+    function emptyGuesses(wordLength, guessLength) {
+      const guesses = [];
+      for (let i = 0; i < guessLength; i++) {
+        const guess = [];
+        for (let j = 0; j < wordLength; j++) {
+          guess.push({ letter: "", state: "pending" });
+        }
+        guesses.push(guess);
       }
-    } catch (err) {
-      console.error(err);
+      return guesses;
     }
 
     function gameState() {
+      const DEFAULT_SETTINGS = {
+        difficulty: "easy",
+      };
+
       return {
-        target,
-        guesses: initialState.guesses || guesses,
-        solved: initialState.solved || false,
-        failed: initialState.failed || false,
-        currentGuessIndex: initialState.currentGuessIndex || 0,
-        cursor: initialState.cursor || 0,
-        cursorMode: initialState.cursorMode || false,
-        keyboard: initialState.keyboard || keyboard,
+        puzzleId: 0,
+        target: "",
+        guesses: [],
+        solved: false,
+        failed: false,
+        currentGuessIndex: 0,
+        cursor: 0,
+        cursorMode: false,
+        keyboard: [],
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -193,6 +195,7 @@
           const key = this.keyboard.find((letter) => letter.label === label);
           // Don't overwrite hit or present with miss
           if (
+            !key ||
             key.state === "hit" ||
             (key.state === "present" && state === "miss")
           ) {
@@ -227,6 +230,12 @@
           } else if (e.key === "?") {
             // TODO
             console.log("Give a hint or show help");
+          } else if (e.key === "+") {
+            this.updateSettings({ difficulty: "medium" });
+            this.loadGameState();
+          } else if (e.key === "-") {
+            this.updateSettings({ difficulty: "easy" });
+            this.loadGameState();
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
             !e.altKey &&
@@ -237,9 +246,9 @@
             this.cursorMode = false;
           }
         },
-        selectTile(guess_index, letter_index) {
-          if (!this.solved && guess_index === this.currentGuessIndex) {
-            this.cursor = letter_index;
+        selectTile(guessIndex, letterIndex) {
+          if (!this.solved && guessIndex === this.currentGuessIndex) {
+            this.cursor = letterIndex;
             this.cursorMode = true;
           }
         },
@@ -257,18 +266,59 @@
             this.currentWord.indexOf(" ") < 0
           );
         },
-        isCursor(guess_index, letter_index) {
+        isCursor(guessIndex, letterIndex) {
           return (
-            guess_index === this.currentGuessIndex &&
-            letter_index === this.cursor
+            guessIndex === this.currentGuessIndex && letterIndex === this.cursor
           );
         },
         get victoryEmoji() {
           const emojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return emojis[this.currentGuessIndex ?? 5];
         },
+        initialLoad() {
+          this.loadSettings();
+          this.loadGameState();
+        },
+        loadGameState() {
+          try {
+            this.target = getTodayPuzzles()[this.settings.difficulty];
+            this.level = `${this.settings.difficulty}-${this.puzzleId}`;
+
+            let initialState = JSON.parse(
+              localStorage.getItem(`game-state-${this.level}`) || "{}"
+            );
+            if (initialState.target !== this.target) {
+              initialState = {};
+            }
+            this.guesses =
+              initialState.guesses ||
+              emptyGuesses(this.target.length, maxGuesses);
+            this.solved = initialState.solved || false;
+            this.failed = initialState.failed || false;
+            this.currentGuessIndex = initialState.currentGuessIndex || 0;
+            this.cursor = initialState.cursor || 0;
+            this.cursorMode = initialState.cursorMode || false;
+            // TODO - recalculate keyboard instead of saving it
+            this.keyboard = initialState.keyboard || initialKeyboard();
+          } catch (err) {
+            console.error(err);
+          }
+        },
         saveGameState() {
-          localStorage.setItem("game-state", JSON.stringify(this.toJson()));
+          localStorage.setItem(
+            `game-state-${this.level}`,
+            JSON.stringify(this.toJson())
+          );
+        },
+        loadSettings() {
+          this.settings = {
+            ...DEFAULT_SETTINGS,
+            ...JSON.parse(localStorage.getItem("settings") || "{}"),
+          };
+        },
+        updateSettings(delta) {
+          this.settings = { ...this.settings, ...delta };
+          localStorage.setItem("settings", JSON.stringify(this.settings));
         },
         toJson() {
           return {

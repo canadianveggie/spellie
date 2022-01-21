@@ -978,7 +978,11 @@ const words_hard = [
   "INSIDE",
 ];
 
-const words = words_easy;
+const words = {
+  easy: words_easy,
+  medium: words_medium,
+  hard: words_hard,
+};
 const fallback = words[0];
 
 const start = new Date(2022, 1 - 1, 18);
@@ -989,10 +993,18 @@ function daysBetween(first, second) {
   return Math.floor((second - first) / MILLIS_PER_DAY);
 }
 
-function getTodayPuzzle() {
-  const index = daysBetween(start, new Date());
-  const puzzle = words[index % words.length];
-  return puzzle.toUpperCase();
+function getTodayPuzzleId() {
+  return daysBetween(start, new Date());
+}
+
+function getTodayPuzzles() {
+  const index = getTodayPuzzleId();
+  const targets = {};
+  for (const difficulty of Object.keys(words)) {
+    const wordList = words[difficulty];
+    targets[difficulty] = wordList[index % wordList.length].toUpperCase();
+  }
+  return targets;
 }
 
 // TODO - add test cases
