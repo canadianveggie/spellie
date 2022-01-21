@@ -62,10 +62,6 @@
       .key-back {
         font-size: 1.5rem;
       }
-      .key-unavailable {
-        background-color: #81837b6e;
-        cursor: auto;
-      }
 
       .guesses-word {
         display: flex;
@@ -89,12 +85,17 @@
         height: 60px;
       }
 
+      .unavailable {
+        background-color: #81837b6e;
+        cursor: auto;
+      }
+
       .cursor {
         border: 5px solid #333;
       }
 
       .miss {
-        background-color: #81837b;
+        background-color: #81837b6e;
       }
 
       .present {
@@ -129,7 +130,7 @@
             <div
               class="key"
               x-text="letter.label"
-              :class="['key-' + letter.type, 'key-' + keyClass(letter)]"
+              :class="['key-' + letter.type, letter.state]"
               @click="addLetter(letter)"
             ></div>
           </template>
@@ -148,14 +149,17 @@
     const keyboard = a_z.map((letter) => ({
       type: "letter",
       label: letter,
+      state: "available",
     }));
     keyboard.push({
       type: "enter",
       label: "guess",
+      state: "unavailable",
     });
     keyboard.push({
       type: "back",
       label: "←",
+      state: "unavailable",
     });
     const guesses = [];
     for (let i = 0; i < maxGuesses; i++) {
@@ -197,13 +201,39 @@
               nextBlank.letter = letterState.label.toUpperCase();
             }
           }
+          this.updateControls();
         },
         checkAnswer() {
           const result = compareTargetAndGuess(this.target, this.currentWord);
           result.forEach((letterResult, i) => {
             this.currentGuess[i].state = letterResult;
+            this.updateKeyboard(this.currentWord[i], letterResult);
           });
           this.solved = this.currentWord === this.target;
+        },
+        updateKeyboard(label, state) {
+          const key = this.keyboard.find((letter) => letter.label === label);
+          // Don't overwrite hit or present with miss
+          if (
+            key.state === "hit" ||
+            (key.state === "present" && state === "miss")
+          ) {
+            return;
+          }
+          key.state = state;
+        },
+        updateControls() {
+          const backKey = this.keyboard.find(
+            (letter) => letter.type === "back"
+          );
+          const enterKey = this.keyboard.find(
+            (letter) => letter.type === "enter"
+          );
+          backKey.state =
+            this.currentWordLastLetterIndex >= 0 ? "available" : "unavailable";
+          enterKey.state = this.isCurrentWordComplete()
+            ? "available"
+            : "unavailable";
         },
         keyPressed(e) {
           if (e.key === "Enter") {
@@ -242,18 +272,6 @@
             }
           }
           return -1;
-        },
-        keyClass(letter) {
-          if (letter.type === "enter") {
-            return this.isCurrentWordComplete() ? "available" : "unavailable";
-          } else if (letter.type === "back") {
-            return this.currentWordLastLetterIndex >= 0
-              ? "available"
-              : "unavailable";
-          } else if (letter.type === "letter") {
-            return "available";
-          }
-          return "available";
         },
         isCursor(guess_index, letter_index) {
           return (
