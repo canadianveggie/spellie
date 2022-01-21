@@ -129,6 +129,7 @@
         failed: false,
         currentGuessIndex: 0,
         cursor: 0,
+        cursorMode: false,
         keyboard,
         addLetter(letterState) {
           if (this.solved || this.failed) {
@@ -146,9 +147,10 @@
               }
             }
           } else if (letterState.type === "back") {
-            if (this.cursor > 0) {
-              this.currentGuess[this.cursor - 1].letter = "";
-              this.cursor -= 1;
+            const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
+            if (deleteIndex >= 0) {
+              this.currentGuess[deleteIndex].letter = "";
+              this.cursor = Math.max(0, this.cursor - 1);
             }
           } else if (letterState.type === "letter") {
             if (this.cursor < this.currentGuess?.length) {
@@ -196,12 +198,15 @@
         keyPressed(e) {
           if (e.key === "Enter") {
             this.addLetter({ type: "enter" });
+            this.cursorMode = false;
           } else if (e.key === "Backspace") {
             this.addLetter({ type: "back" });
           } else if (e.key === "ArrowLeft") {
             this.cursor = Math.max(0, this.cursor - 1);
+            this.cursorMode = true;
           } else if (e.key === "ArrowRight") {
-            this.cursor = Math.min(this.target.length, this.cursor + 1);
+            this.cursor = Math.min(this.target.length - 1, this.cursor + 1);
+            this.cursorMode = true;
           } else if (e.key === "?") {
             // TODO
             console.log("Give a hint or show help");
@@ -212,11 +217,13 @@
             !e.metaKey
           ) {
             this.addLetter({ type: "letter", label: e.key });
+            this.cursorMode = false;
           }
         },
         selectTile(guess_index, letter_index) {
           if (!this.solved && guess_index === this.currentGuessIndex) {
             this.cursor = letter_index;
+            this.cursorMode = true;
           }
         },
         get currentGuess() {
