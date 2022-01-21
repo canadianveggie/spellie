@@ -2,6 +2,8 @@
 
 Wordle Junior - a kid-friendly version of the popular Wordle game
 
+[Try it out](https://canadianveggie.github.io/wordle-junior/)
+
 MVP:
 
 - ✅ static page
