@@ -30,6 +30,20 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <link href="./public/main.css" rel="stylesheet" />
   </head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-5KEWSX2CE2"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-5KEWSX2CE2");
+  </script>
 
   <body>
     <main>
@@ -135,7 +149,7 @@
       };
 
       return {
-        puzzleId: 0,
+        puzzleId,
         target: "",
         guesses: [],
         solved: false,
@@ -184,11 +198,22 @@
             this.updateKeyboard(this.currentWord[i], letterResult);
           });
           this.solved = this.currentWord === this.target;
+          if (this.solved) {
+            gtag("event", "level_end", {
+              level_name: this.level,
+              guesses: this.currentGuessIndex + 1,
+              success: true,
+            });
+          }
           if (
             !this.solved &&
             this.currentGuessIndex >= this.guesses.length - 1
           ) {
             this.failed = true;
+            gtag("event", "level_end", {
+              level_name: this.level,
+              success: false,
+            });
           }
         },
         updateKeyboard(label, state) {
@@ -289,6 +314,9 @@
             );
             if (initialState.target !== this.target) {
               initialState = {};
+              gtag("event", "level_start", {
+                level_name: this.level,
+              });
             }
             this.guesses =
               initialState.guesses ||
