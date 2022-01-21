@@ -182,7 +182,10 @@
             this.updateKeyboard(this.currentWord[i], letterResult);
           });
           this.solved = this.currentWord === this.target;
-          if (this.currentGuessIndex >= this.guesses.length - 1) {
+          if (
+            !this.solved &&
+            this.currentGuessIndex >= this.guesses.length - 1
+          ) {
             this.failed = true;
           }
         },
