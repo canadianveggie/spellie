@@ -50,14 +50,14 @@
   </script>
 
   <body>
-    <main>
-      <h1 class="title">Wordle Junior</h1>
-      <div
-        class="game-content"
-        x-data="gameState()"
-        x-init="initialLoad()"
-        @keyup.document="keyPressed"
-      >
+    <main
+      class="game-content"
+      x-data="gameState()"
+      x-init="initialLoad()"
+      @keyup.document="keyPressed"
+    >
+      <h1 class="title" x-text="'Wordle Junior ' + emoji"></h1>
+      <div>
         <div class="guesses">
           <template x-for="(guess, guessIndex) in guesses">
             <div class="guesses-word">
@@ -111,6 +111,7 @@
   </body>
 
   <script src="public/puzzles.js"></script>
+  <script src="public/emojis.js"></script>
   <script>
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
@@ -155,6 +156,7 @@
       return {
         puzzleId,
         target: "",
+        emoji: "🔠",
         guesses: [],
         solved: false,
         failed: false,
@@ -201,6 +203,7 @@
             this.currentGuess[i].state = letterResult;
             this.updateKeyboard(this.currentWord[i], letterResult);
           });
+          this.emoji = emojis[this.currentWord] || this.emoji;
           this.solved = this.currentWord === this.target;
           if (this.solved) {
             gtag("event", "level_end", {
