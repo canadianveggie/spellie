@@ -51,13 +51,12 @@
 
   <body>
     <main
-      class="game-content"
       x-data="gameState()"
       x-init="initialLoad()"
       @keyup.document="keyPressed"
     >
       <h1 class="title" x-text="'Wordle Junior ' + emoji"></h1>
-      <div>
+      <div class="game-content">
         <div class="guesses">
           <template x-for="(guess, guessIndex) in guesses">
             <div class="guesses-word">
