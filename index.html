@@ -35,13 +35,23 @@
           </template>
         </div>
         <div class="keyboard">
-          <template x-for="letter in keyboard">
-            <div
-              class="key"
-              x-text="letter.label"
-              :class="['key-' + letter.type, letter.state]"
-              @click="addLetter(letter)"
-            ></div>
+          <div
+            x-show="solved"
+            x-cloak
+            x-transition.duration.1500ms
+            class="victory"
+          >
+            <span class="emoji" x-text="victoryEmoji"></span> You win!
+          </div>
+          <template x-if="!solved">
+            <template x-for="letter in keyboard">
+              <div
+                class="key"
+                x-text="letter.label"
+                :class="['key-' + letter.type, letter.state]"
+                @click="addLetter(letter)"
+              ></div>
+            </template>
           </template>
         </div>
       </div>
@@ -60,13 +70,13 @@
       state: "available",
     }));
     keyboard.push({
-      type: "enter",
-      label: "guess",
+      type: "back",
+      label: "←",
       state: "unavailable",
     });
     keyboard.push({
-      type: "back",
-      label: "←",
+      type: "enter",
+      label: "guess",
       state: "unavailable",
     });
     const guesses = [];
@@ -141,9 +151,9 @@
           const enterKey = this.keyboard.find(
             (letter) => letter.type === "enter"
           );
-          backKey.state = this.cursor >= 0 ? "available" : "unavailable";
+          backKey.state = this.cursor > 0 ? "available" : "unavailable";
           enterKey.state = this.isCurrentWordComplete()
-            ? "available"
+            ? "available pulse"
             : "unavailable";
         },
         keyPressed(e) {
@@ -190,6 +200,10 @@
             guess_index === this.currentGuessIndex &&
             letter_index === this.cursor
           );
+        },
+        get victoryEmoji() {
+          const emojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
+          return emojis[this.currentGuessIndex ?? 5];
         },
       };
     }
