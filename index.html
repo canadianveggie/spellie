@@ -23,7 +23,8 @@
                 <div
                   x-text="letter.letter"
                   class="guesses-tile"
-                  :class="[letter.state, guessClass(guess_index, letter_index)]"
+                  :class="[letter.state, isCursor(guess_index, letter_index) ? 'cursor' : '']"
+                  @click="selectTile(guess_index, letter_index)"
                 ></div>
               </template>
             </div>
@@ -46,7 +47,6 @@
   <script src="public/puzzles.js"></script>
   <script>
     const target = getTodayPuzzle();
-    const wordLength = target.length;
     const maxGuesses = 6;
 
     const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -68,7 +68,7 @@
     const guesses = [];
     for (let i = 0; i < maxGuesses; i++) {
       const guess = [];
-      for (let j = 0; j < wordLength; j++) {
+      for (let j = 0; j < target.length; j++) {
         guess.push({ letter: "", state: "pending" });
       }
       guesses.push(guess);
@@ -80,6 +80,7 @@
         guesses,
         solved: false,
         currentGuessIndex: 0,
+        cursor: 0,
         keyboard,
         addLetter(letterState) {
           if (this.solved || this.currentGuessIndex >= this.guesses.length) {
@@ -91,18 +92,21 @@
                 (letterGuess) => (letterGuess.state = "submitted")
               );
               this.checkAnswer();
-              this.currentGuessIndex += 1;
+              if (!this.solved) {
+                this.currentGuessIndex += 1;
+                this.cursor = 0;
+              }
             }
           } else if (letterState.type === "back") {
-            if (this.currentWordLastLetterIndex >= 0) {
-              this.currentGuess[this.currentWordLastLetterIndex].letter = "";
+            if (this.cursor > 0) {
+              this.currentGuess[this.cursor - 1].letter = "";
+              this.cursor -= 1;
             }
-          } else {
-            const nextBlank = this.currentGuess.find(
-              (letterGuess) => letterGuess.letter === ""
-            );
-            if (nextBlank) {
-              nextBlank.letter = letterState.label.toUpperCase();
+          } else if (letterState.type === "letter") {
+            if (this.cursor < this.currentGuess?.length) {
+              this.currentGuess[this.cursor].letter =
+                letterState.label.toUpperCase();
+              this.cursor += 1;
             }
           }
           this.updateControls();
@@ -133,8 +137,7 @@
           const enterKey = this.keyboard.find(
             (letter) => letter.type === "enter"
           );
-          backKey.state =
-            this.currentWordLastLetterIndex >= 0 ? "available" : "unavailable";
+          backKey.state = this.cursor >= 0 ? "available" : "unavailable";
           enterKey.state = this.isCurrentWordComplete()
             ? "available"
             : "unavailable";
@@ -144,6 +147,10 @@
             this.addLetter({ type: "enter" });
           } else if (e.key === "Backspace") {
             this.addLetter({ type: "back" });
+          } else if (e.key === "ArrowLeft") {
+            this.cursor = Math.max(0, this.cursor - 1);
+          } else if (e.key === "ArrowRight") {
+            this.cursor = Math.min(this.target.length, this.cursor + 1);
           } else if (e.key === "?") {
             console.log("Give a hint or show help");
           } else if (
@@ -153,6 +160,11 @@
             !e.metaKey
           ) {
             this.addLetter({ type: "letter", label: e.key });
+          }
+        },
+        selectTile(guess_index, letter_index) {
+          if (!this.solved && guess_index === this.currentGuessIndex) {
+            this.cursor = letter_index;
           }
         },
         get currentGuess() {
@@ -169,25 +181,11 @@
             this.currentWord.indexOf(" ") < 0
           );
         },
-        get currentWordLastLetterIndex() {
-          for (let i = this.target.length - 1; i >= 0; i--) {
-            if (this.currentGuess?.[i].letter) {
-              return i;
-            }
-          }
-          return -1;
-        },
         isCursor(guess_index, letter_index) {
           return (
             guess_index === this.currentGuessIndex &&
-            letter_index === this.currentWordLastLetterIndex + 1
+            letter_index === this.cursor
           );
-        },
-        guessClass(guess_index, letter_index) {
-          if (this.isCursor(guess_index, letter_index)) {
-            return "cursor";
-          }
-          return null;
         },
       };
     }
