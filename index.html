@@ -121,16 +121,27 @@
       guesses.push(guess);
     }
 
+    let initialState = {};
+    try {
+      initialState = JSON.parse(localStorage.getItem("game-state") || "{}");
+      if (initialState.target !== target) {
+        // Don't use yesterday's state
+        initialState = {};
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
     function gameState() {
       return {
         target,
-        guesses,
-        solved: false,
-        failed: false,
-        currentGuessIndex: 0,
-        cursor: 0,
-        cursorMode: false,
-        keyboard,
+        guesses: initialState.guesses || guesses,
+        solved: initialState.solved || false,
+        failed: initialState.failed || false,
+        currentGuessIndex: initialState.currentGuessIndex || 0,
+        cursor: initialState.cursor || 0,
+        cursorMode: initialState.cursorMode || false,
+        keyboard: initialState.keyboard || keyboard,
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -145,21 +156,24 @@
                 this.currentGuessIndex += 1;
                 this.cursor = 0;
               }
+              this.updateControls();
+              this.saveGameState();
             }
           } else if (letterState.type === "back") {
             const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
             if (deleteIndex >= 0) {
               this.currentGuess[deleteIndex].letter = "";
               this.cursor = Math.max(0, this.cursor - 1);
+              this.updateControls();
             }
           } else if (letterState.type === "letter") {
             if (this.cursor < this.currentGuess?.length) {
               this.currentGuess[this.cursor].letter =
                 letterState.label.toUpperCase();
               this.cursor += 1;
+              this.updateControls();
             }
           }
-          this.updateControls();
         },
         checkAnswer() {
           const result = compareTargetAndGuess(this.target, this.currentWord);
@@ -249,6 +263,21 @@
         get victoryEmoji() {
           const emojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return emojis[this.currentGuessIndex ?? 5];
+        },
+        saveGameState() {
+          localStorage.setItem("game-state", JSON.stringify(this.toJson()));
+        },
+        toJson() {
+          return {
+            target: this.target,
+            guesses: this.guesses,
+            solved: this.solved,
+            failed: this.failed,
+            currentGuessIndex: this.currentGuessIndex,
+            cursor: this.cursor,
+            cursorMode: this.cursorMode,
+            keyboard: this.keyboard,
+          };
         },
       };
     }
