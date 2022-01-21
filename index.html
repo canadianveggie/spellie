@@ -261,6 +261,9 @@
           } else if (e.key === "-") {
             this.updateSettings({ difficulty: "easy" });
             this.loadGameState();
+          } else if (e.key === "=") {
+            this.updateSettings({ difficulty: "hard" });
+            this.loadGameState();
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
             !e.altKey &&
