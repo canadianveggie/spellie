@@ -1,0 +1,108 @@
+html {
+  height: 100%;
+}
+
+body {
+  background: #111;
+  color: white;
+  font-family: sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+main {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin: 0 0 1.4rem;
+  text-align: center;
+}
+@media screen and (min-width: 600px) {
+  .title {
+    font-size: 2rem;
+    /*margin-bottom: 2rem;*/
+  }
+}
+
+.keyboard {
+  user-select: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 90%;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 14px;
+}
+.key {
+  text-transform: uppercase;
+  border-radius: 4px;
+  background-color: #818384;
+  color: white;
+  font-weight: bold;
+  width: 40px;
+  line-height: 62px;
+  text-align: center;
+  cursor: pointer;
+}
+.key-enter,
+.key-back {
+  min-width: 60px;
+}
+.key-back {
+  font-size: 1.5rem;
+}
+.key-back {
+  font-size: 1.5rem;
+}
+
+.guesses-word {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  min-height: 60px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.guesses-tile {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid #333;
+  font-weight: bold;
+  font-size: 2rem;
+  background: black;
+  width: 60px;
+  height: 60px;
+}
+
+.unavailable {
+  background-color: #81837b6e;
+  cursor: auto;
+}
+
+.cursor {
+  border: 5px solid #333;
+}
+
+.miss {
+  background-color: #81837b6e;
+}
+
+.present {
+  background-color: #b59f3b;
+}
+
+.match {
+  background-color: #538d4e;
+}
