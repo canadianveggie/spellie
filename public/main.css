@@ -67,9 +67,6 @@ main {
 .key-back {
   font-size: 1.5rem;
 }
-.key-back {
-  font-size: 1.5rem;
-}
 @media screen and (min-width: 600px) {
   .keyboard {
     gap: 8px;
@@ -107,19 +104,26 @@ main {
     height: 60px;
   }
 }
+.cursor {
+  border-color: #999;
+}
 
+.victory,
+.defeat {
+  text-align: center;
+}
 .victory {
   font-size: 3rem;
   font-family: fantasy;
+  animation: zoom 2s ease-in 1;
+}
+.defeat {
+  font-size: 2rem;
 }
 
 .unavailable {
   background-color: #81837b6e;
   cursor: auto;
-}
-
-.cursor {
-  border: 5px solid #333;
 }
 
 .miss {
@@ -139,6 +143,9 @@ main {
 .pulse {
   animation: pulse 0.5s linear infinite alternate;
 }
+.pop {
+  animation: pop 0.3s;
+}
 
 @keyframes pulse {
   0% {
@@ -147,4 +154,29 @@ main {
   100% {
     transform: scale(1.1);
   }
+}
+
+@keyframes zoom {
+  0% {
+    transform: scale(0) rotate(-1turn);
+  }
+  80% {
+    transform: scale(0.5) rotate(-180deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.8);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+}
+
+[x-cloak] {
+  display: none !important;
 }

@@ -25,11 +25,16 @@
             <div class="guesses-word">
               <template x-for="(letter, letter_index) in guess">
                 <div
-                  x-text="letter.letter"
                   class="guesses-tile"
                   :class="[letter.state, isCursor(guess_index, letter_index) ? 'cursor' : '']"
                   @click="selectTile(guess_index, letter_index)"
-                ></div>
+                >
+                  <span
+                    x-show="letter.letter"
+                    x-text="letter.letter"
+                    x-transition:enter="pop"
+                  ></span>
+                </div>
               </template>
             </div>
           </template>
@@ -38,12 +43,21 @@
           <div
             x-show="solved"
             x-cloak
-            x-transition.duration.1500ms
+            x-transition.duration.1000ms
             class="victory"
           >
             <span class="emoji" x-text="victoryEmoji"></span> You win!
           </div>
-          <template x-if="!solved">
+          <div
+            x-cloak
+            x-show="failed"
+            x-transition.duration.1000ms
+            class="defeat"
+          >
+            Nice try!
+            <p x-text="target"></p>
+          </div>
+          <template x-if="!solved && !failed">
             <template x-for="letter in keyboard">
               <div
                 class="key"
@@ -93,11 +107,12 @@
         target,
         guesses,
         solved: false,
+        failed: false,
         currentGuessIndex: 0,
         cursor: 0,
         keyboard,
         addLetter(letterState) {
-          if (this.solved || this.currentGuessIndex >= this.guesses.length) {
+          if (this.solved || this.failed) {
             return;
           }
           if (letterState.type === "enter") {
@@ -106,7 +121,7 @@
                 (letterGuess) => (letterGuess.state = "submitted")
               );
               this.checkAnswer();
-              if (!this.solved) {
+              if (!this.solved && !this.failed) {
                 this.currentGuessIndex += 1;
                 this.cursor = 0;
               }
@@ -132,6 +147,9 @@
             this.updateKeyboard(this.currentWord[i], letterResult);
           });
           this.solved = this.currentWord === this.target;
+          if (this.currentGuessIndex >= this.guesses.length - 1) {
+            this.failed = true;
+          }
         },
         updateKeyboard(label, state) {
           const key = this.keyboard.find((letter) => letter.label === label);
@@ -166,6 +184,7 @@
           } else if (e.key === "ArrowRight") {
             this.cursor = Math.min(this.target.length, this.cursor + 1);
           } else if (e.key === "?") {
+            // TODO
             console.log("Give a hint or show help");
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
