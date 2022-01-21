@@ -96,7 +96,22 @@ main {
   background: black;
   width: 40px;
   height: 40px;
+  transition: background linear 0.5s;
 }
+
+.guesses-tile:nth-of-type(1) {
+  transition-delay: 0s;
+}
+.guesses-tile:nth-of-type(2) {
+  transition-delay: 0.25s;
+}
+.guesses-tile:nth-of-type(3) {
+  transition-delay: 0.5s;
+}
+.guesses-tile:nth-of-type(4) {
+  transition-delay: 0.75s;
+}
+
 @media screen and (min-width: 600px) {
   .guesses-tile {
     font-size: 2rem;
