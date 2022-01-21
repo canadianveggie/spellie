@@ -64,8 +64,9 @@ main {
 .key-back {
   min-width: 60px;
 }
+.key-letter,
 .key-back {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 @media screen and (min-width: 600px) {
   .keyboard {
