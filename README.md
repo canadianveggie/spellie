@@ -15,3 +15,8 @@ Future Enhancements:
 
 - stats
 - ✅ colour-coded keyboard
+
+Differences from classic Wordle:
+
+- not required to enter properly spelled word
+- age-appropriate dictionary

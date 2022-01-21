@@ -15,7 +15,11 @@
   <body>
     <main>
       <h1 class="title">Wordle Junior</h1>
-      <div x-data="gameState()" @keyup.document="keyPressed">
+      <div
+        class="game-content"
+        x-data="gameState()"
+        @keyup.document="keyPressed"
+      >
         <div class="guesses">
           <template x-for="(guess, guess_index) in guesses">
             <div class="guesses-word">
