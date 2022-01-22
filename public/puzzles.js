@@ -1015,6 +1015,10 @@ function compareTargetAndGuess(target, guess) {
   const length = target.length;
   const result = Array(length);
 
+  if (target === guess) {
+    return Array(length).fill("match");
+  }
+
   // 1st pass - matches
   for (let i = 0; i < length; i++) {
     const otherMatches = target
