@@ -1008,39 +1008,32 @@ function getTodayPuzzles() {
 }
 
 // TODO - add test cases
+// Note: not the same logic as original Wordle
 function compareTargetAndGuess(target, guess) {
   target = target.toUpperCase();
   guess = guess.toUpperCase();
   const length = target.length;
   const result = Array(length);
-  const letterUsed = Array(length).fill(false);
 
   // 1st pass - matches
   for (let i = 0; i < length; i++) {
+    const otherMatches = target
+      .split("")
+      .filter((letter, j) => i !== j && letter === guess[i]).length;
     if (target[i] === guess[i]) {
       result[i] = "match";
-      letterUsed[i] = true;
+      if (otherMatches > 0) {
+        result[i] += `-plus${otherMatches}`;
+      }
+    } else if (otherMatches > 0) {
+      result[i] = "present";
+      if (otherMatches > 1) {
+        result[i] += `-plus${otherMatches - 1}`;
+      }
+    } else {
+      result[i] = "miss";
     }
   }
 
-  // 2nd pass - miss and present positions
-  for (let i = 0; i < target.length; i++) {
-    if (result[i] !== "match") {
-      const otherLetters = target.split("").map((letter, j) => {
-        if (i === j || letterUsed[j]) {
-          return "";
-        } else {
-          return letter;
-        }
-      });
-      const targetIndex = otherLetters.indexOf(guess[i]);
-      if (targetIndex >= 0) {
-        result[i] = "present";
-        letterUsed[targetIndex] = true;
-      } else {
-        result[i] = "miss";
-      }
-    }
-  }
   return result;
 }

@@ -150,8 +150,32 @@ main {
   background-color: #b59f3b;
 }
 
+.present-plus1 {
+  background-color: #b59f3b;
+  box-shadow: 3px -3px #b59f3b;
+}
+
+.present-plus2,
+.present-plus3,
+.present-plus4 {
+  background-color: #b59f3b;
+  box-shadow: #b59f3b 3px -3px, #000000 4px -4px, #b59f3b 7px -7px;
+}
+
 .match {
   background-color: #538d4e;
+}
+
+.match-plus1 {
+  background-color: #538d4e;
+  box-shadow: 3px -3px #b59f3b;
+}
+
+.match-plus2,
+.match-plus3,
+.match-plus4 {
+  background-color: #538d4e;
+  box-shadow: #b59f3b 3px -3px, #000000 4px -4px, #b59f3b 7px -7px;
 }
 
 /* animations */

@@ -224,15 +224,15 @@
         },
         updateKeyboard(label, state) {
           const key = this.keyboard.find((letter) => letter.label === label);
-          // Don't overwrite hit or present with miss
+          // Don't overwrite match or present with miss
           if (
             !key ||
-            key.state === "hit" ||
-            (key.state === "present" && state === "miss")
+            key.state.startsWith("match") ||
+            (key.state.startsWith("present") && state === "miss")
           ) {
             return;
           }
-          key.state = state;
+          key.state = state.split("-")[0]; // Don't show drop shadows on keyboard
         },
         updateControls() {
           const backKey = this.keyboard.find(
