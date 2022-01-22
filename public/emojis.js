@@ -96,6 +96,7 @@ const emojis = {
   RABBIT: "🐇",
   RAIN: "🌧",
   RAINY: "☔️",
+  RATS: "🐀🐀",
   ROBOT: "🤖",
   ROCKET: "🚀",
   ROFL: "🤣",
