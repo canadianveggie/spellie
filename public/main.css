@@ -5,11 +5,10 @@ html {
 body {
   background: #111;
   color: white;
-  font-family: sans-serif;
+  font-family: "Andika New Basic", sans-serif;
   height: 100%;
   margin: 0;
   padding: 1rem;
-  overflow-y: hidden;
 }
 
 * {
@@ -36,7 +35,7 @@ main {
 .game-content {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100% - 50px);
   justify-content: space-around;
 }
 
@@ -47,26 +46,24 @@ main {
   gap: 6px;
   justify-content: center;
   margin: 0 auto 20px;
-  font-size: 14px;
+  font-size: 1.5rem;
 }
 .key {
-  text-transform: uppercase;
+  text-transform: lowercase;
   border-radius: 4px;
   background-color: #818384;
   color: white;
-  font-weight: bold;
   text-align: center;
   cursor: pointer;
   width: 30px;
-  line-height: 48px;
+  line-height: 42px;
 }
-.key-enter,
+.key-enter {
+  min-width: 80px;
+  text-transform: capitalize;
+}
 .key-back {
   min-width: 60px;
-}
-.key-letter,
-.key-back {
-  font-size: 2rem;
 }
 @media screen and (min-width: 600px) {
   .keyboard {
@@ -76,6 +73,10 @@ main {
     line-height: 62px;
     width: 40px;
   }
+  .key-letter,
+  .key-back {
+    font-size: 2rem;
+  }
 }
 
 .guesses-word {
@@ -83,16 +84,16 @@ main {
   justify-content: center;
   gap: 8px;
   margin-bottom: 8px;
-  text-transform: uppercase;
+  text-transform: lowercase;
 }
 
 .guesses-tile {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 4px;
 
   border: 2px solid #333;
-  font-weight: bold;
   font-size: 1.5rem;
   background: black;
   width: 40px;
@@ -130,7 +131,6 @@ main {
 }
 .victory {
   font-size: 3rem;
-  font-family: fantasy;
   animation: zoom 2s ease-in 1;
 }
 .defeat {
