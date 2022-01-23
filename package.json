@@ -15,11 +15,12 @@
   "homepage": "https://github.com/canadianveggie/wordle-junior#readme",
   "scripts": {
     "start": "python -m SimpleHTTPServer",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "prepare": "husky install"
   },
   "devDependencies": {
     "husky": "^7.0.4",
+    "jest": "^27.4.7",
     "lint-staged": "^12.2.1",
     "prettier": "2.5.1"
   },

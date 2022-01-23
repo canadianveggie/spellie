@@ -1007,7 +1007,6 @@ function getTodayPuzzles() {
   return targets;
 }
 
-// TODO - add test cases
 function compareTargetAndGuess(target, guess) {
   target = target.toUpperCase();
   guess = guess.toUpperCase();
@@ -1043,4 +1042,8 @@ function compareTargetAndGuess(target, guess) {
     }
   }
   return result;
+}
+
+if (typeof exports !== "undefined") {
+  module.exports = { daysBetween, compareTargetAndGuess };
 }
