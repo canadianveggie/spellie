@@ -21,15 +21,34 @@ main {
   height: 100%;
 }
 
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px #818384 solid;
+  padding: 0 0 1.2rem;
+}
+
+.nav-link {
+  color: #818384;
+}
+
 .title {
   font-size: 1.5rem;
-  margin: 0 0 1.4rem;
   text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
 }
 @media screen and (min-width: 600px) {
   .title {
     font-size: 2rem;
   }
+}
+
+i {
+  padding: 4px;
 }
 
 .game-content {
