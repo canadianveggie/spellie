@@ -38,6 +38,10 @@
       href="https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
     <link href="./public/main.css" rel="stylesheet" />
     <script src="public/amplitude.js"></script>
   </head>
@@ -48,7 +52,22 @@
       x-init="initialLoad()"
       @keyup.document="keyPressed"
     >
-      <h1 class="title" x-text="'Wordle Junior ' + emoji"></h1>
+      <header>
+        <div class="nav">
+          <a href="help.html" class="nav-link">
+            <i class="material-icons">help_outline</i>
+          </a>
+        </div>
+        <div class="title">Wordle Junior</div>
+        <div class="nav">
+          <a href="collections.html" class="nav-link">
+            <i class="material-icons">collections</i>
+          </a>
+          <a href="settings.html" class="nav-link">
+            <i class="material-icons">settings</i>
+          </a>
+        </div>
+      </header>
       <div class="game-content">
         <div class="guesses">
           <template x-for="(guess, guessIndex) in guesses">
