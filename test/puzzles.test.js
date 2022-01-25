@@ -5,7 +5,7 @@ describe("puzzles", () => {
     it("same day", () => {
       const start = new Date(2022, 1 - 1, 18);
       const end = new Date(2022, 1 - 1, 18);
-      expect(daysBetween(start, end)).toBe(100);
+      expect(daysBetween(start, end)).toBe(0);
     });
 
     it("exactly one day", () => {
