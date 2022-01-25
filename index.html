@@ -296,8 +296,7 @@
             this.cursor = Math.min(this.target.length - 1, this.cursor + 1);
             this.cursorMode = true;
           } else if (e.key === "?") {
-            // TODO
-            console.log("Give a hint or show help");
+            this.showHint();
           } else if (e.key === "+") {
             this.updateSettings({ difficulty: "medium" });
             this.loadGameState();
