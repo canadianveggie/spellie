@@ -15,7 +15,9 @@
   "homepage": "https://github.com/canadianveggie/wordle-junior#readme",
   "scripts": {
     "start": "python -m SimpleHTTPServer",
-    "test": "jest --watch",
+    "test": "jest --verbose --watch",
+    "test:ci": "jest",
+    "lint": "prettier --check '**/*.{css,js,html}'",
     "prepare": "husky install"
   },
   "devDependencies": {
