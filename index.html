@@ -325,7 +325,7 @@
             this.level = `${this.settings.difficulty}-${this.puzzleId}`;
 
             let initialState = JSON.parse(
-              localStorage.getItem(`game-state-${this.level}`) || "{}"
+              localStorage.getItem("game-state") || "{}"
             );
             if (initialState.target !== this.target) {
               initialState = {};
@@ -348,10 +348,7 @@
           }
         },
         saveGameState() {
-          localStorage.setItem(
-            `game-state-${this.level}`,
-            JSON.stringify(this.toJson())
-          );
+          localStorage.setItem("game-state", JSON.stringify(this.toJson()));
         },
         loadSettings() {
           this.settings = {
