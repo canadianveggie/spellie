@@ -51,24 +51,30 @@
       x-data="gameState()"
       x-init="initialLoad()"
       @keyup.document="keyPressed"
+      @hashchange.window="page = location.hash"
     >
       <header>
-        <div class="nav">
-          <a href="help.html" class="nav-link">
+        <div class="nav" x-show="page !== ''">
+          <a href="#" class="nav-link">
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </div>
+        <div class="nav" x-show="page === ''">
+          <a href="#help" class="nav-link">
             <i class="material-icons">help_outline</i>
           </a>
         </div>
         <div class="title">Wordle Junior</div>
         <div class="nav">
-          <a href="collections.html" class="nav-link">
+          <a href="#collections" class="nav-link">
             <i class="material-icons">collections</i>
           </a>
-          <a href="settings.html" class="nav-link">
+          <a href="#settings" class="nav-link">
             <i class="material-icons">settings</i>
           </a>
         </div>
       </header>
-      <div class="game-content">
+      <div class="game-content" x-show="page === ''">
         <div class="guesses">
           <template x-for="(guess, guessIndex) in guesses">
             <div class="guesses-word">
@@ -138,6 +144,15 @@
           </template>
         </div>
       </div>
+      <div class="help-content" x-show="page === '#help'">
+        <h1>Help</h1>
+      </div>
+      <div class="collections-content" x-show="page === '#collections'">
+        <h1>Collections</h1>
+      </div>
+      <div class="settings-content" x-show="page === '#settings'">
+        <h1>Settings</h1>
+      </div>
     </main>
   </body>
 
@@ -187,6 +202,7 @@
       const HINT_DELAY = 10 * 1000;
 
       return {
+        page: "",
         puzzleId,
         target: "",
         emoji: "🔠",
