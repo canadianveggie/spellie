@@ -54,19 +54,17 @@
       @hashchange.window="page = location.hash"
     >
       <header>
-        <div class="nav" x-show="page !== ''">
-          <a href="#" class="nav-link">
+        <div class="nav">
+          <a href="#" class="nav-link" x-show="page !== ''">
             <i class="material-icons">arrow_back</i>
-          </a>
-        </div>
-        <div class="nav" x-show="page === ''">
-          <a href="#help" class="nav-link">
-            <i class="material-icons">help_outline</i>
           </a>
         </div>
         <div class="title">Wordle Junior</div>
         <div class="nav">
-          <a href="#collections" class="nav-link">
+          <a href="#help" class="nav-link">
+            <i class="material-icons">help_outline</i>
+          </a>
+          <a href="#collection" class="nav-link">
             <i class="material-icons">collections</i>
           </a>
           <a href="#settings" class="nav-link">
@@ -147,8 +145,20 @@
       <div class="help-content" x-show="page === '#help'">
         <h1>Help</h1>
       </div>
-      <div class="collections-content" x-show="page === '#collections'">
-        <h1>Collections</h1>
+      <div class="collection-content" x-show="page === '#collection'">
+        <h1>Collection</h1>
+        <div class="collection-tiles">
+          <template x-for="(collectable, i) in emojiCollection">
+            <div class="guesses-word" x-show="collectable.unlocked">
+              <span x-text="collectable.emoji"></span>
+              <template x-for="letter in collectable.word">
+                <div class="guesses-tile match">
+                  <span x-text="letter"></span>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
       </div>
       <div class="settings-content" x-show="page === '#settings'">
         <h1>Settings</h1>
@@ -202,7 +212,7 @@
       const HINT_DELAY = 10 * 1000;
 
       return {
-        page: "",
+        page: location.hash,
         puzzleId,
         target: "",
         emoji: "🔠",
@@ -218,6 +228,7 @@
         cursor: 0,
         cursorMode: false,
         keyboard: [],
+        emojiCollection: [],
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -261,6 +272,7 @@
             this.updateKeyboard(this.currentWord[i], letterResult);
           });
           this.emoji = emojis[this.currentWord] || this.emoji;
+          this.addToCollection(this.currentWord);
           this.solved = this.currentWord === this.target;
           if (this.solved) {
             amplitude.getInstance().logEvent("level_end", {
@@ -364,8 +376,8 @@
           );
         },
         get victoryEmoji() {
-          const emojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
-          return emojis[this.currentGuessIndex ?? 5];
+          const victoryEmojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
+          return victoryEmojis[this.currentGuessIndex ?? 5];
         },
         prepareHint() {
           if (
@@ -405,6 +417,7 @@
         initialLoad() {
           this.loadSettings();
           this.loadGameState();
+          this.loadCollection();
         },
         loadGameState() {
           try {
@@ -447,6 +460,31 @@
         updateSettings(delta) {
           this.settings = { ...this.settings, ...delta };
           localStorage.setItem("settings", JSON.stringify(this.settings));
+        },
+        loadCollection() {
+          const collection = JSON.parse(
+            localStorage.getItem("collection") || '{"unlocked": {}}'
+          );
+          this.emojiCollection = Object.entries(emojis).map(([word, emoji]) => {
+            return {
+              word,
+              emoji,
+              unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
+            };
+          });
+        },
+        addToCollection(newWord) {
+          if (emojis[newWord]) {
+            const collection = JSON.parse(
+              localStorage.getItem("collection") || '{"unlocked": {}}'
+            );
+            collection.unlocked[newWord] = { date: new Date().toISOString() };
+            localStorage.setItem("collection", JSON.stringify(collection));
+            const collectable = this.emojiCollection.find(
+              (collectable) => collectable.word === newWord
+            );
+            collectable.unlocked = true;
+          }
         },
         toJson() {
           return {
