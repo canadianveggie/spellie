@@ -20,7 +20,6 @@ function findMultiple(letters) {
  * Goal: educate where possible and encourage if close.
  */
 function getHintText(target, keys) {
-  // console.log("info I have", target, keys);
   const match = keys
     .filter((key) => key.state === "match")
     .map((key) => key.label)
@@ -29,6 +28,10 @@ function getHintText(target, keys) {
     .filter((key) => key.state === "present")
     .map((key) => key.label)
     .sort();
+
+  if (match.length === target.length - 1) {
+    return `You're almost there!`;
+  }
 
   const targetLetters = target.split("");
   const isVowelMatched = match.some((letter) => VOWELS.includes(letter));
@@ -45,7 +48,7 @@ function getHintText(target, keys) {
   // warn about multiples
   const multiple = findMultiple(targetLetters);
   if (multiple) {
-    return `You know, there could be more than one "${multiple.toLowerCase()}"...`;
+    return `There could be more than one "${multiple.toLowerCase()}".`;
   }
 
   // common clusters:
@@ -64,7 +67,7 @@ function getHintText(target, keys) {
         (letter) => !combinedMatchPresent.has(letter)
       );
       if (firstFound && firstNotFound) {
-        return `I heard that "${firstFound.toLowerCase()}" is really good friends with "${firstNotFound.toLowerCase()}".`;
+        return `Did you know "${firstFound.toLowerCase()}" and "${firstNotFound.toLowerCase()}" often go together?`;
       }
     }
   }
@@ -72,15 +75,15 @@ function getHintText(target, keys) {
   // e at the end is common
   const eKey = keys.find((key) => key.label === "E");
   if (target.endsWith("E") && eKey.state === "available") {
-    return `Quite a few words end with "e"...`;
+    return `Quite a few words end with "e".`;
   }
 
+  // TODO: most common letters in English?
+
   // fallback: next unfound letter of the target
-  if (match.length < 3) {
-    for (letter of targetLetters) {
-      if (!match.includes(letter) && !present.includes(letter)) {
-        return `I just love the letter "${letter.toLowerCase()}", don't you?`;
-      }
+  for (letter of targetLetters) {
+    if (!match.includes(letter) && !present.includes(letter)) {
+      return `I just love the letter "${letter.toLowerCase()}", don't you?`;
     }
   }
 

@@ -347,7 +347,12 @@
           return emojis[this.currentGuessIndex ?? 5];
         },
         prepareHint() {
-          if (this.currentGuessIndex === 0 || this.solved || this.failed) {
+          if (
+            this.settings.difficulty !== "easy" ||
+            this.currentGuessIndex === 0 ||
+            this.solved ||
+            this.failed
+          ) {
             return;
           }
           this.hint.timer = setTimeout(() => {
@@ -357,7 +362,6 @@
           }, HINT_DELAY);
         },
         resetHint() {
-          console.log("clearing ", this.hint.timer);
           clearTimeout(this.hint.timer);
           this.hint.available = false;
           this.hint.message = null;

@@ -21,7 +21,7 @@ describe("hint", () => {
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "E").state = "present";
       expect(getHintText(target, keys)).toBe(
-        `You know, there could be more than one "e"...`
+        `There could be more than one "e".`
       );
     });
     it("cluster - ch", () => {
@@ -30,7 +30,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "A").state = "present";
       keys.find((key) => key.label === "H").state = "present";
       expect(getHintText(target, keys)).toBe(
-        `I heard that "h" is really good friends with "c".`
+        `Did you know "h" and "c" often go together?`
       );
     });
     it("cluster - th", () => {
@@ -39,16 +39,14 @@ describe("hint", () => {
       keys.find((key) => key.label === "E").state = "present";
       keys.find((key) => key.label === "N").state = "match";
       expect(getHintText(target, keys)).toBe(
-        `I heard that "n" is really good friends with "t".`
+        `Did you know "n" and "t" often go together?`
       );
     });
     it("e at the end", () => {
       const target = "GAME";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "A").state = "present";
-      expect(getHintText(target, keys)).toBe(
-        `Quite a few words end with "e"...`
-      );
+      expect(getHintText(target, keys)).toBe(`Quite a few words end with "e".`);
     });
     it("first letter", () => {
       const target = "GAME";
@@ -78,11 +76,11 @@ describe("hint", () => {
       expect(getHintText(target, keys)).toBe(`You're almost there!`);
     });
     it("encouragement if 3 matches", () => {
-      const target = "HOPE";
+      const target = "HUNT";
       const keys = getDefaultKeys();
-      keys.find((key) => key.label === "O").state = "match";
-      keys.find((key) => key.label === "P").state = "match";
-      keys.find((key) => key.label === "E").state = "match";
+      keys.find((key) => key.label === "H").state = "match";
+      keys.find((key) => key.label === "U").state = "match";
+      keys.find((key) => key.label === "N").state = "match";
       expect(getHintText(target, keys)).toBe(`You're almost there!`);
     });
   });
