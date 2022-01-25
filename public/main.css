@@ -170,6 +170,11 @@ main {
   background-color: #538d4e;
 }
 
+.glow {
+  box-shadow: 0 0 2px 1px #fff, /* inner white */ 0 0 3px 2px #f0f,
+    /* middle magenta */ 0 0 4px 3px #0ff; /* outer cyan */
+}
+
 /* animations */
 
 .pulse {

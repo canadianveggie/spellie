@@ -19,7 +19,7 @@ function findMultiple(letters) {
  *
  * Goal: educate where possible and encourage if close.
  */
-function getHintText(target, keys) {
+function getHint(target, keys) {
   const match = keys
     .filter((key) => key.state === "match")
     .map((key) => key.label)
@@ -30,7 +30,7 @@ function getHintText(target, keys) {
     .sort();
 
   if (match.length === target.length - 1) {
-    return `You're almost there!`;
+    return { text: `You're almost there!` };
   }
 
   const targetLetters = target.split("");
@@ -41,14 +41,20 @@ function getHintText(target, keys) {
   if (!isVowelMatched && !isVowelPresent) {
     const firstVowel = targetLetters.find((letter) => VOWELS.includes(letter));
     if (firstVowel) {
-      return `How about a vowel like "${firstVowel.toLowerCase()}"?`;
+      return {
+        text: `How about a vowel like "${firstVowel.toLowerCase()}"?`,
+        letter: firstVowel,
+      };
     }
   }
 
   // warn about multiples
   const multiple = findMultiple(targetLetters);
   if (multiple) {
-    return `There could be more than one "${multiple.toLowerCase()}".`;
+    return {
+      text: `There could be more than one "${multiple.toLowerCase()}".`,
+      letter: multiple,
+    };
   }
 
   // common clusters:
@@ -67,7 +73,10 @@ function getHintText(target, keys) {
         (letter) => !combinedMatchPresent.has(letter)
       );
       if (firstFound && firstNotFound) {
-        return `Did you know "${firstFound.toLowerCase()}" and "${firstNotFound.toLowerCase()}" often go together?`;
+        return {
+          text: `Did you know "${firstFound.toLowerCase()}" and "${firstNotFound.toLowerCase()}" often go together?`,
+          letter: firstNotFound,
+        };
       }
     }
   }
@@ -75,7 +84,7 @@ function getHintText(target, keys) {
   // e at the end is common
   const eKey = keys.find((key) => key.label === "E");
   if (target.endsWith("E") && eKey.state === "available") {
-    return `Quite a few words end with "e".`;
+    return { text: `Quite a few words end with "e".`, letter: "E" };
   }
 
   // TODO: most common letters in English?
@@ -83,13 +92,16 @@ function getHintText(target, keys) {
   // fallback: next unfound letter of the target
   for (letter of targetLetters) {
     if (!match.includes(letter) && !present.includes(letter)) {
-      return `I just love the letter "${letter.toLowerCase()}", don't you?`;
+      return {
+        text: `I just love the letter "${letter.toLowerCase()}", don't you?`,
+        letter,
+      };
     }
   }
 
-  return `You're almost there!`;
+  return { text: `You're almost there!` };
 }
 
 if (typeof exports !== "undefined") {
-  module.exports = { getHintText };
+  module.exports = { getHint };
 }

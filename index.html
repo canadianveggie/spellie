@@ -112,7 +112,7 @@
               <div
                 class="key"
                 x-text="letter.label"
-                :class="['key-' + letter.type, letter.state]"
+                :class="['key-' + letter.type, letter.state, letter.label === hint.letter ? 'glow' : '']"
                 @click="addLetter(letter)"
               ></div>
             </template>
@@ -350,13 +350,16 @@
         resetHint() {
           clearTimeout(this.hint.timer);
           this.hint.available = false;
+          this.hint.letter = null;
           this.hint.message = null;
         },
         showHint() {
-          this.hint.message = getHintText(
+          const hint = getHint(
             this.target,
             this.keyboard.filter((key) => key.type === "letter")
           );
+          this.hint.message = hint.text;
+          this.hint.letter = hint.letter;
           this.hint.available = false;
         },
         initialLoad() {
