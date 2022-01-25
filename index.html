@@ -358,6 +358,11 @@
             this.target,
             this.keyboard.filter((key) => key.type === "letter")
           );
+          amplitude.getInstance().logEvent("show_hint", {
+            level_name: this.level,
+            message: hint.text,
+            letter: hint.letter,
+          });
           this.hint.message = hint.text;
           this.hint.letter = hint.letter;
           this.hint.available = false;
