@@ -983,7 +983,6 @@ const words = {
   medium: words_medium,
   hard: words_hard,
 };
-const fallback = words[0];
 
 const start = new Date(2022, 1 - 1, 18);
 
@@ -1002,7 +1001,7 @@ function getTodayPuzzles() {
   const targets = {};
   for (const difficulty of Object.keys(words)) {
     const wordList = words[difficulty];
-    targets[difficulty] = wordList[index % wordList.length].toUpperCase();
+    targets[difficulty] = "HUNT"; // wordList[index % wordList.length].toUpperCase();
   }
   return targets;
 }
