@@ -81,6 +81,26 @@
               </template>
             </div>
           </template>
+          <div class="hint-area">
+            <button
+              class="hint-button"
+              @click="showHint"
+              x-show="hint.available"
+              x-transition:enter.duration.500ms
+              x-cloak
+            >
+              Need a hint?
+            </button>
+            <div
+              class="hint"
+              x-show="hint.message"
+              @click="resetHint"
+              x-transition:enter.duration.1000ms
+              x-transition:leave.duration.500ms
+            >
+              <span x-text="hint.message"></span>
+            </div>
+          </div>
         </div>
         <div class="keyboard">
           <div
@@ -116,6 +136,7 @@
   </body>
 
   <script src="public/puzzles.js"></script>
+  <script src="public/hint.js"></script>
   <script src="public/emojis.js"></script>
   <script>
     const puzzleId = getTodayPuzzleId();
@@ -157,6 +178,7 @@
       const DEFAULT_SETTINGS = {
         difficulty: "easy",
       };
+      const HINT_DELAY = 10 * 1000;
 
       return {
         puzzleId,
@@ -165,6 +187,11 @@
         guesses: [],
         solved: false,
         failed: false,
+        hint: {
+          available: false,
+          message: null,
+          timer: null,
+        },
         currentGuessIndex: 0,
         cursor: 0,
         cursorMode: false,
@@ -174,18 +201,21 @@
             return;
           }
           if (letterState.type === "enter") {
-            if (this.isCurrentWordComplete()) {
-              this.currentGuess.forEach(
-                (letterGuess) => (letterGuess.state = "submitted")
-              );
-              this.checkAnswer();
-              if (!this.solved && !this.failed) {
-                this.currentGuessIndex += 1;
-                this.cursor = 0;
-              }
-              this.updateControls();
-              this.saveGameState();
+            if (!this.isCurrentWordComplete()) {
+              return;
             }
+            this.currentGuess.forEach(
+              (letterGuess) => (letterGuess.state = "submitted")
+            );
+            this.resetHint();
+            this.checkAnswer();
+            if (!this.solved && !this.failed) {
+              this.currentGuessIndex += 1;
+              this.cursor = 0;
+              this.prepareHint();
+            }
+            this.updateControls();
+            this.saveGameState();
           } else if (letterState.type === "back") {
             const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
             if (deleteIndex >= 0) {
@@ -216,6 +246,7 @@
               guesses: this.currentGuessIndex + 1,
               success: true,
             });
+            return;
           }
           if (
             !this.solved &&
@@ -230,10 +261,10 @@
         },
         updateKeyboard(label, state) {
           const key = this.keyboard.find((letter) => letter.label === label);
-          // Don't overwrite hit or present with miss
+          // Don't overwrite match or present with miss
           if (
             !key ||
-            key.state === "hit" ||
+            key.state === "match" ||
             (key.state === "present" && state === "miss")
           ) {
             return;
@@ -315,6 +346,29 @@
           const emojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return emojis[this.currentGuessIndex ?? 5];
         },
+        prepareHint() {
+          if (this.currentGuessIndex === 0 || this.solved || this.failed) {
+            return;
+          }
+          this.hint.timer = setTimeout(() => {
+            if (!this.hint.message) {
+              this.hint.available = true;
+            }
+          }, HINT_DELAY);
+        },
+        resetHint() {
+          console.log("clearing ", this.hint.timer);
+          clearTimeout(this.hint.timer);
+          this.hint.available = false;
+          this.hint.message = null;
+        },
+        showHint() {
+          this.hint.message = getHintText(
+            this.target,
+            this.keyboard.filter((key) => key.type === "letter")
+          );
+          this.hint.available = false;
+        },
         initialLoad() {
           this.loadSettings();
           this.loadGameState();
@@ -343,6 +397,7 @@
             this.cursorMode = initialState.cursorMode || false;
             // TODO - recalculate keyboard instead of saving it
             this.keyboard = initialState.keyboard || initialKeyboard();
+            this.prepareHint();
           } catch (err) {
             console.error(err);
           }

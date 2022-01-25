@@ -125,6 +125,22 @@ main {
   border-color: #999;
 }
 
+.hint-area {
+  min-height: 26px;
+  font-size: 1rem;
+  color: #999;
+  display: flex;
+  justify-content: center;
+}
+.hint-button {
+  font-size: 1rem;
+  appearance: none;
+  background: none;
+  color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
 .victory,
 .defeat {
   text-align: center;
