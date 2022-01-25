@@ -51,6 +51,10 @@ i {
   padding: 4px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .game-content {
   display: flex;
   flex-direction: column;
