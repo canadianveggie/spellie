@@ -1001,7 +1001,7 @@ function getTodayPuzzles() {
   const targets = {};
   for (const difficulty of Object.keys(words)) {
     const wordList = words[difficulty];
-    targets[difficulty] = "HUNT"; // wordList[index % wordList.length].toUpperCase();
+    targets[difficulty] = wordList[index % wordList.length].toUpperCase();
   }
   return targets;
 }
