@@ -61,9 +61,6 @@
         </div>
         <div class="title">Wordle Junior</div>
         <div class="nav">
-          <a href="#help" class="nav-link">
-            <i class="material-icons">help_outline</i>
-          </a>
           <a href="#collection" class="nav-link">
             <i class="material-icons">collections</i>
           </a>
@@ -162,6 +159,59 @@
       </div>
       <div class="settings-content" x-show="page === '#settings'">
         <h1>Settings</h1>
+        <div>
+          <h2>Difficulty</h2>
+          <label>
+            <input
+              type="radio"
+              id="easy"
+              value="easy"
+              x-model="settings.difficulty"
+              @change="updateSettings()"
+            />
+            Easy</label
+          >
+          <label>
+            <input
+              type="radio"
+              id="medium"
+              value="medium"
+              x-model="settings.difficulty"
+              @change="updateSettings()"
+            />Medium</label
+          >
+          <label>
+            <input
+              type="radio"
+              id="hard"
+              value="hard"
+              x-model="settings.difficulty"
+              @change="updateSettings()"
+            />
+            Hard
+          </label>
+        </div>
+        <div>
+          <h2>Keyboard Layout</h2>
+          <label
+            ><input
+              type="radio"
+              id="atoz"
+              value="atoz"
+              x-model="settings.keyboardLayout"
+              @change="updateSettings()"
+            />A to Z</label
+          >
+          <label
+            ><input
+              type="radio"
+              id="qwerty"
+              value="qwerty"
+              x-model="settings.keyboardLayout"
+              @change="updateSettings()"
+            />QWERTY</label
+          >
+        </div>
       </div>
     </main>
   </body>
@@ -173,9 +223,13 @@
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
 
-    function initialKeyboard() {
+    function initialKeyboard(keyboardLayout) {
       const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-      const keyboard = a_z.map((letter) => ({
+      const qwerty = "QWERTYUIOPASDFGHIJKLZXCVBNM".split("");
+
+      const keys = keyboardLayout === "qwerty" ? qwerty : a_z;
+
+      const keyboard = keys.map((letter) => ({
         type: "letter",
         label: letter,
         state: "available",
@@ -207,7 +261,8 @@
 
     function gameState() {
       const DEFAULT_SETTINGS = {
-        difficulty: "easy",
+        difficulty: "easy", // easy, medium, hard
+        keyboardLayout: "atoz", // atoz, qwerty
       };
       const HINT_DELAY = 10 * 1000;
 
@@ -269,8 +324,8 @@
           const result = compareTargetAndGuess(this.target, this.currentWord);
           result.forEach((letterResult, i) => {
             this.currentGuess[i].state = letterResult;
-            this.updateKeyboard(this.currentWord[i], letterResult);
           });
+          this.updateKeyboardForGuess(this.currentWord);
           this.emoji = emojis[this.currentWord] || this.emoji;
           this.addToCollection(this.currentWord);
           this.solved = this.currentWord === this.target;
@@ -293,17 +348,26 @@
             });
           }
         },
-        updateKeyboard(label, state) {
-          const key = this.keyboard.find((letter) => letter.label === label);
-          // Don't overwrite match or present with miss
-          if (
-            !key ||
-            key.state === "match" ||
-            (key.state === "present" && state === "miss")
-          ) {
-            return;
+        updateKeyboardForGuess(guess) {
+          const result = compareTargetAndGuess(this.target, guess);
+          result.forEach((letterResult, i) => {
+            const label = guess[i];
+            const key = this.keyboard.find((letter) => letter.label === label);
+            // Don't overwrite match or present with miss
+            if (
+              !key ||
+              key.state === "match" ||
+              (key.state === "present" && letterResult === "miss")
+            ) {
+              return;
+            }
+            key.state = letterResult;
+          });
+        },
+        updateKeyboard() {
+          for (const guess of this.guesses.slice(0, this.currentGuessIndex)) {
+            this.updateKeyboardForGuess(this.guessToWord(guess));
           }
-          key.state = state;
         },
         updateControls() {
           const backKey = this.keyboard.find(
@@ -333,13 +397,10 @@
             this.showHint();
           } else if (e.key === "+") {
             this.updateSettings({ difficulty: "medium" });
-            this.loadGameState();
           } else if (e.key === "-") {
             this.updateSettings({ difficulty: "easy" });
-            this.loadGameState();
           } else if (e.key === "=") {
             this.updateSettings({ difficulty: "hard" });
-            this.loadGameState();
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
             !e.altKey &&
@@ -359,10 +420,13 @@
         get currentGuess() {
           return this.guesses[this.currentGuessIndex];
         },
-        get currentWord() {
-          return this.currentGuess
+        guessToWord(guess) {
+          return guess
             ?.map((letterGuess) => letterGuess.letter || " ")
             .join("");
+        },
+        get currentWord() {
+          return this.guessToWord(this.currentGuess);
         },
         isCurrentWordComplete() {
           return (
@@ -441,8 +505,8 @@
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
-            // TODO - recalculate keyboard instead of saving it
-            this.keyboard = initialState.keyboard || initialKeyboard();
+            this.keyboard = initialKeyboard(this.settings.keyboardLayout);
+            this.updateKeyboard();
             this.prepareHint();
           } catch (err) {
             console.error(err);
@@ -460,6 +524,7 @@
         updateSettings(delta) {
           this.settings = { ...this.settings, ...delta };
           localStorage.setItem("settings", JSON.stringify(this.settings));
+          this.loadGameState();
         },
         loadCollection() {
           const collection = JSON.parse(
@@ -495,7 +560,6 @@
             currentGuessIndex: this.currentGuessIndex,
             cursor: this.cursor,
             cursorMode: this.cursorMode,
-            keyboard: this.keyboard,
           };
         },
       };
