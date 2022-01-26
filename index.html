@@ -147,7 +147,9 @@
         <div class="collection-tiles">
           <template x-for="(collectable, i) in emojiCollection">
             <div class="guesses-word" x-show="collectable.unlocked">
-              <span x-text="collectable.emoji"></span>
+              <div class="guesses-tile">
+                <span x-text="collectable.emoji"></span>
+              </div>
               <template x-for="letter in collectable.word">
                 <div class="guesses-tile match">
                   <span x-text="letter"></span>
@@ -169,8 +171,8 @@
               x-model="settings.difficulty"
               @change="updateSettings()"
             />
-            Easy</label
-          >
+            Easy
+          </label>
           <label>
             <input
               type="radio"
@@ -178,8 +180,9 @@
               value="medium"
               x-model="settings.difficulty"
               @change="updateSettings()"
-            />Medium</label
-          >
+            />
+            Medium
+          </label>
           <label>
             <input
               type="radio"
@@ -193,24 +196,26 @@
         </div>
         <div>
           <h2>Keyboard Layout</h2>
-          <label
-            ><input
+          <label>
+            <input
               type="radio"
               id="atoz"
               value="atoz"
               x-model="settings.keyboardLayout"
               @change="updateSettings()"
-            />A to Z</label
-          >
-          <label
-            ><input
+            />
+            A to Z
+          </label>
+          <label>
+            <input
               type="radio"
               id="qwerty"
               value="qwerty"
               x-model="settings.keyboardLayout"
               @change="updateSettings()"
-            />QWERTY</label
-          >
+            />
+            QWERTY
+          </label>
         </div>
       </div>
     </main>
