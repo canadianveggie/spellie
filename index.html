@@ -326,6 +326,11 @@
           }
         },
         checkAnswer() {
+          if (this.currentGuessIndex === 0) {
+            amplitude.getInstance().logEvent("level_start", {
+              level_name: this.level,
+            });
+          }
           const result = compareTargetAndGuess(this.target, this.currentWord);
           result.forEach((letterResult, i) => {
             this.currentGuess[i].state = letterResult;
@@ -490,18 +495,20 @@
         },
         loadGameState() {
           try {
-            this.target = getTodayPuzzles()[this.settings.difficulty];
-            this.level = `${this.settings.difficulty}-${this.puzzleId}`;
-
             let initialState = JSON.parse(
               localStorage.getItem("game-state") || "{}"
             );
-            if (initialState.target !== this.target) {
+            // Only allow one puzzle per day
+            // Once puzzle is started, changing difficulty doesn't change target
+            if (initialState.puzzleId !== this.puzzleId) {
               initialState = {};
-              amplitude.getInstance().logEvent("level_start", {
-                level_name: this.level,
-              });
             }
+            this.level =
+              initialState.level ||
+              `${this.settings.difficulty}-${this.puzzleId}`;
+            this.target =
+              initialState.target ||
+              getTodayPuzzles()[this.settings.difficulty];
             this.guesses =
               initialState.guesses ||
               emptyGuesses(this.target.length, maxGuesses);
@@ -559,6 +566,8 @@
         toJson() {
           return {
             target: this.target,
+            level: this.level,
+            puzzleId: this.puzzleId,
             guesses: this.guesses,
             solved: this.solved,
             failed: this.failed,
