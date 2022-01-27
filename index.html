@@ -315,8 +315,8 @@
             );
             this.resetHint();
             this.checkAnswer();
+            this.currentGuessIndex += 1;
             if (!this.solved && !this.failed) {
-              this.currentGuessIndex += 1;
               this.cursor = 0;
               this.prepareHint();
             }
@@ -470,7 +470,7 @@
         },
         get victoryEmoji() {
           const victoryEmojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
-          return victoryEmojis[this.currentGuessIndex ?? 5];
+          return victoryEmojis[this.currentGuessIndex - 1 ?? 5];
         },
         prepareHint() {
           if (
