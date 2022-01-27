@@ -519,6 +519,7 @@
             this.cursorMode = initialState.cursorMode || false;
             this.keyboard = initialKeyboard(this.settings.keyboardLayout);
             this.updateKeyboard();
+            this.resetHint();
             this.prepareHint();
           } catch (err) {
             console.error(err);
