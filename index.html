@@ -73,6 +73,13 @@
         <div class="guesses">
           <template x-for="(guess, guessIndex) in guesses">
             <div class="guesses-word">
+              <div
+                class="guesses-tile emoji-tile"
+                x-show="guessEmojis[guessIndex]"
+                x-transition.delay.2000ms
+              >
+                <span x-text="guessEmojis[guessIndex]"></span>
+              </div>
               <template x-for="(letter, letterIndex) in guess">
                 <div
                   class="guesses-tile"
@@ -86,6 +93,13 @@
                   ></span>
                 </div>
               </template>
+              <div
+                class="guesses-tile emoji-tile"
+                x-show="guessEmojis[guessIndex]"
+                x-transition.delay.2000ms
+              >
+                <span x-text="guessEmojis[guessIndex]"></span>
+              </div>
             </div>
           </template>
           <div class="hint-area">
@@ -147,7 +161,7 @@
         <div class="collection-tiles">
           <template x-for="(collectable, i) in emojiCollection">
             <div class="guesses-word" x-show="collectable.unlocked">
-              <div class="guesses-tile">
+              <div class="guesses-tile emoji-tile">
                 <span x-text="collectable.emoji"></span>
               </div>
               <template x-for="letter in collectable.word">
@@ -275,7 +289,6 @@
         page: location.hash,
         puzzleId,
         target: "",
-        emoji: "🔠",
         guesses: [],
         solved: false,
         failed: false,
@@ -336,7 +349,6 @@
             this.currentGuess[i].state = letterResult;
           });
           this.updateKeyboardForGuess(this.currentWord);
-          this.emoji = emojis[this.currentWord] || this.emoji;
           this.addToCollection(this.currentWord);
           this.solved = this.currentWord === this.target;
           if (this.solved) {
@@ -437,6 +449,13 @@
         },
         get currentWord() {
           return this.guessToWord(this.currentGuess);
+        },
+        get guessEmojis() {
+          return this.guesses.map((guess, i) => {
+            return i < this.currentGuessIndex
+              ? emojis[this.guessToWord(guess)]
+              : undefined;
+          });
         },
         isCurrentWordComplete() {
           return (

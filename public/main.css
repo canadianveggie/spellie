@@ -136,6 +136,17 @@ a {
 .guesses-tile:nth-of-type(4) {
   transition-delay: 0.75s;
 }
+.guesses-tile:nth-of-type(5) {
+  transition-delay: 1s;
+}
+.guesses-tile:nth-of-type(6) {
+  transition-delay: 1.25s;
+}
+
+.emoji-tile {
+  border: none;
+  background: #111;
+}
 
 @media screen and (min-width: 600px) {
   .guesses-tile {
