@@ -542,13 +542,24 @@
           const collection = JSON.parse(
             localStorage.getItem("collection") || '{"unlocked": {}}'
           );
-          this.emojiCollection = Object.entries(emojis).map(([word, emoji]) => {
-            return {
-              word,
-              emoji,
-              unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
-            };
-          });
+          this.emojiCollection = Object.entries(emojis)
+            .sort((a, b) => {
+              // Sort by length, alphabetical
+              if (a[0].length < b[0].length) {
+                return -1;
+              } else if (a[0].length < b[0].length) {
+                return 1;
+              } else {
+                return a[0] - b[0];
+              }
+            })
+            .map(([word, emoji]) => {
+              return {
+                word,
+                emoji,
+                unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
+              };
+            });
         },
         addToCollection(newWord) {
           if (emojis[newWord]) {
