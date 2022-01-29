@@ -161,7 +161,30 @@
       </div>
       <div class="collection-content" x-show="page === '#collection'">
         <h1>Collection</h1>
+        <p x-show="unlockedEmojis.length === 0">
+          Your word guesses can unlock hidden emojis.<br />Maybe you'll find one
+          next game.
+        </p>
+        <p x-show="unlockedEmojis.length === 1">
+          You found your first emoji! Great job.<br />How many more can you
+          find?
+        </p>
+        <p x-show="unlockedEmojis.length > 1">
+          You've already found
+          <span x-text="unlockedEmojis.length"></span> emojis. That is
+          amazing!<br />I wonder if you can find any more.
+        </p>
         <div class="collection-tiles">
+          <div class="guesses-word" x-show="unlockedEmojis.length === 0">
+            <div class="guesses-tile emoji-tile">
+              <span>❓</span>
+            </div>
+            <template x-for="letter in '????'">
+              <div class="guesses-tile match">
+                <span x-text="letter"></span>
+              </div>
+            </template>
+          </div>
           <template x-for="(collectable, i) in emojiCollection">
             <div class="guesses-word" x-show="collectable.unlocked">
               <div class="guesses-tile emoji-tile">
@@ -601,6 +624,9 @@
             );
             collectable.unlocked = true;
           }
+        },
+        get unlockedEmojis() {
+          return this.emojiCollection?.filter((e) => e.unlocked);
         },
         toJson() {
           return {
