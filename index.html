@@ -71,7 +71,10 @@
       </header>
       <div class="game-content" x-show="page === ''">
         <div class="guesses">
-          <template x-for="(guess, guessIndex) in guesses">
+          <template
+            x-for="(guess, guessIndex) in guesses"
+            :key="`${level}-${guessIndex}`"
+          >
             <div class="guesses-word">
               <div
                 class="guesses-tile emoji-tile"
@@ -342,6 +345,7 @@
           if (this.currentGuessIndex === 0) {
             amplitude.getInstance().logEvent("level_start", {
               level_name: this.level,
+              difficulty: this.settings.difficulty,
             });
           }
           const result = compareTargetAndGuess(this.target, this.currentWord);
@@ -354,6 +358,7 @@
           if (this.solved) {
             amplitude.getInstance().logEvent("level_end", {
               level_name: this.level,
+              difficulty: this.settings.difficulty,
               guesses: this.currentGuessIndex + 1,
               success: true,
             });
@@ -366,6 +371,7 @@
             this.failed = true;
             amplitude.getInstance().logEvent("level_end", {
               level_name: this.level,
+              difficulty: this.settings.difficulty,
               success: false,
             });
           }
@@ -515,10 +521,9 @@
         loadGameState() {
           try {
             let initialState = JSON.parse(
-              localStorage.getItem("game-state") || "{}"
+              localStorage.getItem(`game-state-${this.settings.difficulty}`) ||
+                "{}"
             );
-            // Only allow one puzzle per day
-            // Once puzzle is started, changing difficulty doesn't change target
             if (initialState.puzzleId !== this.puzzleId) {
               initialState = {};
             }
@@ -545,7 +550,10 @@
           }
         },
         saveGameState() {
-          localStorage.setItem("game-state", JSON.stringify(this.toJson()));
+          localStorage.setItem(
+            `game-state-${this.settings.difficulty}`,
+            JSON.stringify(this.toJson())
+          );
         },
         loadSettings() {
           this.settings = {
