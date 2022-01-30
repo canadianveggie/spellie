@@ -72,7 +72,7 @@
             x-for="(guess, guessIndex) in guesses"
             :key="`${level}-${guessIndex}`"
           >
-            <div class="guesses-word">
+            <div class="guesses-word" :class="settings.case">
               <div
                 class="guesses-tile emoji-tile"
                 x-show="guessEmojis[guessIndex]"
@@ -146,7 +146,7 @@
               <div
                 class="key"
                 x-text="letter.label"
-                :class="['key-' + letter.type, letter.state, letter.label === hint.letter ? 'glow' : '']"
+                :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'glow' : '']"
                 @click="addLetter(letter)"
               ></div>
             </template>
@@ -172,7 +172,11 @@
           amazing!<br />I wonder if you can find any more.
         </p>
         <div class="collection-tiles">
-          <div class="guesses-word" x-show="unlockedEmojis.length === 0">
+          <div
+            class="guesses-word"
+            x-show="unlockedEmojis.length === 0"
+            :class="settings.case"
+          >
             <div class="guesses-tile emoji-tile">
               <span>❓</span>
             </div>
@@ -183,7 +187,11 @@
             </template>
           </div>
           <template x-for="(collectable, i) in emojiCollection">
-            <div class="guesses-word" x-show="collectable.unlocked">
+            <div
+              class="guesses-word"
+              x-show="collectable.unlocked"
+              :class="settings.case"
+            >
               <div class="guesses-tile emoji-tile">
                 <span x-text="collectable.emoji"></span>
               </div>
@@ -229,6 +237,29 @@
               @change="updateSettings()"
             />
             Hard
+          </label>
+        </div>
+        <div>
+          <h2>Letters</h2>
+          <label>
+            <input
+              type="radio"
+              id="lowercase"
+              value="lowercase"
+              x-model="settings.case"
+              @change="updateSettings()"
+            />
+            lowercase
+          </label>
+          <label>
+            <input
+              type="radio"
+              id="uppercase"
+              value="uppercase"
+              x-model="settings.case"
+              @change="updateSettings()"
+            />
+            UPPERCASE
           </label>
         </div>
         <div>
@@ -305,6 +336,7 @@
       const DEFAULT_SETTINGS = {
         difficulty: "easy", // easy, medium, hard
         keyboardLayout: "atoz", // atoz, qwerty
+        case: "lowercase", // lowercase, uppercase
       };
       const HINT_DELAY = 10 * 1000;
 

@@ -55,6 +55,13 @@ a {
   text-decoration: none;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+
 .game-content {
   display: flex;
   flex-direction: column;
@@ -71,8 +78,8 @@ a {
   margin: 0 auto 20px;
   font-size: 1.5rem;
 }
+
 .key {
-  text-transform: lowercase;
   border-radius: 4px;
   background-color: #818384;
   color: white;
@@ -107,7 +114,6 @@ a {
   justify-content: center;
   gap: 8px;
   margin-bottom: 8px;
-  text-transform: lowercase;
 }
 
 .guesses-tile {
