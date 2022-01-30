@@ -52,7 +52,7 @@
     >
       <header>
         <div class="nav">
-          <a href="#" class="nav-link" x-show="page !== ''">
+          <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
             <i class="material-icons">arrow_back</i>
           </a>
         </div>
@@ -102,28 +102,30 @@
               </div>
             </div>
           </template>
-          <div class="hint-area">
-            <button
-              class="hint-button"
-              @click="showHint"
-              x-show="hint.available"
-              x-transition:enter.duration.500ms
-              x-cloak
-            >
-              Need a hint?
-            </button>
-            <div
-              class="hint"
-              x-show="hint.message"
-              @click="resetHint"
-              x-transition:enter.duration.1000ms
-              x-transition:leave.duration.500ms
-            >
-              <span x-text="hint.message"></span>
-            </div>
+        </div>
+
+        <div class="hint-area">
+          <button
+            class="hint-button"
+            @click="showHint"
+            x-show="hint.available"
+            x-transition:enter.duration.500ms
+            x-cloak
+          >
+            Need a hint?
+          </button>
+          <div
+            class="hint"
+            x-show="hint.message"
+            @click="resetHint"
+            x-transition:enter.duration.1000ms
+            x-transition:leave.duration.500ms
+          >
+            <span x-text="hint.message"></span>
           </div>
         </div>
-        <div class="keyboard">
+
+        <div class="bottom-area">
           <div
             x-show="solved"
             x-cloak
@@ -142,21 +144,36 @@
             <p x-text="target"></p>
           </div>
           <template x-if="!solved && !failed">
-            <template x-for="letter in keyboard">
-              <div
-                class="key"
-                x-text="letter.label"
-                :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'glow' : '']"
-                @click="addLetter(letter)"
-              ></div>
-            </template>
+            <div class="keyboard-grid">
+              <template x-for="letter in keyboard">
+                <div
+                  role="button"
+                  tabindex="0"
+                  class="key"
+                  :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
+                  @click="addLetter(letter)"
+                >
+                  <template x-if="letter.type === 'letter'">
+                    <span x-text="letter.label"></span>
+                  </template>
+                  <template x-if="letter.type === 'back'">
+                    <span class="material-icons">backspace</span>
+                  </template>
+                  <template x-if="letter.type === 'enter'">
+                    <span class="material-icons">check_circle</span>
+                  </template>
+                </div>
+              </template>
+            </div>
           </template>
         </div>
       </div>
-      <div class="help-content" x-show="page === '#help'">
+
+      <div class="help-content" x-show="page === '#help'" x-cloak>
         <h1>Help</h1>
       </div>
-      <div class="collection-content" x-show="page === '#collection'">
+
+      <div class="collection-content" x-show="page === '#collection'" x-cloak>
         <h1>Collection</h1>
         <p x-show="unlockedEmojis.length === 0">
           Your word guesses can unlock hidden emojis.<br />Maybe you'll find one
@@ -204,7 +221,8 @@
           </template>
         </div>
       </div>
-      <div class="settings-content" x-show="page === '#settings'">
+
+      <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <h1>Settings</h1>
         <div>
           <h2>Difficulty</h2>
@@ -338,7 +356,7 @@
         keyboardLayout: "atoz", // atoz, qwerty
         case: "lowercase", // lowercase, uppercase
       };
-      const HINT_DELAY = 10 * 1000;
+      const HINT_DELAY = 15 * 1000;
 
       return {
         page: location.hash,

@@ -8,7 +8,7 @@ body {
   font-family: "Andika New Basic", sans-serif;
   height: 100%;
   margin: 0;
-  padding: 1rem;
+  padding: 0;
 }
 
 * {
@@ -25,8 +25,14 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px #818384 solid;
-  padding: 0 0 1.2rem;
+  border-bottom: 1px solid #818384;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+@media screen and (min-width: 600px) {
+  header {
+    padding: 1rem 0;
+  }
 }
 
 .nav-link {
@@ -63,48 +69,43 @@ a {
 }
 
 .game-content {
+  padding: 4px;
   display: flex;
   flex-direction: column;
-  height: calc(100% - 50px);
   justify-content: space-around;
 }
 
-.keyboard {
-  user-select: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  margin: 0 auto 20px;
+.keyboard-grid {
+  display: grid;
+  gap: 4px;
+  grid-template-rows: repeat(4, minmax(40px, 1fr));
+  grid-template-columns: repeat(7, minmax(36px, 1fr));
   font-size: 1.5rem;
+  user-select: none;
 }
-
-.key {
+.keyboard-grid .key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
   background-color: #818384;
   color: white;
-  text-align: center;
   cursor: pointer;
-  width: 30px;
-  line-height: 42px;
 }
-.key-enter {
-  min-width: 80px;
-  text-transform: capitalize;
+.keyboard-grid .key-letter span {
+  transform: translateY(-0.1em); /* make j etc look more centered */
 }
-.key-back {
-  min-width: 60px;
+.key.available:hover {
+  background: #747677;
 }
+
 @media screen and (min-width: 600px) {
-  .keyboard {
+  .keyboard-grid {
     gap: 8px;
+    max-width: 400px;
+    margin: 0 auto;
   }
-  .key {
-    line-height: 62px;
-    width: 40px;
-  }
-  .key-letter,
-  .key-back {
+  .keyboard-grid .key {
     font-size: 2rem;
   }
 }
@@ -113,7 +114,9 @@ a {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 8px;
+}
+.guesses-word + .guesses-word {
+  margin-top: 8px;
 }
 
 .guesses-tile {
@@ -166,11 +169,12 @@ a {
 }
 
 .hint-area {
-  min-height: 26px;
+  min-height: 52px;
   font-size: 1rem;
   color: #999;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .hint-button {
   font-size: 1rem;
@@ -193,26 +197,25 @@ a {
   font-size: 2rem;
 }
 
-.unavailable {
+.key.unavailable,
+.guesses-tile.unavailable {
   background-color: #81837b6e;
   cursor: auto;
 }
 
-.miss {
+.key.miss,
+.guesses-tile.miss {
   background-color: #81837b6e;
 }
 
-.present {
+.key.present,
+.guesses-tile.present {
   background-color: #b59f3b;
 }
 
-.match {
+.key.match,
+.guesses-tile.match {
   background-color: #538d4e;
-}
-
-.glow {
-  box-shadow: 0 0 2px 1px #fff, /* inner white */ 0 0 3px 2px #f0f,
-    /* middle magenta */ 0 0 4px 3px #0ff; /* outer cyan */
 }
 
 /* animations */
