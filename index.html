@@ -73,12 +73,12 @@
             :key="`${level}-${guessIndex}`"
           >
             <div class="guesses-word" :class="settings.case">
-              <div
-                class="guesses-tile emoji-tile"
-                x-show="guessEmojis[guessIndex]"
-                x-transition.delay.2000ms
-              >
-                <span x-text="guessEmojis[guessIndex]"></span>
+              <div class="guesses-tile emoji-tile">
+                <span
+                  x-text="guessEmojis[guessIndex]"
+                  x-show="guessEmojis[guessIndex]"
+                  x-transition.delay.2000ms
+                ></span>
               </div>
               <template x-for="(letter, letterIndex) in guess">
                 <div
@@ -93,12 +93,12 @@
                   ></span>
                 </div>
               </template>
-              <div
-                class="guesses-tile emoji-tile"
-                x-show="guessEmojis[guessIndex]"
-                x-transition.delay.2000ms
-              >
-                <span x-text="guessEmojis[guessIndex]"></span>
+              <div class="guesses-tile emoji-tile">
+                <span
+                  x-text="guessEmojis[guessIndex]"
+                  x-show="guessEmojis[guessIndex]"
+                  x-transition.delay.2000ms
+                ></span>
               </div>
             </div>
           </template>
