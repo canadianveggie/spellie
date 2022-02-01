@@ -338,7 +338,7 @@
         keyboardLayout: "atoz", // atoz, qwerty
         case: "lowercase", // lowercase, uppercase
       };
-      const HINT_DELAY = 10 * 1000;
+      const HINT_DELAY = 15 * 1000;
 
       return {
         page: location.hash,
@@ -379,9 +379,14 @@
             this.saveGameState();
           } else if (letterState.type === "back") {
             const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
-            if (deleteIndex >= 0) {
+            if (
+              deleteIndex >= 0 &&
+              this.currentGuess[deleteIndex].state !== "match" // keep easy mode freebie
+            ) {
               this.currentGuess[deleteIndex].letter = "";
-              this.cursor = Math.max(0, this.cursor - 1);
+              if (!this.cursorMode) {
+                this.cursor = Math.max(0, this.cursor - 1);
+              }
               this.updateControls();
             }
           } else if (letterState.type === "letter") {
@@ -468,19 +473,17 @@
           } else if (e.key === "Backspace") {
             this.addLetter({ type: "back" });
           } else if (e.key === "ArrowLeft") {
-            this.cursor = Math.max(0, this.cursor - 1);
+            const nextCursorIndex = Math.max(0, this.cursor - 1);
+            if (this.currentGuess[nextCursorIndex].state === "match") {
+              return; // don't allow reaching easy mode freebie
+            }
+            this.cursor = nextCursorIndex;
             this.cursorMode = true;
           } else if (e.key === "ArrowRight") {
             this.cursor = Math.min(this.target.length - 1, this.cursor + 1);
             this.cursorMode = true;
           } else if (e.key === "?") {
             this.showHint();
-          } else if (e.key === "+") {
-            this.updateSettings({ difficulty: "medium" });
-          } else if (e.key === "-") {
-            this.updateSettings({ difficulty: "easy" });
-          } else if (e.key === "=") {
-            this.updateSettings({ difficulty: "hard" });
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
             !e.altKey &&
@@ -530,10 +533,20 @@
           const victoryEmojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return victoryEmojis[this.currentGuessIndex - 1 ?? 5];
         },
+        /** First letter provided free on easy difficulty */
+        prepareFreebie() {
+          if (
+            this.settings.difficulty === "easy" &&
+            this.guesses[0][0].letter === ""
+          ) {
+            this.addLetter({ type: "letter", label: this.target[0] });
+            this.guesses[0][0].state = "match"; // set this already as signal to player
+          }
+        },
         prepareHint() {
           if (
             this.settings.difficulty !== "easy" ||
-            this.currentGuessIndex === 0 ||
+            this.currentGuessIndex < 2 ||
             this.solved ||
             this.failed
           ) {
@@ -597,6 +610,7 @@
             this.updateKeyboard();
             this.resetHint();
             this.prepareHint();
+            this.prepareFreebie();
           } catch (err) {
             console.error(err);
           }
