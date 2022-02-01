@@ -148,6 +148,12 @@ a {
 .guesses-tile:nth-of-type(6) {
   transition-delay: 1.25s;
 }
+.guesses-tile:nth-of-type(7) {
+  transition-delay: 1.5s;
+}
+.guesses-tile:nth-of-type(8) {
+  transition-delay: 1.75s;
+}
 
 .emoji-tile {
   border: none;
