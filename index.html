@@ -142,7 +142,10 @@
             <p x-text="target"></p>
           </div>
           <template x-if="!solved && !failed">
-            <template x-for="letter in keyboard">
+            <template
+              x-for="letter in keyboard"
+              :key="`${level}-${letter.label}`"
+            >
               <div
                 class="key"
                 x-text="letter.label"
