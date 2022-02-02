@@ -3,8 +3,8 @@ html {
 }
 
 body {
-  background: #111;
-  color: white;
+  background: #c9f8ff;
+  color: black;
   font-family: "Andika New Basic", sans-serif;
   height: 100%;
   margin: 0;
@@ -24,13 +24,14 @@ main {
 header {
   display: flex;
   align-items: center;
+  color: #00699d;
   justify-content: space-between;
   border-bottom: 1px #818384 solid;
   padding: 0 0 1.2rem;
 }
 
 .nav-link {
-  color: #818384;
+  color: #81837b;
 }
 
 .title {
@@ -80,9 +81,10 @@ a {
 }
 
 .key {
-  border-radius: 4px;
-  background-color: #818384;
-  color: white;
+  border-radius: 25px;
+  background-color: #08adff;
+  border: 2px solid #333;
+  color: black;
   text-align: center;
   cursor: pointer;
   width: 30px;
@@ -123,8 +125,9 @@ a {
   padding-bottom: 4px;
 
   border: 2px solid #333;
+  border-radius: 25px;
   font-size: 1.5rem;
-  background: black;
+  background: white;
   width: 40px;
   height: 40px;
   transition: background linear 0.5s;
@@ -157,7 +160,7 @@ a {
 
 .emoji-tile {
   border: none;
-  background: #111;
+  background: #c9f8ff;
 }
 
 @media screen and (min-width: 600px) {
@@ -168,7 +171,7 @@ a {
   }
 }
 .cursor {
-  border-color: #999;
+  border: 4px solid black;
 }
 
 .hint-area {
@@ -209,16 +212,11 @@ a {
 }
 
 .present {
-  background-color: #b59f3b;
+  background-color: #ffa800;
 }
 
 .match {
-  background-color: #538d4e;
-}
-
-.glow {
-  box-shadow: 0 0 2px 1px #fff, /* inner white */ 0 0 3px 2px #f0f,
-    /* middle magenta */ 0 0 4px 3px #0ff; /* outer cyan */
+  background-color: #23f787;
 }
 
 /* animations */
