@@ -498,7 +498,11 @@
           }
         },
         selectTile(guessIndex, letterIndex) {
-          if (!this.solved && guessIndex === this.currentGuessIndex) {
+          if (
+            !this.solved &&
+            guessIndex === this.currentGuessIndex &&
+            this.currentGuess[letterIndex].state !== "match"
+          ) {
             this.cursor = letterIndex;
             this.cursorMode = true;
           }
