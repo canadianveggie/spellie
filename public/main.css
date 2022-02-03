@@ -81,7 +81,7 @@ a {
 }
 
 .key {
-  border-radius: 25px;
+  border-radius: 15px;
   background-color: #08adff;
   border: 2px solid #333;
   color: black;
@@ -125,7 +125,7 @@ a {
   padding-bottom: 4px;
 
   border: 2px solid #333;
-  border-radius: 25px;
+  border-radius: 50%;
   font-size: 1.5rem;
   background: white;
   width: 40px;
