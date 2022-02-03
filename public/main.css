@@ -24,7 +24,8 @@ main {
 header {
   display: flex;
   align-items: center;
-  color: #00699d;
+  color: #0081c1;
+  font-weight: bolder;
   justify-content: space-between;
   border-bottom: 1px #818384 solid;
   padding: 0 0 1.2rem;
