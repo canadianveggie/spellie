@@ -698,12 +698,16 @@
           return navigator?.share || navigator?.clipboard;
         },
         share() {
-          const text = this.solved
-            ? guessesAsEmojis(this.guesses)
-            : "Check out Wordle Kids";
+          const title = "Wordle Kids";
+          const text =
+            this.solved && this.page === ""
+              ? guessesAsEmojis(this.guesses) +
+                "\n" +
+                `${this.level}: ${this.currentGuessIndex}/6`
+              : "ⓦⓞⓡⓓⓢ\n🥚🍊🍏🥚🍏\n🤔🤔🤔🤔🤔\nⓗⓔⓡⓞⓢ🦸";
           const url = window.location.href;
           const shareData = {
-            title: "Wordle Kids",
+            title,
             text,
             url,
           };
@@ -713,7 +717,7 @@
           ) {
             navigator.share(shareData);
           } else if (navigator?.clipboard) {
-            navigator.clipboard.writeText(text + "\n" + url);
+            navigator.clipboard.writeText(`${title}\n${text}\n${url}`);
             // TODO - toast notification
           }
         },
