@@ -1,4 +1,8 @@
-const { daysBetween, compareTargetAndGuess } = require("../public/puzzles");
+const {
+  daysBetween,
+  compareTargetAndGuess,
+  guessesAsEmojis,
+} = require("../public/puzzles");
 
 describe("puzzles", () => {
   describe("daysBetween", () => {
@@ -65,6 +69,50 @@ describe("puzzles", () => {
         "miss",
         "miss",
       ]);
+    });
+  });
+
+  describe("guessesAsEmojis", () => {
+    it("shows emojis", () => {
+      const guesses = [
+        [
+          { state: "miss" },
+          { state: "present" },
+          { state: "miss" },
+          { state: "miss" },
+        ],
+        [
+          { state: "present" },
+          { state: "match" },
+          { state: "match" },
+          { state: "miss" },
+        ],
+        [
+          { state: "match" },
+          { state: "match" },
+          { state: "match" },
+          { state: "match" },
+        ],
+        [
+          { state: "pending" },
+          { state: "pending" },
+          { state: "pending" },
+          { state: "pending" },
+        ],
+        [
+          { state: "pending" },
+          { state: "pending" },
+          { state: "pending" },
+          { state: "pending" },
+        ],
+        [
+          { state: "pending" },
+          { state: "pending" },
+          { state: "pending" },
+          { state: "pending" },
+        ],
+      ];
+      expect(guessesAsEmojis(guesses)).toEqual("🥚🍊🥚🥚\n🍊🍏🍏🥚\n🍏🍏🍏🍏");
     });
   });
 });
