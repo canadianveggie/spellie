@@ -58,6 +58,9 @@
         </div>
         <div class="title">Wordle Kids</div>
         <div class="nav">
+          <a x-on:click="share" x-show="canShare" class="nav-link">
+            <i class="material-icons">share</i>
+          </a>
           <a href="#collection" class="nav-link">
             <i class="material-icons">collections</i>
           </a>
@@ -690,6 +693,29 @@
             cursor: this.cursor,
             cursorMode: this.cursorMode,
           };
+        },
+        get canShare() {
+          return navigator?.share || navigator?.clipboard;
+        },
+        share() {
+          const text = this.solved
+            ? guessesAsEmojis(this.guesses)
+            : "Check out Wordle Kids";
+          const url = window.location.href;
+          const shareData = {
+            title: "Wordle Kids",
+            text,
+            url,
+          };
+          if (
+            navigator?.canShare?.(shareData) &&
+            navigator.canShare(shareData)
+          ) {
+            navigator.share(shareData);
+          } else if (navigator?.clipboard) {
+            navigator.clipboard.writeText(text + "\n" + url);
+            // TODO - toast notification
+          }
         },
       };
     }

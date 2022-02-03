@@ -962,6 +962,27 @@ function compareTargetAndGuess(target, guess) {
   return result;
 }
 
+function guessesAsEmojis(guesses) {
+  return guesses
+    .map((guess) => {
+      return guess
+        .map((letter) => {
+          if (letter.state === "match") {
+            return "🍏";
+          } else if (letter.state === "present") {
+            return "🍊";
+          } else if (letter.state === "miss") {
+            return "🥚";
+          } else {
+            return "";
+          }
+        })
+        .join("");
+    })
+    .join("\n")
+    .trim();
+}
+
 if (typeof exports !== "undefined") {
-  module.exports = { daysBetween, compareTargetAndGuess };
+  module.exports = { daysBetween, compareTargetAndGuess, guessesAsEmojis };
 }
