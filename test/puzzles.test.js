@@ -1,6 +1,7 @@
 const {
   daysBetween,
   compareTargetAndGuess,
+  emojiMatchThemes,
   guessesAsEmojis,
 } = require("../public/puzzles");
 
@@ -73,46 +74,53 @@ describe("puzzles", () => {
   });
 
   describe("guessesAsEmojis", () => {
-    it("shows emojis", () => {
-      const guesses = [
-        [
-          { state: "miss" },
-          { state: "present" },
-          { state: "miss" },
-          { state: "miss" },
-        ],
-        [
-          { state: "present" },
-          { state: "match" },
-          { state: "match" },
-          { state: "miss" },
-        ],
-        [
-          { state: "match" },
-          { state: "match" },
-          { state: "match" },
-          { state: "match" },
-        ],
-        [
-          { state: "pending" },
-          { state: "pending" },
-          { state: "pending" },
-          { state: "pending" },
-        ],
-        [
-          { state: "pending" },
-          { state: "pending" },
-          { state: "pending" },
-          { state: "pending" },
-        ],
-        [
-          { state: "pending" },
-          { state: "pending" },
-          { state: "pending" },
-          { state: "pending" },
-        ],
-      ];
-      expect(guessesAsEmojis(guesses)).toEqual("🥚🍊🥚🥚\n🍊🍏🍏🥚\n🍏🍏🍏🍏");
+    const guesses = [
+      [
+        { state: "miss" },
+        { state: "present" },
+        { state: "miss" },
+        { state: "miss" },
+      ],
+      [
+        { state: "present" },
+        { state: "miss" },
+        { state: "match" },
+        { state: "miss" },
+      ],
+      [
+        { state: "match" },
+        { state: "match" },
+        { state: "match" },
+        { state: "match" },
+      ],
+      [
+        { state: "pending" },
+        { state: "pending" },
+        { state: "pending" },
+        { state: "pending" },
+      ],
+    ];
+
+    const expectedResults = {
+      fruit: "🥥🍊🥥🥥\n🍊🥥🍏🥥\n🍏🍏🍏🍏",
+      vegetable: "🍽️🍄🍽️🍽️\n🍄🍽️🥦🍽️\n🥦🥦🥦🥦",
+      nature: "🕸️🌻🕸️🕸️\n🌻🕸️🍀🕸️\n🍀🍀🍀🍀",
+      tree: "🪨🍁🪨🪨\n🍁🪨🌳🪨\n🌳🌳🌳🌳",
+    };
+
+    it("random", () => {
+      for (let i = 0; i < 10; i++) {
+        const emojiString = guessesAsEmojis(guesses);
+        expect(Object.values(expectedResults)).toContain(emojiString);
+      }
+    });
+
+    it("themed", () => {
+      for (const theme of Object.keys(emojiMatchThemes)) {
+        expect(guessesAsEmojis(guesses, emojiMatchThemes[theme])).toEqual(
+          expectedResults[theme]
+        );
+      }
     });
   });
 });
