@@ -962,20 +962,41 @@ function compareTargetAndGuess(target, guess) {
   return result;
 }
 
-function guessesAsEmojis(guesses) {
+const emojiMatchThemes = {
+  fruit: {
+    match: "🍏",
+    present: "🍊",
+    miss: "🥥",
+  },
+  vegetable: {
+    match: "🥦",
+    present: "🍄",
+    miss: "🍽️",
+  },
+  nature: {
+    match: "🍀",
+    present: "🌻",
+    miss: "🕸️",
+  },
+  tree: {
+    match: "🌳",
+    present: "🍁",
+    miss: "🪨",
+  },
+};
+
+function randomEmojiMatchTheme() {
+  const themes = Object.values(emojiMatchThemes);
+  return themes[Math.floor(Math.random() * themes.length)];
+}
+
+function guessesAsEmojis(guesses, theme) {
+  theme = theme || randomEmojiMatchTheme();
   return guesses
     .map((guess) => {
       return guess
         .map((letter) => {
-          if (letter.state === "match") {
-            return "🍏";
-          } else if (letter.state === "present") {
-            return "🍊";
-          } else if (letter.state === "miss") {
-            return "🥚";
-          } else {
-            return "";
-          }
+          return theme[letter.state] || "";
         })
         .join("");
     })
@@ -984,5 +1005,10 @@ function guessesAsEmojis(guesses) {
 }
 
 if (typeof exports !== "undefined") {
-  module.exports = { daysBetween, compareTargetAndGuess, guessesAsEmojis };
+  module.exports = {
+    daysBetween,
+    compareTargetAndGuess,
+    emojiMatchThemes,
+    guessesAsEmojis,
+  };
 }
