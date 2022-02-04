@@ -214,82 +214,110 @@
         <h1>Settings</h1>
         <div>
           <h2>Difficulty</h2>
-          <label>
+          <div>
             <input
               type="radio"
-              id="easy"
+              id="difficulty-easy"
               value="easy"
               x-model="settings.difficulty"
               @change="updateSettings()"
             />
-            Easy
-          </label>
-          <label>
+            <label for="difficulty-easy">Easy</label>
+          </div>
+          <div>
             <input
               type="radio"
-              id="medium"
+              id="difficulty-medium"
               value="medium"
               x-model="settings.difficulty"
               @change="updateSettings()"
             />
-            Medium
-          </label>
-          <label>
+            <label for="difficulty-medium">Medium</label>
+          </div>
+          <div>
             <input
               type="radio"
-              id="hard"
+              id="difficulty-hard"
               value="hard"
               x-model="settings.difficulty"
               @change="updateSettings()"
             />
-            Hard
-          </label>
+            <label for="difficulty-hard">Hard</label>
+          </div>
         </div>
         <div>
           <h2>Letters</h2>
-          <label>
+          <div>
             <input
               type="radio"
-              id="lowercase"
+              id="case-lowercase"
               value="lowercase"
               x-model="settings.case"
               @change="updateSettings()"
             />
-            lowercase
-          </label>
-          <label>
+            <label for="case-lowercase">lowercase</label>
+          </div>
+          <div>
             <input
               type="radio"
-              id="uppercase"
+              id="case-uppercase"
               value="uppercase"
               x-model="settings.case"
               @change="updateSettings()"
             />
-            UPPERCASE
-          </label>
+            <label for="case-uppercase">UPPERCASE</label>
+          </div>
+        </div>
+        <div>
+          <h2>Sharing Theme</h2>
+          <div>
+            <input
+              id="sharing-emojis-random"
+              type="radio"
+              value=""
+              x-model="settings.sharingEmojis"
+              @change="updateSettings()"
+            />
+            <label for="sharing-emojis-random">??? (Random)</label>
+          </div>
+          <template x-for="entries in Object.entries(emojiMatchThemes)">
+            <div>
+              <input
+                :id="'sharing-emojis-' + entries[0]"
+                type="radio"
+                :value="entries[0]"
+                x-model="settings.sharingEmojis"
+                @change="updateSettings()"
+              />
+              <label
+                :for="'sharing-emojis-' + entries[0]"
+                x-text="entries[1].match + entries[1].present + entries[1].miss"
+              ></label>
+            </div>
+          </template>
         </div>
         <!-- <div>
           <h2>Keyboard Layout</h2>
-          <label>
+          <div>
             <input
               type="radio"
-              id="atoz"
+              id="keyboardLayout-atoz"
               value="atoz"
               x-model="settings.keyboardLayout"
               @change="updateSettings()"
             />
-            A to Z
-          </label>
-          <label>
+            <label for="keyboardLayout-atoz">A to Z</label>
+          </div>
+          <div>
             <input
               type="radio"
-              id="qwerty"
+              id="keyboardLayout-qwerty"
               value="qwerty"
               x-model="settings.keyboardLayout"
               @change="updateSettings()"
             />
-            QWERTY
-          </label>
+            <label for="keyboardLayout-qwerty">QWERTY</label>
+          </div>
         </div> -->
       </div>
       <div
@@ -353,6 +381,7 @@
         difficulty: "easy", // easy, medium, hard
         keyboardLayout: "atoz", // atoz, qwerty
         case: "lowercase", // lowercase, uppercase
+        sharingEmojis: "", // "", fruit, vegetable, nature, tree
       };
       const HINT_DELAY = 15 * 1000;
 
@@ -716,7 +745,7 @@
           let shareType = "basic";
           if (this.solved && this.page === "") {
             text =
-              guessesAsEmojis(this.guesses) +
+              guessesAsEmojis(this.guesses, this.settings.sharingEmojis) +
               "\n" +
               `${this.level}: ${this.currentGuessIndex}/${maxGuesses}`;
             shareType = "puzzle";

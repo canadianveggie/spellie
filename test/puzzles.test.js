@@ -117,9 +117,7 @@ describe("puzzles", () => {
 
     it("themed", () => {
       for (const theme of Object.keys(emojiMatchThemes)) {
-        expect(guessesAsEmojis(guesses, emojiMatchThemes[theme])).toEqual(
-          expectedResults[theme]
-        );
+        expect(guessesAsEmojis(guesses, theme)).toEqual(expectedResults[theme]);
       }
     });
   });
