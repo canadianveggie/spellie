@@ -991,12 +991,12 @@ function randomEmojiMatchTheme() {
 }
 
 function guessesAsEmojis(guesses, theme) {
-  theme = theme || randomEmojiMatchTheme();
+  const emojiTheme = emojiMatchThemes[theme] || randomEmojiMatchTheme();
   return guesses
     .map((guess) => {
       return guess
         .map((letter) => {
-          return theme[letter.state] || "";
+          return emojiTheme[letter.state] || "";
         })
         .join("");
     })
