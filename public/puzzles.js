@@ -983,6 +983,11 @@ const emojiMatchThemes = {
     present: "🍁",
     miss: "🪨",
   },
+  circle: {
+    match: "🟢",
+    present: "🟠",
+    miss: "⚫️",
+  },
 };
 
 function randomEmojiMatchTheme() {
