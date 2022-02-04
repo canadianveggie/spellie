@@ -292,6 +292,16 @@
           </label>
         </div>
       </div>
+      <div
+        x-data="noticesHandler()"
+        class="notice"
+        @notice.window="notify($event.detail)"
+        x-cloak
+        x-show="notice?.visible"
+        @click="remove(notice?.id)"
+        x-text="notice?.text"
+        x-transition:enter="fadein"
+      ></div>
     </main>
   </body>
 
@@ -641,6 +651,9 @@
           this.settings = { ...this.settings, ...delta };
           localStorage.setItem("settings", JSON.stringify(this.settings));
           this.loadGameState();
+          window.dispatchEvent(
+            new CustomEvent("notice", { detail: { text: "Settings updated" } })
+          );
         },
         loadCollection() {
           const collection = JSON.parse(
@@ -718,7 +731,31 @@
             navigator.share(shareData);
           } else if (navigator?.clipboard) {
             navigator.clipboard.writeText(`${title}\n${text}\n${url}`);
-            // TODO - toast notification
+            window.dispatchEvent(
+              new CustomEvent("notice", {
+                detail: { text: "Copied to clipboard" },
+              })
+            );
+          }
+        },
+      };
+    }
+
+    function noticesHandler() {
+      return {
+        notice: null,
+        notify(notice) {
+          notice.id = Date.now();
+          notice.visible = true;
+          this.notice = notice;
+          const timeShown = 5000;
+          setTimeout(() => {
+            this.remove(notice.id);
+          }, timeShown);
+        },
+        remove(id) {
+          if (this.notice.id === id) {
+            this.notice.visible = false;
           }
         },
       };
