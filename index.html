@@ -712,12 +712,25 @@
         },
         share() {
           const title = "Wordle Kids";
-          const text =
-            this.solved && this.page === ""
-              ? guessesAsEmojis(this.guesses) +
-                "\n" +
-                `${this.level}: ${this.currentGuessIndex}/6`
-              : "ⓦⓞⓡⓓⓢ\n🥚🍊🍏🥚🍏\n🤔🤔🤔🤔🤔\nⓗⓔⓡⓞⓢ🦸";
+          let text = "ⓦⓞⓡⓓⓢ\n🥚🍊🍏🥚🍏\n🤔🤔🤔🤔🤔\nⓗⓔⓡⓞⓢ🦸";
+          if (this.solved && this.page === "") {
+            text =
+              guessesAsEmojis(this.guesses) +
+              "\n" +
+              `${this.level}: ${this.currentGuessIndex}/${maxGuesses}`;
+          } else if (
+            this.page === "#collection" &&
+            this.unlockedEmojis.length === 1
+          ) {
+            text = `I collected my first emoji! ${this.unlockedEmojis[0].emoji}`;
+          } else if (
+            this.page === "#collection" &&
+            this.unlockedEmojis.length > 1
+          ) {
+            text = `I've collected ${
+              this.unlockedEmojis.length
+            } emojis:\n${this.unlockedEmojis.map((e) => e.emoji).join("")}`;
+          }
           const url = window.location.origin;
           const shareData = {
             title,
