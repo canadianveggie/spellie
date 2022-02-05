@@ -6,6 +6,7 @@ Wordle Junior - a kid-friendly version of the popular Wordle game
 
 Differences from classic Wordle:
 
+- kid friendly colour scheme
 - keyboard has an alphabetical layout
 - choose between lowercase and UPPERCASE letters
 - words enetered don't have to be in the dictionary
@@ -17,5 +18,4 @@ Differences from classic Wordle:
 
 Future Enhancements:
 
-- kid friendly colour scheme
 - help page
