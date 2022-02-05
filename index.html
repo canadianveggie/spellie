@@ -429,7 +429,9 @@
               this.currentGuess[deleteIndex].state !== "match" // keep easy mode freebie
             ) {
               this.currentGuess[deleteIndex].letter = "";
-              if (!this.cursorMode) {
+              if (this.cursorMode) {
+                this.cursorMode = false;
+              } else {
                 this.cursor = Math.max(0, this.cursor - 1);
               }
               this.updateControls();
