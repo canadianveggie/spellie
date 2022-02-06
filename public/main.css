@@ -1,5 +1,18 @@
+:root {
+  --word-length: 4; /* easy */
+
+  /* TODO: extract others */
+  --color-neutral-0: #000;
+  --color-neutral-10: #222;
+  --color-neutral-20: #444;
+}
+
 html {
   height: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -8,20 +21,19 @@ body {
   font-family: "Andika New Basic", sans-serif;
   height: 100%;
   margin: 0;
-  padding: 1rem;
-}
-
-* {
-  box-sizing: border-box;
+  padding: 1rem 1rem 0;
 }
 
 main {
   max-width: 500px;
   margin: 0 auto;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
+  height: 55px; /* prevent reflow */
   display: flex;
   align-items: center;
   color: #0081c1;
@@ -29,11 +41,12 @@ header {
   justify-content: space-between;
   border-bottom: 1px #818384 solid;
   padding: 0 0 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .nav-link {
   cursor: pointer;
-  color: #81837b;
+  color: var(--color-neutral-20);
 }
 
 .title {
@@ -66,10 +79,31 @@ a {
 }
 
 .game-content {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: calc(100% - 50px);
-  justify-content: space-around;
+  align-items: center;
+}
+
+.guesses-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.guesses {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 4px;
+}
+
+/* TODO: change column count as needed for word */
+.guesses-word {
+  display: grid;
+  grid-template-columns: repeat(calc(2 + var(--word-length)), 1fr);
+  gap: 4px;
+  grid-auto-flow: column;
 }
 
 .keyboard {
@@ -78,14 +112,14 @@ a {
   flex-wrap: wrap;
   gap: 6px;
   justify-content: center;
-  margin: 0 auto 20px;
+  margin: 0 auto 8px;
   font-size: 1.5rem;
 }
 
 .key {
   border-radius: 15px;
   background-color: #08adff;
-  border: 2px solid #333;
+  border: 2px solid var(--color-neutral-10);
   color: black;
   text-align: center;
   cursor: pointer;
@@ -113,26 +147,31 @@ a {
   }
 }
 
-.guesses-word {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
 .guesses-tile {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 4px;
-
-  border: 2px solid #333;
+  border: 2px solid var(--color-neutral-10);
   border-radius: 50%;
-  font-size: 1.5rem;
+  padding-bottom: 4px; /* improve letter centering */
+  font-size: 1rem;
+  line-height: 1;
   background: white;
-  width: 40px;
-  height: 40px;
+  aspect-ratio: 1/1;
   transition: background linear 0.5s;
+}
+.guesses-tile:empty::before {
+  content: " ";
+}
+
+@media screen and (min-height: 600px) {
+  .guesses,
+  .guesses-word {
+    gap: 8px;
+  }
+  .guesses-tile {
+    font-size: 2rem;
+  }
 }
 
 .guesses-tile:nth-of-type(1) {
@@ -165,23 +204,22 @@ a {
   background: #c9f8ff;
 }
 
-@media screen and (min-width: 600px) {
-  .guesses-tile {
-    font-size: 2rem;
-    width: 60px;
-    height: 60px;
-  }
-}
 .cursor {
-  border: 4px solid black;
+  outline: 1px solid black;
+}
+@media screen and (min-height: 600px) {
+  .cursor {
+    outline: 3px solid black;
+  }
 }
 
 .hint-area {
-  min-height: 26px;
+  min-height: 52px;
   font-size: 1rem;
-  color: #999;
+  color: var(--color-neutral-20);
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .hint-button {
   font-size: 1rem;
@@ -221,6 +259,17 @@ a {
   background-color: #23f787;
 }
 
+.collection-tiles .guesses-word {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+}
+.collection-tiles .guesses-tile {
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+}
+
 .notice {
   position: fixed;
   min-width: 250px;
@@ -229,12 +278,12 @@ a {
   left: 50%;
   text-align: center;
   align-items: center;
-  border-radius: 2px;
+  border-radius: 15px;
   padding: 4px;
   transform: translateX(-50%);
   font-size: 1.5rem;
   color: #fff;
-  background-color: #333;
+  background-color: var(--color-neutral-10);
 }
 
 /* animations */
