@@ -49,7 +49,7 @@
       x-init="initialLoad()"
       @keyup.document="keyPressed"
       @hashchange.window="page = location.hash"
-      @resize.window.throttle="onResize"
+      @resize.window="onResize"
     >
       <header>
         <div class="nav">
