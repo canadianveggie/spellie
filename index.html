@@ -749,14 +749,13 @@
               { state: "present" },
               { state: "match" },
               { state: "miss" },
-              { state: "match" },
             ],
           ];
           const wordsEmojis = guessesAsEmojis(
             wordsMatch,
             this.settings.sharingEmojis
           );
-          let text = `ⓦⓞⓡⓓⓢ\n${wordsEmojis}\n🤔🤔🤔🤔🤔\nⓗⓔⓡⓞⓢ🦸`;
+          let text = `ⓦⓞⓡⓓ\n${wordsEmojis}\n🤔🤔🤔🤔\nⓗⓔⓡⓞ🦸`;
           let shareType = "basic";
           if (this.solved && this.page === "") {
             text =
