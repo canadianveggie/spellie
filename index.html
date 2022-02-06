@@ -148,10 +148,7 @@
             <p x-text="target"></p>
           </div>
           <template x-if="!solved && !failed">
-            <template
-              x-for="letter in keyboard"
-              :key="`${level}-${letter.label}`"
-            >
+            <template x-for="letter in keyboard" :key="level + letter.label">
               <div
                 class="key"
                 x-text="letter.label"
@@ -223,7 +220,7 @@
               id="difficulty-easy"
               value="easy"
               x-model="settings.difficulty"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="difficulty-easy">Easy</label>
           </div>
@@ -233,7 +230,7 @@
               id="difficulty-medium"
               value="medium"
               x-model="settings.difficulty"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="difficulty-medium">Medium</label>
           </div>
@@ -243,7 +240,7 @@
               id="difficulty-hard"
               value="hard"
               x-model="settings.difficulty"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="difficulty-hard">Hard</label>
           </div>
@@ -256,7 +253,7 @@
               id="case-lowercase"
               value="lowercase"
               x-model="settings.case"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="case-lowercase">lowercase</label>
           </div>
@@ -266,7 +263,7 @@
               id="case-uppercase"
               value="uppercase"
               x-model="settings.case"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="case-uppercase">UPPERCASE</label>
           </div>
@@ -279,7 +276,7 @@
               type="radio"
               value=""
               x-model="settings.sharingEmojis"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="sharing-emojis-random">??? (Random)</label>
           </div>
@@ -290,7 +287,7 @@
                 type="radio"
                 :value="entries[0]"
                 x-model="settings.sharingEmojis"
-                @change="updateSettings()"
+                @change="updateSettings"
               />
               <label
                 :for="'sharing-emojis-' + entries[0]"
@@ -307,7 +304,7 @@
               id="keyboardLayout-atoz"
               value="atoz"
               x-model="settings.keyboardLayout"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="keyboardLayout-atoz">A to Z</label>
           </div>
@@ -317,7 +314,7 @@
               id="keyboardLayout-qwerty"
               value="qwerty"
               x-model="settings.keyboardLayout"
-              @change="updateSettings()"
+              @change="updateSettings"
             />
             <label for="keyboardLayout-qwerty">QWERTY</label>
           </div>
@@ -343,13 +340,11 @@
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
 
-    function initialKeyboard(keyboardLayout) {
-      const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-      const qwerty = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
+    const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    const qwerty = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
 
-      const keys = keyboardLayout === "qwerty" ? qwerty : a_z;
-
-      const keyboard = keys.map((letter) => ({
+    function initialKeyboard() {
+      const keyboard = a_z.map((letter) => ({
         type: "letter",
         label: letter,
         state: "available",
@@ -403,7 +398,7 @@
         currentGuessIndex: 0,
         cursor: 0,
         cursorMode: false,
-        keyboard: [],
+        keyboard: initialKeyboard(),
         emojiCollection: [],
         onResize() {
           const container = document.querySelector(".guesses-container");
@@ -516,9 +511,23 @@
           });
         },
         updateKeyboard() {
+          this.keyboard.forEach((key) => {
+            if (key.type === "letter") {
+              key.state = "available";
+            }
+          });
           for (const guess of this.guesses.slice(0, this.currentGuessIndex)) {
             this.updateKeyboardForGuess(this.guessToWord(guess));
           }
+          this.updateControls();
+        },
+        sortKeyboard(keyboardLayout) {
+          const keys = keyboardLayout === "qwerty" ? qwerty : a_z;
+          keys.push(this.keyboard.find((key) => key.type === "back").label);
+          keys.push(this.keyboard.find((key) => key.type === "enter").label);
+          this.keyboard.sort((a, b) => {
+            return keys.indexOf(a.label) - keys.indexOf(b.label);
+          });
         },
         updateControls() {
           const backKey = this.keyboard.find(
@@ -681,7 +690,7 @@
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
-            this.keyboard = initialKeyboard(this.settings.keyboardLayout);
+            this.sortKeyboard(this.settings.keyboardLayout);
             this.updateKeyboard();
             this.resetHint();
             this.prepareHint();
@@ -702,8 +711,7 @@
             ...JSON.parse(localStorage.getItem("settings") || "{}"),
           };
         },
-        updateSettings(delta) {
-          this.settings = { ...this.settings, ...delta };
+        updateSettings() {
           localStorage.setItem("settings", JSON.stringify(this.settings));
           this.loadGameState();
           window.dispatchEvent(
