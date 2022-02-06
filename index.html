@@ -49,10 +49,11 @@
       x-init="initialLoad()"
       @keyup.document="keyPressed"
       @hashchange.window="page = location.hash"
+      @resize.window.throttle="onResize"
     >
       <header>
         <div class="nav">
-          <a href="#" class="nav-link" x-show="page !== ''">
+          <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
             <i class="material-icons">arrow_back</i>
           </a>
         </div>
@@ -70,60 +71,62 @@
         </div>
       </header>
       <div class="game-content" x-show="page === ''">
-        <div class="guesses">
-          <template
-            x-for="(guess, guessIndex) in guesses"
-            :key="`${level}-${guessIndex}`"
-          >
-            <div class="guesses-word" :class="settings.case">
-              <div class="guesses-tile emoji-tile">
-                <span
-                  x-text="guessEmojis[guessIndex]"
-                  x-show="guessEmojis[guessIndex]"
-                  x-transition.delay.2000ms
-                ></span>
-              </div>
-              <template x-for="(letter, letterIndex) in guess">
-                <div
-                  class="guesses-tile"
-                  :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
-                  @click="selectTile(guessIndex, letterIndex)"
-                >
+        <div class="guesses-container">
+          <div class="guesses">
+            <template
+              x-for="(guess, guessIndex) in guesses"
+              :key="`${level}-${guessIndex}`"
+            >
+              <div class="guesses-word" :class="settings.case">
+                <div class="guesses-tile emoji-tile">
                   <span
-                    x-show="letter.letter"
-                    x-text="letter.letter"
-                    x-transition:enter="pop"
+                    x-text="guessEmojis[guessIndex]"
+                    x-show="guessEmojis[guessIndex]"
+                    x-transition.delay.2000ms
                   ></span>
                 </div>
-              </template>
-              <div class="guesses-tile emoji-tile">
-                <span
-                  x-text="guessEmojis[guessIndex]"
-                  x-show="guessEmojis[guessIndex]"
-                  x-transition.delay.2000ms
-                ></span>
+                <template x-for="(letter, letterIndex) in guess">
+                  <div
+                    class="guesses-tile"
+                    :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
+                    @click="selectTile(guessIndex, letterIndex)"
+                  >
+                    <span
+                      x-show="letter.letter"
+                      x-text="letter.letter"
+                      x-transition:enter="pop"
+                    ></span>
+                  </div>
+                </template>
+                <div class="guesses-tile emoji-tile">
+                  <span
+                    x-text="guessEmojis[guessIndex]"
+                    x-show="guessEmojis[guessIndex]"
+                    x-transition.delay.2000ms
+                  ></span>
+                </div>
               </div>
-            </div>
-          </template>
-          <div class="hint-area">
-            <button
-              class="hint-button"
-              @click="showHint"
-              x-show="hint.available"
-              x-transition:enter.duration.500ms
-              x-cloak
-            >
-              Need a hint?
-            </button>
-            <div
-              class="hint"
-              x-show="hint.message"
-              @click="resetHint"
-              x-transition:enter.duration.1000ms
-              x-transition:leave.duration.500ms
-            >
-              <span x-text="hint.message"></span>
-            </div>
+            </template>
+          </div>
+        </div>
+        <div class="hint-area">
+          <button
+            class="hint-button"
+            @click="showHint"
+            x-show="hint.available"
+            x-transition:enter.duration.500ms
+            x-cloak
+          >
+            Need a hint?
+          </button>
+          <div
+            class="hint"
+            x-show="hint.message"
+            @click="resetHint"
+            x-transition:enter.duration.1000ms
+            x-transition:leave.duration.500ms
+          >
+            <span x-text="hint.message"></span>
           </div>
         </div>
         <div class="keyboard">
@@ -159,10 +162,10 @@
           </template>
         </div>
       </div>
-      <div class="help-content" x-show="page === '#help'">
+      <div class="help-content" x-show="page === '#help'" x-cloak>
         <h1>Help</h1>
       </div>
-      <div class="collection-content" x-show="page === '#collection'">
+      <div class="collection-content" x-show="page === '#collection'" x-cloak>
         <h1>Collection</h1>
         <p x-show="unlockedEmojis.length === 0">
           Your word guesses can unlock hidden emojis.<br />Maybe you'll find one
@@ -174,7 +177,7 @@
         </p>
         <p x-show="unlockedEmojis.length > 1">
           You've already found
-          <span x-text="unlockedEmojis.length"></span> emojis. That is
+          <span x-text="unlockedEmojis.length"></span> emojis. That's
           amazing!<br />I wonder if you can find any more.
         </p>
         <div class="collection-tiles">
@@ -210,7 +213,7 @@
           </template>
         </div>
       </div>
-      <div class="settings-content" x-show="page === '#settings'">
+      <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <h1>Settings</h1>
         <div>
           <h2>Difficulty</h2>
@@ -402,6 +405,22 @@
         cursorMode: false,
         keyboard: [],
         emojiCollection: [],
+        onResize() {
+          const container = document.querySelector(".guesses-container");
+          const gridWidth = Math.min(
+            Math.floor(container.clientHeight * 0.85),
+            500
+          );
+          if (gridWidth < 100) {
+            return; // never go this small
+          }
+          const gridRowCells = 2 + this.target.length;
+          const gridHeight = 6 * Math.floor(gridWidth / gridRowCells);
+
+          const grid = document.querySelector(".guesses");
+          grid.style.width = `${gridWidth}px`;
+          grid.style.height = `${gridHeight}px`;
+        },
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -649,6 +668,11 @@
             this.target =
               initialState.target ||
               getTodayPuzzles()[this.settings.difficulty];
+
+            this.$nextTick(() => {
+              this.onResize();
+            });
+
             this.guesses =
               initialState.guesses ||
               emptyGuesses(this.target.length, maxGuesses);
