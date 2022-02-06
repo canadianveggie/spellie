@@ -144,7 +144,7 @@
             x-transition.duration.1000ms
             class="defeat"
           >
-            Nice try!
+            Nice try! It was:
             <p x-text="target"></p>
           </div>
           <template x-if="!solved && !failed">
@@ -408,11 +408,11 @@
         onResize() {
           const container = document.querySelector(".guesses-container");
           const gridWidth = Math.min(
-            Math.floor(container.clientHeight * 0.85),
+            Math.floor(container.clientHeight * 0.9),
             500
           );
           if (gridWidth < 100) {
-            return; // never go this small
+            return; // sanity check
           }
           const gridRowCells = 2 + this.target.length;
           const gridHeight = 6 * Math.floor(gridWidth / gridRowCells);
