@@ -163,6 +163,12 @@ a {
 }
 
 @media screen and (min-height: 600px) {
+  .guesses-tile {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (min-height: 700px) {
   .guesses,
   .guesses-word {
     gap: 8px;
