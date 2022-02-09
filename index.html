@@ -155,24 +155,25 @@
             <span x-text="hint.message"></span>
           </div>
         </div>
+        <div
+          x-show="solved"
+          x-cloak
+          x-transition.enter.duration.1000ms
+          x-transition.leave.duration.0ms
+          class="victory"
+        >
+          <span class="emoji" x-text="victoryEmoji"></span> You win!
+        </div>
+        <div
+          x-cloak
+          x-show="failed"
+          x-transition.duration.1000ms
+          class="defeat"
+        >
+          Nice try! It was:
+          <p x-text="target"></p>
+        </div>
         <div class="keyboard">
-          <div
-            x-show="solved"
-            x-cloak
-            x-transition.duration.1000ms
-            class="victory"
-          >
-            <span class="emoji" x-text="victoryEmoji"></span> You win!
-          </div>
-          <div
-            x-cloak
-            x-show="failed"
-            x-transition.duration.1000ms
-            class="defeat"
-          >
-            Nice try! It was:
-            <p x-text="target"></p>
-          </div>
           <template x-if="!solved && !failed">
             <template x-for="letter in keyboard" :key="level + letter.label">
               <div
