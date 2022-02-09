@@ -71,6 +71,32 @@
         </div>
       </header>
       <div class="game-content" x-show="page === ''">
+        <div class="radio-toolbar">
+          <input
+            type="radio"
+            id="difficulty-easy"
+            value="easy"
+            x-model="settings.difficulty"
+            @change="updateSettings"
+          />
+          <label for="difficulty-easy">Easy</label>
+          <input
+            type="radio"
+            id="difficulty-medium"
+            value="medium"
+            x-model="settings.difficulty"
+            @change="updateSettings"
+          />
+          <label for="difficulty-medium">Medium</label>
+          <input
+            type="radio"
+            id="difficulty-hard"
+            value="hard"
+            x-model="settings.difficulty"
+            @change="updateSettings"
+          />
+          <label for="difficulty-hard">Hard</label>
+        </div>
         <div class="guesses-container">
           <div class="guesses">
             <template
@@ -212,39 +238,6 @@
       </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <h1>Settings</h1>
-        <div>
-          <h2>Difficulty</h2>
-          <div>
-            <input
-              type="radio"
-              id="difficulty-easy"
-              value="easy"
-              x-model="settings.difficulty"
-              @change="updateSettings"
-            />
-            <label for="difficulty-easy">Easy</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              id="difficulty-medium"
-              value="medium"
-              x-model="settings.difficulty"
-              @change="updateSettings"
-            />
-            <label for="difficulty-medium">Medium</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              id="difficulty-hard"
-              value="hard"
-              x-model="settings.difficulty"
-              @change="updateSettings"
-            />
-            <label for="difficulty-hard">Hard</label>
-          </div>
-        </div>
         <div>
           <h2>Letters</h2>
           <div>
