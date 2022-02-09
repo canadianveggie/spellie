@@ -57,6 +57,9 @@
         </div>
         <div class="title">Spellie</div>
         <div>
+          <a href="#about" class="nav-link">
+            <i class="material-icons">info</i>
+          </a>
           <a x-on:click="share" x-show="canShare" class="nav-link">
             <i class="material-icons">share</i>
           </a>
@@ -105,6 +108,26 @@
       </div>
     </header>
     <main :class="`target-${target.length}`">
+      <div class="about-content" x-show="page === '#about'" x-cloak>
+        <p>Wordling is a daily world puzzle geared at young spellers.</p>
+
+        <h1>Features</h1>
+        <ul>
+          <li>Age appropriate words</li>
+          <li>Enter letters in any order</li>
+          <li>3 difficulty settings</li>
+          <li>Emoji colectables</li>
+          <li>Kid-friendly font</li>
+        </ul>
+
+        <h1>How To Play</h1>
+
+        <h1>Creators</h1>
+        <ul>
+          <li>Chris Porter</li>
+          <li>David Hirtle</li>
+        </ul>
+      </div>
       <div class="game-content" x-show="page === ''">
         <div class="guesses-grid">
           <template
@@ -194,9 +217,6 @@
             </template>
           </template>
         </div>
-      </div>
-      <div class="help-content" x-show="page === '#help'" x-cloak>
-        <h1>Help</h1>
       </div>
       <div class="collection-content" x-show="page === '#collection'" x-cloak>
         <h1>Collection</h1>
