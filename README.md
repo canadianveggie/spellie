@@ -2,7 +2,7 @@
 
 Spellie - a kid-friendly version of the popular Wordle game
 
-[Try it out](https://spellie.io)
+[Try it out](https://spelliegame.com)
 
 Differences from classic Wordle:
 
