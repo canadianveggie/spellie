@@ -783,11 +783,12 @@
           );
           let text = `ⓦⓞⓡⓓ\n${wordsEmojis}\n🤔🤔🤔🤔\nⓗⓔⓡⓞ🦸`;
           let shareType = "basic";
-          if (this.solved && this.page === "") {
+          if ((this.solved || this.failed) && this.page === "") {
+            const nGuesses = this.failed ? "-" : this.currentGuessIndex;
             text =
-              guessesAsEmojis(this.guesses, this.settings.sharingEmojis) +
+              `${this.level}: ${nGuesses}/${maxGuesses}` +
               "\n" +
-              `${this.level}: ${this.currentGuessIndex}/${maxGuesses}`;
+              guessesAsEmojis(this.guesses, this.settings.sharingEmojis);
             shareType = "puzzle";
           } else if (
             this.page === "#collection" &&
