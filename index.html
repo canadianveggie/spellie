@@ -245,7 +245,7 @@
               id="case-lowercase"
               value="lowercase"
               x-model="settings.case"
-              @change="updateSettings"
+              @change="updateSettingsAndNotify"
             />
             <label for="case-lowercase">lowercase</label>
           </div>
@@ -255,7 +255,7 @@
               id="case-uppercase"
               value="uppercase"
               x-model="settings.case"
-              @change="updateSettings"
+              @change="updateSettingsAndNotify"
             />
             <label for="case-uppercase">UPPERCASE</label>
           </div>
@@ -268,7 +268,7 @@
               type="radio"
               value=""
               x-model="settings.sharingEmojis"
-              @change="updateSettings"
+              @change="updateSettingsAndNotify"
             />
             <label for="sharing-emojis-random">??? (Random)</label>
           </div>
@@ -279,7 +279,7 @@
                 type="radio"
                 :value="entries[0]"
                 x-model="settings.sharingEmojis"
-                @change="updateSettings"
+                @change="updateSettingsAndNotify"
               />
               <label
                 :for="'sharing-emojis-' + entries[0]"
@@ -296,7 +296,7 @@
               id="keyboardLayout-atoz"
               value="atoz"
               x-model="settings.keyboardLayout"
-              @change="updateSettings"
+              @change="updateSettingsAndNotify"
             />
             <label for="keyboardLayout-atoz">A to Z</label>
           </div>
@@ -306,7 +306,7 @@
               id="keyboardLayout-qwerty"
               value="qwerty"
               x-model="settings.keyboardLayout"
-              @change="updateSettings"
+              @change="updateSettingsAndNotify"
             />
             <label for="keyboardLayout-qwerty">QWERTY</label>
           </div>
@@ -706,6 +706,9 @@
         updateSettings() {
           localStorage.setItem("settings", JSON.stringify(this.settings));
           this.loadGameState();
+        },
+        updateSettingsAndNotify() {
+          this.updateSettings();
           window.dispatchEvent(
             new CustomEvent("notice", { detail: { text: "Settings updated" } })
           );
