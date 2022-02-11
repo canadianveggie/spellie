@@ -1,8 +1,8 @@
 # wordle-junior
 
-Wordle Junior - a kid-friendly version of the popular Wordle game
+Spellie - a kid-friendly version of the popular Wordle game
 
-[Try it out](https://wordlekids.com)
+[Try it out](https://spellie.io)
 
 Differences from classic Wordle:
 
