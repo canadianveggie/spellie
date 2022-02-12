@@ -373,6 +373,11 @@
         case: "lowercase", // lowercase, uppercase
         sharingEmojis: "", // "", fruit, vegetable, nature, tree
       };
+      const DEFAULT_STATISTICS = {
+        easy: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
+        medium: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
+        hard: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
+      };
       const HINT_DELAY = 15 * 1000;
 
       return {
@@ -421,7 +426,6 @@
             );
             this.resetHint();
             this.checkAnswer();
-            this.currentGuessIndex += 1;
             if (!this.solved && !this.failed) {
               this.cursor = 0;
               this.prepareHint();
@@ -465,25 +469,18 @@
           this.updateKeyboardForGuess(this.currentWord);
           this.addToCollection(this.currentWord);
           this.solved = this.currentWord === this.target;
+          this.currentGuessIndex += 1;
           if (this.solved) {
-            amplitude.getInstance().logEvent("level_end", {
-              level_name: this.level,
-              difficulty: this.settings.difficulty,
-              guesses: this.currentGuessIndex + 1,
-              success: true,
-            });
+            this.levelEnd();
             return;
           }
           if (
             !this.solved &&
-            this.currentGuessIndex >= this.guesses.length - 1
+            !this.failed &&
+            this.currentGuessIndex >= this.guesses.length
           ) {
             this.failed = true;
-            amplitude.getInstance().logEvent("level_end", {
-              level_name: this.level,
-              difficulty: this.settings.difficulty,
-              success: false,
-            });
+            this.levelEnd();
           }
         },
         updateKeyboardForGuess(guess) {
@@ -508,9 +505,9 @@
               key.state = "available";
             }
           });
-          for (const guess of this.guesses.slice(0, this.currentGuessIndex)) {
-            this.updateKeyboardForGuess(this.guessToWord(guess));
-          }
+          this.guessWords.forEach((guessWord) => {
+            this.updateKeyboardForGuess(guessWord);
+          });
           this.updateControls();
         },
         sortKeyboard(keyboardLayout) {
@@ -582,11 +579,20 @@
         get currentWord() {
           return this.guessToWord(this.currentGuess);
         },
+        get guessWords() {
+          return this.guesses.slice(0, this.currentGuessIndex).map((guess) => {
+            return this.guessToWord(guess);
+          });
+        },
+        get guessWordDictionary() {
+          return this.guessWords.reduce((dict, guessWord, i) => {
+            dict[`guess${i + 1}`] = guessWord;
+            return dict;
+          }, {});
+        },
         get guessEmojis() {
-          return this.guesses.map((guess, i) => {
-            return i < this.currentGuessIndex
-              ? emojis[this.guessToWord(guess)]
-              : undefined;
+          return this.guessWords.map((guessWord) => {
+            return emojis[guessWord];
           });
         },
         isCurrentWordComplete() {
@@ -656,9 +662,9 @@
         },
         loadGameState() {
           try {
-            let initialState = JSON.parse(
-              localStorage.getItem(`game-state-${this.settings.difficulty}`) ||
-                "{}"
+            let initialState = this.getFromLocalStorage(
+              `game-state-${this.settings.difficulty}`,
+              {}
             );
             if (initialState.puzzleId !== this.puzzleId) {
               initialState = {};
@@ -700,7 +706,7 @@
         loadSettings() {
           this.settings = {
             ...DEFAULT_SETTINGS,
-            ...JSON.parse(localStorage.getItem("settings") || "{}"),
+            ...this.getFromLocalStorage("settings", {}),
           };
         },
         updateSettings() {
@@ -714,9 +720,9 @@
           );
         },
         loadCollection() {
-          const collection = JSON.parse(
-            localStorage.getItem("collection") || '{"unlocked": {}}'
-          );
+          const collection = this.getFromLocalStorage("collection", {
+            unlocked: {},
+          });
           this.emojiCollection = Object.entries(emojis)
             .sort((a, b) => {
               // Sort by length, alphabetical
@@ -738,9 +744,9 @@
         },
         addToCollection(newWord) {
           if (emojis[newWord]) {
-            const collection = JSON.parse(
-              localStorage.getItem("collection") || '{"unlocked": {}}'
-            );
+            const collection = this.getFromLocalStorage("collection", {
+              unlocked: {},
+            });
             collection.unlocked[newWord] = { date: new Date().toISOString() };
             localStorage.setItem("collection", JSON.stringify(collection));
             const collectable = this.emojiCollection.find(
@@ -748,6 +754,29 @@
             );
             collectable.unlocked = true;
           }
+        },
+        levelEnd() {
+          amplitude.getInstance().logEvent("level_end", {
+            level_name: this.level,
+            difficulty: this.settings.difficulty,
+            guesses: this.sovled ? this.currentGuessIndex : null,
+            success: this.solved,
+            guessWords: this.guessWords,
+            ...this.guessWordDictionary,
+          });
+          const statistics = this.getFromLocalStorage(
+            "statistics",
+            DEFAULT_STATISTICS
+          );
+          if (this.solved) {
+            statistics[this.settings.difficulty].success += 1;
+            statistics[this.settings.difficulty].guesses[
+              this.currentGuessIndex
+            ] += 1;
+          } else {
+            statistics[this.settings.difficulty].fail += 1;
+          }
+          localStorage.setItem("statistics", JSON.stringify(statistics));
         },
         get unlockedEmojis() {
           return this.emojiCollection?.filter((e) => e.unlocked);
@@ -830,6 +859,14 @@
             text,
             share_type: shareType,
           });
+        },
+        getFromLocalStorage(key, defaultValue) {
+          const value = localStorage.getItem(key);
+          if (value) {
+            return JSON.parse(value);
+          } else {
+            return defaultValue;
+          }
         },
       };
     }
