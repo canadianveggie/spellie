@@ -101,4 +101,7 @@
   e.amplitude = n;
 })(window, document);
 
-amplitude.getInstance().init("a46dd2f34cf79c6973d117575467b9b4");
+amplitude.getInstance().init("a46dd2f34cf79c6973d117575467b9b4", null, {
+  includeReferrer: true,
+  includeUtm: true,
+});
