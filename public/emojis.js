@@ -453,3 +453,7 @@ const emojis = {
   ZERO: "0️⃣",
   ZOMBIE: "🧟",
 };
+
+if (typeof module !== "undefined") {
+  module.exports = { emojis };
+}
