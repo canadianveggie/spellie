@@ -15,6 +15,9 @@
   "homepage": "https://github.com/canadianveggie/wordle-junior#readme",
   "scripts": {
     "start": "python -m SimpleHTTPServer",
+    "watch": "npm run css -- --watch",
+    "build": "npm run css -- --minify",
+    "css": "npx tailwindcss -i ./public/input.css -o ./public/main.css",
     "test": "jest --verbose --watch",
     "test:ci": "jest",
     "lint": "prettier --check '**/*.{css,js,html}'",
