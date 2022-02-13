@@ -75,7 +75,7 @@
             id="difficulty-easy"
             value="easy"
             x-model="settings.difficulty"
-            @change="updateSettings"
+            @change="updateDifficulty"
           />
           <label for="difficulty-easy">Easy</label>
           <input
@@ -83,7 +83,7 @@
             id="difficulty-medium"
             value="medium"
             x-model="settings.difficulty"
-            @change="updateSettings"
+            @change="updateDifficulty"
           />
           <label for="difficulty-medium">Medium</label>
           <input
@@ -91,7 +91,7 @@
             id="difficulty-hard"
             value="hard"
             x-model="settings.difficulty"
-            @change="updateSettings"
+            @change="updateDifficulty"
           />
           <label for="difficulty-hard">Hard</label>
         </div>
@@ -245,7 +245,7 @@
               id="case-lowercase"
               value="lowercase"
               x-model="settings.case"
-              @change="updateSettingsAndNotify"
+              @change="updateSettings"
             />
             <label for="case-lowercase">lowercase</label>
           </div>
@@ -255,7 +255,7 @@
               id="case-uppercase"
               value="uppercase"
               x-model="settings.case"
-              @change="updateSettingsAndNotify"
+              @change="updateSettings"
             />
             <label for="case-uppercase">UPPERCASE</label>
           </div>
@@ -268,7 +268,7 @@
               type="radio"
               value=""
               x-model="settings.sharingEmojis"
-              @change="updateSettingsAndNotify"
+              @change="updateSettings"
             />
             <label for="sharing-emojis-random">??? (Random)</label>
           </div>
@@ -279,7 +279,7 @@
                 type="radio"
                 :value="entries[0]"
                 x-model="settings.sharingEmojis"
-                @change="updateSettingsAndNotify"
+                @change="updateSettings"
               />
               <label
                 :for="'sharing-emojis-' + entries[0]"
@@ -296,7 +296,7 @@
               id="keyboardLayout-atoz"
               value="atoz"
               x-model="settings.keyboardLayout"
-              @change="updateSettingsAndNotify"
+              @change="updateSettings"
             />
             <label for="keyboardLayout-atoz">A to Z</label>
           </div>
@@ -306,7 +306,7 @@
               id="keyboardLayout-qwerty"
               value="qwerty"
               x-model="settings.keyboardLayout"
-              @change="updateSettingsAndNotify"
+              @change="updateSettings"
             />
             <label for="keyboardLayout-qwerty">QWERTY</label>
           </div>
@@ -709,15 +709,20 @@
             ...this.getFromLocalStorage("settings", {}),
           };
         },
-        updateSettings() {
+        saveSettings() {
           localStorage.setItem("settings", JSON.stringify(this.settings));
           this.loadGameState();
         },
-        updateSettingsAndNotify() {
-          this.updateSettings();
+        updateSettings() {
+          this.saveSettings();
           window.dispatchEvent(
             new CustomEvent("notice", { detail: { text: "Settings updated" } })
           );
+        },
+        updateDifficulty(e) {
+          this.saveSettings();
+          // release focus so that arrow key presses only affect puzzle
+          e.target?.blur();
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
