@@ -47,7 +47,6 @@
       x-init="initialLoad()"
       @keyup.document="keyPressed"
       @hashchange.window="page = location.hash"
-      @resize.window="onResize"
     >
       <header>
         <div class="nav">
@@ -68,8 +67,8 @@
           </a>
         </div>
       </header>
-      <div class="game-content" x-show="page === ''">
-        <div class="radio-toolbar">
+      <div class="game-content items-center" x-show="page === ''">
+        <div class="radio-toolbar items-center">
           <input
             type="radio"
             id="difficulty-easy"
@@ -95,14 +94,17 @@
           />
           <label for="difficulty-hard">Hard</label>
         </div>
-        <div class="guesses-container">
+        <div>
           <div class="guesses">
             <template
               x-for="(guess, guessIndex) in guesses"
               :key="`${level}-${guessIndex}`"
             >
-              <div class="guesses-word" :class="settings.case">
-                <div class="guesses-tile emoji-tile">
+              <div
+                class="flex flex-row space-x-1 space-y-1"
+                :class="settings.case"
+              >
+                <div class="guesses-tile emoji-tile basis-1/6">
                   <span
                     x-text="guessEmojis[guessIndex]"
                     x-show="guessEmojis[guessIndex]"
@@ -111,7 +113,7 @@
                 </div>
                 <template x-for="(letter, letterIndex) in guess">
                   <div
-                    class="guesses-tile"
+                    class="guesses-tile basis-1/6"
                     :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
                     @click="selectTile(guessIndex, letterIndex)"
                   >
@@ -122,7 +124,7 @@
                     ></span>
                   </div>
                 </template>
-                <div class="guesses-tile emoji-tile">
+                <div class="guesses-tile emoji-tile basis-1/6">
                   <span
                     x-text="guessEmojis[guessIndex]"
                     x-show="guessEmojis[guessIndex]"
@@ -397,22 +399,6 @@
         cursorMode: false,
         keyboard: initialKeyboard(),
         emojiCollection: [],
-        onResize() {
-          const container = document.querySelector(".guesses-container");
-          const gridWidth = Math.min(
-            Math.floor(container.clientHeight * 0.9),
-            500
-          );
-          if (gridWidth < 100) {
-            return; // sanity check
-          }
-          const gridRowCells = 2 + this.target.length;
-          const gridHeight = 6 * Math.floor(gridWidth / gridRowCells);
-
-          const grid = document.querySelector(".guesses");
-          grid.style.width = `${gridWidth}px`;
-          grid.style.height = `${gridHeight}px`;
-        },
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -675,10 +661,6 @@
             this.target =
               initialState.target ||
               getTodayPuzzles()[this.settings.difficulty];
-
-            this.$nextTick(() => {
-              this.onResize();
-            });
 
             this.guesses =
               initialState.guesses ||
