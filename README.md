@@ -1,21 +1,24 @@
-# wordle-junior
+# Spellie
 
-Spellie - a kid-friendly version of the popular Wordle game
+A kid-friendly version of the popular Wordle game
 
 [Try it out](https://spelliegame.com)
 
 Differences from classic Wordle:
 
-- kid friendly colour scheme
-- keyboard has an alphabetical layout
-- choose between lowercase and UPPERCASE letters
-- words enetered don't have to be in the dictionary
-- age-appropriate words chosen for daily puzzles
-- letters can be entered in any order (cursor support)
-- emoji rewards for guessing popular words
-- multiple difficulties (easy, medium, and hard)
-- hints when you're stuck
+- Daily puzzles from a curated, kid-friendly list of words
+- 3 difficulty levels to challenge spellers of all ages
+- Easy mode is appropriate for K-2 and has hints and help
+- Hard mode is challenging enough for adults, but with words that any Grade 4 student can spell
+- Letters can be entered in any order
+- Brighter, more kid friendly colours
+- Kid-friendly font (Andika) with either uppercase or lowercase letters
+- Alphabetically ordered keyboard
+- No restrictions to entering words that might not be in the dictionary
+- Over 400 emojis that you can collect as rewards for spelling and imagination
 
 Future Enhancements:
 
 - help page
+- light/dark mode
+- QWERTY keyboard layout
