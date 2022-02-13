@@ -1,6 +1,7 @@
 const emojis = {
   ABCD: "🔠",
   ABCS: "🔤",
+  ADIEU: "👋",
   ALIEN: "👽",
   ANGEL: "😇",
   ANGOLA: "🇦🇴",
@@ -9,6 +10,7 @@ const emojis = {
   APPLE: "🍎",
   ARMS: "💪",
   ARUBA: "🇦🇼",
+  AUDIO: "🔈",
   AXES: "🪓",
   BABY: "🚼",
   BADGER: "🦡",
@@ -432,6 +434,7 @@ const emojis = {
   WAFFLE: "🧇",
   WATCH: "⌚️",
   WATER: "💧",
+  WAVE: "🌊",
   WEBS: "🕸️",
   WHALE: "🐳",
   WHITE: "⚪",
