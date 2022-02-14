@@ -1,8 +1,29 @@
 :root {
-  /* TODO: extract others */
   --color-neutral-0: #000;
   --color-neutral-10: #222;
   --color-neutral-20: #444;
+  --color-neutral-100: #fff;
+
+  --color-text: var(--color-neutral-0);
+  --color-bg: #c9f8ff;
+  --color-title: #0081c1;
+  --color-nav: var(--color-neutral-20);
+  --color-border-header: #818384;
+  --color-border: var(--color-neutral-10);
+
+  --color-available: #08adff;
+  --color-empty: var(--color-neutral-100);
+  --color-miss: #81837b6e;
+  --color-present: #ffa800;
+  --color-match: #23f787;
+
+  --color-hint-text: var(--color-neutral-20);
+
+  --color-radio-bg: #81837b6e;
+  --color-radio-active: var(--color-available);
+
+  --color-notice-bg: var(--color-neutral-10);
+  --color-notice-text: var(--color-neutral-100);
 }
 
 html {
@@ -14,8 +35,8 @@ html {
 }
 
 body {
-  background: #c9f8ff;
-  color: black;
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: "Andika New Basic", sans-serif;
   height: 100%;
   margin: 0;
@@ -34,17 +55,17 @@ header {
   height: 55px; /* prevent reflow */
   display: flex;
   align-items: center;
-  color: #0081c1;
+  color: var(--color-title);
   font-weight: bolder;
   justify-content: space-between;
-  border-bottom: 1px #818384 solid;
+  border-bottom: 1px solid var(--color-border-header);
   padding: 0 0 1.2rem;
   margin-bottom: 1rem;
 }
 
 .nav-link {
   cursor: pointer;
-  color: var(--color-neutral-20);
+  color: var(--color-nav);
 }
 
 .title {
@@ -116,9 +137,9 @@ a {
 
 .key {
   border-radius: 15px;
-  background-color: #08adff;
-  border: 2px solid var(--color-neutral-10);
-  color: black;
+  background-color: var(--color-available);
+  border: 2px solid var(--color-border);
+  color: var(--color-text);
   text-align: center;
   cursor: pointer;
   width: 30px;
@@ -157,10 +178,10 @@ a {
 
 .radio-toolbar label {
   display: inline-block;
-  background-color: #81837b6e;
+  background-color: var(--color-radio-bg);
   padding: 5px 10px;
   font-size: 16px;
-  border: 2px solid var(--color-neutral-20);
+  border: 2px solid var(--color-border);
   border-radius: 4px;
 }
 
@@ -169,19 +190,19 @@ a {
 }
 
 .radio-toolbar input[type="radio"]:checked + label {
-  background-color: #08adff;
+  background-color: var(--color-radio-active);
 }
 
 .guesses-tile {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid var(--color-neutral-10);
+  border: 2px solid var(--color-border);
   border-radius: 50%;
   padding-bottom: 4px; /* improve letter centering */
   font-size: 1rem;
   line-height: 1;
-  background: white;
+  background: var(--color-empty);
   aspect-ratio: 1/1;
   transition: background linear 0.5s;
 }
@@ -232,22 +253,22 @@ a {
 
 .emoji-tile {
   border: none;
-  background: #c9f8ff;
+  background: none;
 }
 
 .cursor {
-  outline: 1px solid black;
+  outline: 1px solid var(--color-border);
 }
 @media screen and (min-height: 600px) {
   .cursor {
-    outline: 3px solid black;
+    outline: 3px solid var(--color-border);
   }
 }
 
 .hint-area {
   min-height: 52px;
   font-size: 1rem;
-  color: var(--color-neutral-20);
+  color: var(--color-hint-text);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -275,20 +296,17 @@ a {
 }
 
 .unavailable {
-  background-color: #81837b6e;
+  background-color: var(--color-miss);
   cursor: auto;
 }
-
 .miss {
-  background-color: #81837b6e;
+  background-color: var(--color-miss);
 }
-
 .present {
-  background-color: #ffa800;
+  background-color: var(--color-present);
 }
-
 .match {
-  background-color: #23f787;
+  background-color: var(--color-match);
 }
 
 .collection-tiles .guesses-word {
@@ -314,8 +332,8 @@ a {
   padding: 4px;
   transform: translateX(-50%);
   font-size: 1.5rem;
-  color: #fff;
-  background-color: var(--color-neutral-10);
+  color: var(--color-notice-text);
+  background-color: var(--color-notice-bg);
 }
 
 /* animations */
