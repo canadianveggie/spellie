@@ -6,21 +6,21 @@
 
   --color-text: var(--color-neutral-0);
   --color-bg: #c9f8ff;
-  --color-title: #0081c1;
+  --color-title: #008da3;
   --color-nav: var(--color-neutral-20);
   --color-border-header: #818384;
   --color-border: var(--color-neutral-10);
 
-  --color-available: #08adff;
-  --color-empty: var(--color-neutral-100);
-  --color-miss: #81837b6e;
-  --color-present: #ffa800;
-  --color-match: #23f787;
+  --color-available: #bbb;
+  --color-empty: transparent;
+  --color-miss: #ebfcff;
+  --color-present: #fac748;
+  --color-match: #09e85e;
 
   --color-hint-text: var(--color-neutral-20);
 
-  --color-radio-bg: #81837b6e;
-  --color-radio-active: var(--color-available);
+  --color-radio-bg: #ccc;
+  --color-radio-active: #eee;
 
   --color-notice-bg: var(--color-neutral-10);
   --color-notice-text: var(--color-neutral-100);
@@ -179,8 +179,8 @@ a {
 .radio-toolbar label {
   display: inline-block;
   background-color: var(--color-radio-bg);
-  padding: 5px 10px;
-  font-size: 16px;
+  padding: 2px 8px;
+  font-size: 14px;
   border: 2px solid var(--color-border);
   border-radius: 4px;
 }
@@ -191,6 +191,7 @@ a {
 
 .radio-toolbar input[type="radio"]:checked + label {
   background-color: var(--color-radio-active);
+  outline: 1px solid var(--color-border);
 }
 
 .guesses-tile {
@@ -389,4 +390,11 @@ a {
 
 [x-cloak] {
   display: none !important;
+}
+
+.difficulty {
+  cursor: pointer;
+  background: none;
+  border: none;
+  appearance: none;
 }
