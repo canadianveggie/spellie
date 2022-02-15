@@ -28,5 +28,9 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "jsdom"
   }
 }
