@@ -3,9 +3,31 @@ const {
   compareTargetAndGuess,
   emojiMatchThemes,
   guessesAsEmojis,
+  words,
 } = require("../public/puzzles");
 
 describe("puzzles", () => {
+  describe("words", () => {
+    it("easy are length 4", () => {
+      expect(words.easy.length).toBeGreaterThan(300);
+      words.easy.forEach((word) => {
+        expect(word).toMatch(/^[A-Z]{4}$/);
+      });
+    });
+    it("medium are length 4-5", () => {
+      expect(words.medium.length).toBeGreaterThan(300);
+      words.medium.forEach((word) => {
+        expect(word).toMatch(/^[A-Z]{4,5}$/);
+      });
+    });
+    it("hard are length 5-6", () => {
+      expect(words.hard.length).toBeGreaterThan(300);
+      words.hard.forEach((word) => {
+        expect(word).toMatch(/^[A-Z]{5,6}$/);
+      });
+    });
+  });
+
   describe("daysBetween", () => {
     it("same day", () => {
       const start = new Date(2022, 1 - 1, 18);
