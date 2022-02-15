@@ -1006,6 +1006,11 @@ function compareTargetAndGuess(target, guess) {
 }
 
 const emojiMatchThemes = {
+  nature: {
+    match: "🍀",
+    present: "🌻",
+    miss: "🕸️",
+  },
   fruit: {
     match: "🍏",
     present: "🍊",
@@ -1015,11 +1020,6 @@ const emojiMatchThemes = {
     match: "🥦",
     present: "🍄",
     miss: "🍽️",
-  },
-  nature: {
-    match: "🍀",
-    present: "🌻",
-    miss: "🕸️",
   },
   tree: {
     match: "🌳",
