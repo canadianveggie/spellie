@@ -150,6 +150,7 @@ const emojis = {
   FISH: "🐠",
   FIVE: "5️⃣",
   FLAG: "🏁",
+  FLOWER: "🌻",
   FLYS: "🪰",
   FONDUE: "🫕",
   FOOT: "🦶",
