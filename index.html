@@ -263,16 +263,6 @@
         </div>
         <div>
           <h2>Sharing Theme</h2>
-          <div>
-            <input
-              id="sharing-emojis-random"
-              type="radio"
-              value=""
-              x-model="settings.sharingEmojis"
-              @change="updateSettings"
-            />
-            <label for="sharing-emojis-random">??? (Random)</label>
-          </div>
           <template x-for="entries in Object.entries(emojiMatchThemes)">
             <div>
               <input
@@ -372,7 +362,7 @@
         difficulty: "easy", // easy, medium, hard
         keyboardLayout: "atoz", // atoz, qwerty
         case: "lowercase", // lowercase, uppercase
-        sharingEmojis: "", // "", fruit, vegetable, nature, tree
+        sharingEmojis: "nature", // fruit, vegetable, nature, tree
       };
       const DEFAULT_STATISTICS = {
         easy: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
@@ -709,6 +699,10 @@
             ...DEFAULT_SETTINGS,
             ...this.getFromLocalStorage("settings", {}),
           };
+          if (this.settings.sharingEmojis === "") {
+            // Removing random default for now
+            this.settings.sharingEmojis = DEFAULT_SETTINGS.sharingEmojis;
+          }
         },
         saveSettings() {
           localStorage.setItem("settings", JSON.stringify(this.settings));
