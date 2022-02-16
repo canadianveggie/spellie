@@ -113,12 +113,17 @@ a {
   padding: 8px;
 }
 
+.target-5 .guesses-row {
+  --guess-columns: calc(5 + 2);
+}
+.target-6 .guesses-row {
+  --guess-columns: calc(6 + 2);
+}
 .guesses-row {
   display: flex;
   justify-content: center;
   gap: var(--tile-spacing);
-  /* TODO: can be lower than 8 if target is 4 or 5 letters */
-  aspect-ratio: 8/1;
+  aspect-ratio: var(--guess-columns, 6) / 1;
   margin: 0 auto;
   --margin-between-rows: calc(var(--total-guesses) * var(--tile-spacing));
   height: calc(calc(100% - var(--margin-between-rows)) / var(--total-guesses));
@@ -298,6 +303,7 @@ a {
   justify-content: center;
   align-items: center;
   margin-bottom: 8px;
+  min-height: 22px;
 }
 .hint-button {
   font-size: 1rem;

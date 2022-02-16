@@ -95,7 +95,7 @@
           />
           <label for="difficulty-hard">Hard</label>
         </div>
-        <div class="guesses-grid">
+        <div class="guesses-grid" :class="`target-${target.length}`">
           <template
             x-for="(guess, guessIndex) in guesses"
             :key="`${level}-${guessIndex}`"
