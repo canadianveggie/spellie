@@ -174,13 +174,23 @@
         </div>
         <div class="keyboard">
           <template x-if="!solved && !failed">
-            <template x-for="letter in keyboard" :key="level + letter.label">
-              <div
-                class="key"
-                x-text="letter.label"
-                :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
-                @click="addLetter(letter)"
-              ></div>
+            <template
+              x-for="(keyboardRow, rowIndex) in keyboard"
+              :key="level + rowIndex"
+            >
+              <div class="keyboard-row">
+                <template
+                  x-for="letter in keyboardRow"
+                  :key="level + letter.label"
+                >
+                  <div
+                    class="key"
+                    x-text="letter.label"
+                    :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
+                    @click="addLetter(letter)"
+                  ></div>
+                </template>
+              </div>
             </template>
           </template>
         </div>
@@ -239,6 +249,29 @@
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <h1>Settings</h1>
         <div>
+          <h2>Keyboard Layout</h2>
+          <div>
+            <input
+              type="radio"
+              id="keyboardLayout-atoz"
+              value="atoz"
+              x-model="settings.keyboardLayout"
+              @change="updateSettings"
+            />
+            <label for="keyboardLayout-atoz">A to Z</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="keyboardLayout-qwerty"
+              value="qwerty"
+              x-model="settings.keyboardLayout"
+              @change="updateSettings"
+            />
+            <label for="keyboardLayout-qwerty">QWERTY</label>
+          </div>
+        </div>
+        <div>
           <h2>Letters</h2>
           <div>
             <input
@@ -279,29 +312,6 @@
             </div>
           </template>
         </div>
-        <!-- <div>
-          <h2>Keyboard Layout</h2>
-          <div>
-            <input
-              type="radio"
-              id="keyboardLayout-atoz"
-              value="atoz"
-              x-model="settings.keyboardLayout"
-              @change="updateSettings"
-            />
-            <label for="keyboardLayout-atoz">A to Z</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              id="keyboardLayout-qwerty"
-              value="qwerty"
-              x-model="settings.keyboardLayout"
-              @change="updateSettings"
-            />
-            <label for="keyboardLayout-qwerty">QWERTY</label>
-          </div>
-        </div> -->
       </div>
       <div
         x-data="noticesHandler()"
@@ -323,11 +333,9 @@
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
 
-    const a_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    const qwerty = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
-
-    function initialKeyboard() {
-      const keyboard = a_z.map((letter) => ({
+    function initialKeys() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      const keyboard = letters.map((letter) => ({
         type: "letter",
         label: letter,
         state: "available",
@@ -386,7 +394,7 @@
         currentGuessIndex: 0,
         cursor: 0,
         cursorMode: false,
-        keyboard: initialKeyboard(),
+        keys: initialKeys(),
         emojiCollection: [],
         onResize() {
           const container = document.querySelector(".guesses-container");
@@ -478,7 +486,7 @@
           const result = compareTargetAndGuess(this.target, guess);
           result.forEach((letterResult, i) => {
             const label = guess[i];
-            const key = this.keyboard.find((letter) => letter.label === label);
+            const key = this.keys.find((letter) => letter.label === label);
             // Don't overwrite match or present with miss
             if (
               !key ||
@@ -491,7 +499,7 @@
           });
         },
         updateKeyboard() {
-          this.keyboard.forEach((key) => {
+          this.keys.forEach((key) => {
             if (key.type === "letter") {
               key.state = "available";
             }
@@ -501,21 +509,26 @@
           });
           this.updateControls();
         },
-        sortKeyboard(keyboardLayout) {
-          const keys = keyboardLayout === "qwerty" ? qwerty : a_z;
-          keys.push(this.keyboard.find((key) => key.type === "back").label);
-          keys.push(this.keyboard.find((key) => key.type === "enter").label);
-          this.keyboard.sort((a, b) => {
-            return keys.indexOf(a.label) - keys.indexOf(b.label);
+        get keyboard() {
+          const a_z = ["ABCDEFGHI", "JKLMNOPQR", "STUVWXYZ"];
+          const qwerty = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
+
+          const layout =
+            this.settings.keyboardLayout === "qwerty" ? qwerty : a_z;
+          const keyboard = [];
+          layout.forEach((row) => {
+            const rowKeys = row.split("").map((letter) => {
+              return this.keys.find((key) => key.label === letter);
+            });
+            keyboard.push(rowKeys);
           });
+          keyboard[2].push(this.keys.find((key) => key.type === "back"));
+          keyboard[3] = [this.keys.find((key) => key.type === "enter")];
+          return keyboard;
         },
         updateControls() {
-          const backKey = this.keyboard.find(
-            (letter) => letter.type === "back"
-          );
-          const enterKey = this.keyboard.find(
-            (letter) => letter.type === "enter"
-          );
+          const backKey = this.keys.find((letter) => letter.type === "back");
+          const enterKey = this.keys.find((letter) => letter.type === "enter");
           backKey.state = this.cursor > 0 ? "available" : "unavailable";
           enterKey.state = this.isCurrentWordComplete()
             ? "available pulse"
@@ -635,7 +648,7 @@
         showHint() {
           const hint = getHint(
             this.target,
-            this.keyboard.filter((key) => key.type === "letter")
+            this.keys.filter((key) => key.type === "letter")
           );
           amplitude.getInstance().logEvent("show_hint", {
             level_name: this.level,
@@ -679,7 +692,6 @@
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
-            this.sortKeyboard(this.settings.keyboardLayout);
             this.updateKeyboard();
             this.resetHint();
             this.prepareHint();
