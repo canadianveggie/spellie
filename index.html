@@ -326,6 +326,7 @@
   <script src="public/puzzles.js"></script>
   <script src="public/hint.js"></script>
   <script src="public/emojis.js"></script>
+  <script src="public/mobileCheck.js"></script>
   <script>
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
@@ -830,10 +831,7 @@
             text: `${text}\n`,
             url,
           };
-          if (
-            navigator?.canShare?.(shareData) &&
-            navigator.canShare(shareData)
-          ) {
+          if (navigator?.canShare?.(shareData) && onMobile()) {
             navigator.share(shareData);
           } else if (navigator?.clipboard) {
             navigator.clipboard.writeText(`${title}\n${text}\n${url}`);
