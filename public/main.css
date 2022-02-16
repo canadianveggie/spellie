@@ -126,16 +126,20 @@ a {
 }
 
 .keyboard {
-  user-select: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
   justify-content: center;
-  margin: 0 auto 8px;
   font-size: 1.5rem;
 }
 
+.keyboard-row {
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto 4px;
+  gap: 4px;
+}
+
 .key {
+  flex-grow: 1;
   border-radius: 15px;
   background-color: var(--color-available);
   border: 2px solid var(--color-border);
