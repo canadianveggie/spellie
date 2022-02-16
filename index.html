@@ -634,6 +634,8 @@
           );
           amplitude.getInstance().logEvent("show_hint", {
             level_name: this.level,
+            difficulty: this.settings.difficulty,
+            guess: this.currentGuessIndex + 1,
             message: hint.text,
             letter: hint.letter,
           });
