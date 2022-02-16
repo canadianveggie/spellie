@@ -151,14 +151,14 @@
             <span x-text="hint.message"></span>
           </div>
         </div>
-        <div
-          x-show="solved"
-          x-cloak
-          x-transition.enter.duration.1000ms
-          x-transition.leave.duration.0ms
-          class="victory"
-        >
-          <span class="emoji" x-text="victoryEmoji"></span> You win!
+        <div x-show="solved" x-cloak>
+          <div
+            x-transition.enter.duration.1000ms
+            x-transition.leave.duration.0ms
+            class="victory"
+          >
+            <span class="emoji" x-text="victoryEmoji"></span> You win!
+          </div>
         </div>
         <div
           x-cloak
