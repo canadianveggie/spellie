@@ -312,6 +312,29 @@
           </div>
         </div>
         <div>
+          <h2>Spell Checker</h2>
+          <div>
+            <input
+              type="radio"
+              id="spellChecker-off"
+              value="off"
+              x-model="settings.spellChecker"
+              @change="updateSettings"
+            />
+            <label for="spellChecker-off">Off</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="spellChecker-on"
+              value="on"
+              x-model="settings.spellChecker"
+              @change="updateSettings"
+            />
+            <label for="spellChecker-on">On</label>
+          </div>
+        </div>
+        <div>
           <h2>Sharing Theme</h2>
           <template x-for="entries in Object.entries(emojiMatchThemes)">
             <div>
@@ -347,9 +370,14 @@
   <script src="public/hint.js"></script>
   <script src="public/emojis.js"></script>
   <script src="public/mobileCheck.js"></script>
+  <script src="public/dictionary.js"></script>
   <script>
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
+
+    // Add emoji keys to valid words
+    // So that ELSA and ROFL are accepted
+    Object.keys(emojis).forEach((key) => validWords.add(key));
 
     function initialKeys() {
       const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -389,6 +417,7 @@
         keyboardLayout: "atoz", // atoz, qwerty
         case: "lowercase", // lowercase, uppercase
         sharingEmojis: "nature", // fruit, vegetable, nature, tree
+        spellChecker: "off", // on, off
       };
       const DEFAULT_STATISTICS = {
         easy: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
@@ -420,6 +449,17 @@
           }
           if (letterState.type === "enter") {
             if (!this.isCurrentWordComplete()) {
+              return;
+            }
+            if (
+              (this.settings.spellChecker === "on" || this.onLastGuess) &&
+              !validWords.has(this.currentWord)
+            ) {
+              window.dispatchEvent(
+                new CustomEvent("notice", {
+                  detail: { text: "Not a valid word" },
+                })
+              );
               return;
             }
             this.currentGuess.forEach(
@@ -600,6 +640,9 @@
           return this.guessWords.map((guessWord) => {
             return emojis[guessWord];
           });
+        },
+        get onLastGuess() {
+          return this.currentGuessIndex === maxGuesses - 1;
         },
         isCurrentWordComplete() {
           return (
