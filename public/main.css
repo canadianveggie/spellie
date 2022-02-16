@@ -147,7 +147,7 @@ a {
   transition: background linear 0.5s;
 }
 
-@media screen and (min-height: 575px) {
+@media screen and (min-height: 565px) {
   .guesses-tile {
     font-size: 1rem;
   }
