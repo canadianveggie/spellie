@@ -47,7 +47,6 @@
       x-init="initialLoad()"
       @keyup.document="keyPressed"
       @hashchange.window="page = location.hash"
-      @resize.window="onResize"
     >
       <header>
         <div class="nav">
@@ -96,43 +95,41 @@
           />
           <label for="difficulty-hard">Hard</label>
         </div>
-        <div class="guesses-container">
-          <div class="guesses">
-            <template
-              x-for="(guess, guessIndex) in guesses"
-              :key="`${level}-${guessIndex}`"
-            >
-              <div class="guesses-word" :class="settings.case">
-                <div class="guesses-tile emoji-tile">
-                  <span
-                    x-text="guessEmojis[guessIndex]"
-                    x-show="guessEmojis[guessIndex]"
-                    x-transition.delay.2000ms
-                  ></span>
-                </div>
-                <template x-for="(letter, letterIndex) in guess">
-                  <div
-                    class="guesses-tile"
-                    :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
-                    @click="selectTile(guessIndex, letterIndex)"
-                  >
-                    <span
-                      x-show="letter.letter"
-                      x-text="letter.letter"
-                      x-transition:enter="pop"
-                    ></span>
-                  </div>
-                </template>
-                <div class="guesses-tile emoji-tile">
-                  <span
-                    x-text="guessEmojis[guessIndex]"
-                    x-show="guessEmojis[guessIndex]"
-                    x-transition.delay.2000ms
-                  ></span>
-                </div>
+        <div class="guesses-grid" :class="`target-${target.length}`">
+          <template
+            x-for="(guess, guessIndex) in guesses"
+            :key="`${level}-${guessIndex}`"
+          >
+            <div class="guesses-row" :class="settings.case">
+              <div class="guesses-tile emoji-tile">
+                <span
+                  x-text="guessEmojis[guessIndex]"
+                  x-show="guessEmojis[guessIndex]"
+                  x-transition.delay.2000ms
+                ></span>
               </div>
-            </template>
-          </div>
+              <template x-for="(letter, letterIndex) in guess">
+                <div
+                  class="guesses-tile"
+                  :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
+                  @click="selectTile(guessIndex, letterIndex)"
+                >
+                  <span
+                    x-show="letter.letter"
+                    x-text="letter.letter"
+                    x-transition:enter="pop"
+                  ></span>
+                </div>
+              </template>
+              <div class="guesses-tile emoji-tile">
+                <span
+                  x-text="guessEmojis[guessIndex]"
+                  x-show="guessEmojis[guessIndex]"
+                  x-transition.delay.2000ms
+                ></span>
+              </div>
+            </div>
+          </template>
         </div>
         <div class="hint-area">
           <button
@@ -396,22 +393,6 @@
         cursorMode: false,
         keys: initialKeys(),
         emojiCollection: [],
-        onResize() {
-          const container = document.querySelector(".guesses-container");
-          const gridWidth = Math.min(
-            Math.floor(container.clientHeight * 0.9),
-            500
-          );
-          if (gridWidth < 100) {
-            return; // sanity check
-          }
-          const gridRowCells = 2 + this.target.length;
-          const gridHeight = 6 * Math.floor(gridWidth / gridRowCells);
-
-          const grid = document.querySelector(".guesses");
-          grid.style.width = `${gridWidth}px`;
-          grid.style.height = `${gridHeight}px`;
-        },
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -679,10 +660,6 @@
             this.target =
               initialState.target ||
               getTodayPuzzles()[this.settings.difficulty];
-
-            this.$nextTick(() => {
-              this.onResize();
-            });
 
             this.guesses =
               initialState.guesses ||
