@@ -324,12 +324,7 @@ main {
 }
 
 .cursor {
-  outline: 1px solid var(--color-border);
-}
-@media screen and (min-height: 600px) {
-  .cursor {
-    outline: 2px solid var(--color-border);
-  }
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 30), rgba(0, 0, 0, 30) 3px 3px;
 }
 
 .hint-area {
