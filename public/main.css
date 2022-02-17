@@ -236,7 +236,7 @@ a {
 }
 
 .radio-toolbar {
-  margin: 0 auto 1rem;
+  margin: 0 auto 0.25rem;
 }
 
 .radio-toolbar input[type="radio"] {
