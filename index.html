@@ -48,26 +48,26 @@
     @hashchange.window="page = location.hash"
   >
     <header>
-      <div class="nav">
-        <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
-          <i class="material-icons">arrow_back</i>
-        </a>
-      </div>
-      <div class="title">Spellie</div>
-      <div class="nav">
-        <a x-on:click="share" x-show="canShare" class="nav-link">
-          <i class="material-icons">share</i>
-        </a>
-        <a href="#collection" class="nav-link">
-          <i class="material-icons">collections</i>
-        </a>
-        <a href="#settings" class="nav-link">
-          <i class="material-icons">settings</i>
-        </a>
-      </div>
-    </header>
-    <main>
-      <div class="game-content" x-show="page === ''">
+      <nav>
+        <div>
+          <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </div>
+        <div class="title">Spellie</div>
+        <div>
+          <a x-on:click="share" x-show="canShare" class="nav-link">
+            <i class="material-icons">share</i>
+          </a>
+          <a href="#collection" class="nav-link">
+            <i class="material-icons">collections</i>
+          </a>
+          <a href="#settings" class="nav-link">
+            <i class="material-icons">settings</i>
+          </a>
+        </div>
+      </nav>
+      <div class="nav-tabs" x-cloak>
         <!-- difficulty? 😎 😐 🤔 -->
         <div class="radio-toolbar">
           <input
@@ -95,6 +95,10 @@
           />
           <label for="difficulty-hard">Hard</label>
         </div>
+      </div>
+    </header>
+    <main>
+      <div class="game-content" x-show="page === ''">
         <div class="guesses-grid" :class="`target-${target.length}`">
           <template
             x-for="(guess, guessIndex) in guesses"
