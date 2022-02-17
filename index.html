@@ -41,32 +41,32 @@
     <script src="public/amplitude.js"></script>
   </head>
 
-  <body>
-    <main
-      x-data="gameState()"
-      x-init="initialLoad()"
-      @keyup.document="keyPressed"
-      @hashchange.window="page = location.hash"
-    >
-      <header>
-        <div class="nav">
-          <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
-            <i class="material-icons">arrow_back</i>
-          </a>
-        </div>
-        <div class="title">Spellie</div>
-        <div class="nav">
-          <a x-on:click="share" x-show="canShare" class="nav-link">
-            <i class="material-icons">share</i>
-          </a>
-          <a href="#collection" class="nav-link">
-            <i class="material-icons">collections</i>
-          </a>
-          <a href="#settings" class="nav-link">
-            <i class="material-icons">settings</i>
-          </a>
-        </div>
-      </header>
+  <body
+    x-data="gameState()"
+    x-init="initialLoad()"
+    @keyup.document="keyPressed"
+    @hashchange.window="page = location.hash"
+  >
+    <header>
+      <div class="nav">
+        <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
+          <i class="material-icons">arrow_back</i>
+        </a>
+      </div>
+      <div class="title">Spellie</div>
+      <div class="nav">
+        <a x-on:click="share" x-show="canShare" class="nav-link">
+          <i class="material-icons">share</i>
+        </a>
+        <a href="#collection" class="nav-link">
+          <i class="material-icons">collections</i>
+        </a>
+        <a href="#settings" class="nav-link">
+          <i class="material-icons">settings</i>
+        </a>
+      </div>
+    </header>
+    <main>
       <div class="game-content" x-show="page === ''">
         <!-- difficulty? 😎 😐 🤔 -->
         <div class="radio-toolbar">

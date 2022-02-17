@@ -1,6 +1,7 @@
 :root {
   --tile-spacing: 4px;
   --total-guesses: 6;
+  --header-height: 100px;
 
   --color-neutral-0: #000;
   --color-neutral-10: #222;
@@ -43,32 +44,26 @@ body {
   font-family: "Andika New Basic", sans-serif;
   height: 100%;
   margin: 0;
-  padding: 1rem 1rem 0;
-}
-
-main {
-  max-width: 500px;
-  margin: 0 auto;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  padding: 0;
+  /* padding: 1rem 1rem 0; */
 }
 
 header {
-  height: 55px; /* prevent reflow */
+  height: var(--header-height);
+  background-color: var(--color-nav);
   display: flex;
   align-items: center;
   color: var(--color-title);
   font-weight: bolder;
   justify-content: space-between;
-  border-bottom: 1px solid var(--color-border-header);
+  /* border-bottom: 1px solid var(--color-border-header); */
   padding: 0 0 1.2rem;
-  margin-bottom: 1rem;
+  color: var(--color-title);
 }
 
 .nav-link {
+  color: var(--color-bg);
   cursor: pointer;
-  color: var(--color-nav);
 }
 
 .title {
@@ -91,6 +86,15 @@ i {
 
 a {
   text-decoration: none;
+}
+
+main {
+  max-width: 500px;
+  margin: 0 auto;
+  height: calc(100% - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 }
 
 .lowercase {
