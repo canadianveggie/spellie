@@ -225,12 +225,8 @@
               </div>
             </template>
           </div>
-          <template x-for="(collectable, i) in emojiCollection">
-            <div
-              class="guesses-word"
-              x-show="collectable.unlocked"
-              :class="settings.case"
-            >
+          <template x-for="(collectable, i) in unlockedEmojis">
+            <div class="guesses-word" :class="settings.case">
               <div class="guesses-tile emoji-tile">
                 <span x-text="collectable.emoji"></span>
               </div>
@@ -245,7 +241,7 @@
       </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <h1>Settings</h1>
-        <div>
+        <section>
           <h2>Keyboard Layout</h2>
           <div>
             <input
@@ -267,8 +263,8 @@
             />
             <label for="keyboardLayout-qwerty">QWERTY</label>
           </div>
-        </div>
-        <div>
+        </section>
+        <section>
           <h2>Letters</h2>
           <div>
             <input
@@ -290,8 +286,8 @@
             />
             <label for="case-uppercase">UPPERCASE</label>
           </div>
-        </div>
-        <div>
+        </section>
+        <section>
           <h2>Sharing Theme</h2>
           <template x-for="entries in Object.entries(emojiMatchThemes)">
             <div>
@@ -308,7 +304,7 @@
               ></label>
             </div>
           </template>
-        </div>
+        </section>
       </div>
       <div
         x-data="noticesHandler()"
@@ -533,7 +529,9 @@
             this.cursor = Math.min(this.target.length - 1, this.cursor + 1);
             this.cursorMode = true;
           } else if (e.key === "?") {
-            this.showHint();
+            if (this.hint.available) {
+              this.showHint();
+            }
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
             !e.altKey &&
