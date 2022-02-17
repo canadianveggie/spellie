@@ -10,20 +10,20 @@
   --color-text: var(--color-neutral-0);
   --color-bg: #30a3fc;
   --color-title: #ffffff;
-  --color-nav: var(--color-neutral-20);
+  --color-nav: #004b84;
   --color-border-header: #818384;
   --color-border: var(--color-neutral-10);
 
   --color-available: #ffffff;
   --color-empty: transparent;
-  --color-miss: #0088f0;
+  --color-miss: transparent;
   --color-present: #ffcb22;
   --color-match: #9fef00;
 
   --color-hint-text: var(--color-neutral-20);
 
-  --color-radio-bg: #ccc;
-  --color-radio-active: #eee;
+  --color-radio-bg: #004b84;
+  --color-radio-active: #ffffff;
 
   --color-notice-bg: var(--color-neutral-10);
   --color-notice-text: var(--color-neutral-100);
@@ -252,6 +252,7 @@ a {
   font-size: 14px;
   border: 2px solid var(--color-border);
   border-radius: 4px;
+  color: var(--color-title);
 }
 
 .radio-toolbar label:hover {
@@ -260,6 +261,7 @@ a {
 
 .radio-toolbar input[type="radio"]:checked + label {
   background-color: var(--color-radio-active);
+  color: var(--color-text);
   outline: 1px solid var(--color-border);
 }
 
