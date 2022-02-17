@@ -7,7 +7,7 @@
   --color-neutral-20: #444;
   --color-neutral-100: #fff;
 
-  --color-text: var(--color-neutral-0);
+  --color-text: #040d14;
   --color-bg: #30a3fc;
   --color-title: #ffffff;
   --color-nav: #004b84;
@@ -183,8 +183,6 @@ a {
 }
 
 .keyboard {
-  /* width: 100%; */
-  /* min-height: 280px; */
   justify-content: center;
   font-size: 1.5rem;
 }
@@ -211,9 +209,6 @@ a {
 .key-enter {
   min-width: 80px;
   text-transform: capitalize;
-}
-.key-back {
-  min-width: 60px;
 }
 @media screen and (min-width: 600px) and (min-height: 700px) {
   .keyboard {
