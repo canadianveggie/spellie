@@ -150,13 +150,23 @@ main {
   height: calc(calc(100% - var(--margin-between-rows)) / var(--total-guesses));
 }
 
+/* safari 15 etc needs this to avoid tiles enlarging */
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .guesses-row {
+      align-items: center;
+    }
+  }
+}
+
 .guesses-row + .guesses-row {
   margin-top: var(--tile-spacing);
 }
 
 .guesses-tile {
+  flex-grow: 1;
   font-weight: bold;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   aspect-ratio: 1/1;
