@@ -29,8 +29,12 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
+    <!-- <link
       href="https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@400;700&display=swap"
+      rel="stylesheet"
+    /> -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -41,21 +45,21 @@
     <script src="public/amplitude.js"></script>
   </head>
 
-  <body>
-    <main
-      x-data="gameState()"
-      x-init="initialLoad()"
-      @keyup.document="keyPressed"
-      @hashchange.window="page = location.hash"
-    >
-      <header>
-        <div class="nav">
+  <body
+    x-data="gameState()"
+    x-init="initialLoad()"
+    @keyup.document="keyPressed"
+    @hashchange.window="page = location.hash"
+  >
+    <header>
+      <nav>
+        <div>
           <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
             <i class="material-icons">arrow_back</i>
           </a>
         </div>
         <div class="title">Spellie</div>
-        <div class="nav">
+        <div>
           <a x-on:click="share" x-show="canShare" class="nav-link">
             <i class="material-icons">share</i>
           </a>
@@ -66,9 +70,8 @@
             <i class="material-icons">settings</i>
           </a>
         </div>
-      </header>
-      <div class="game-content" x-show="page === ''">
-        <!-- difficulty? 😎 😐 🤔 -->
+      </nav>
+      <div class="nav-tabs" x-cloak x-show="page === ''">
         <div class="radio-toolbar">
           <input
             type="radio"
@@ -77,7 +80,14 @@
             x-model="settings.difficulty"
             @change="updateDifficulty"
           />
-          <label for="difficulty-easy">Easy</label>
+          <label for="difficulty-easy">
+            <!-- <i
+              x-show="settings.difficulty === 'easy' && solved"
+              class="material-icons"
+              >check</i
+            > -->
+            Easy</label
+          >
           <input
             type="radio"
             id="difficulty-medium"
@@ -95,6 +105,10 @@
           />
           <label for="difficulty-hard">Hard</label>
         </div>
+      </div>
+    </header>
+    <main>
+      <div class="game-content" x-show="page === ''">
         <div class="guesses-grid" :class="`target-${target.length}`">
           <template
             x-for="(guess, guessIndex) in guesses"
@@ -182,10 +196,16 @@
                 >
                   <div
                     class="key"
-                    x-text="letter.label"
                     :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
                     @click="addLetter(letter)"
-                  ></div>
+                  >
+                    <template x-if="letter.type === 'back'">
+                      <i class="material-icons">backspace</i>
+                    </template>
+                    <template x-if="letter.type !== 'back'">
+                      <span x-text="letter.label"></span>
+                    </template>
+                  </div>
                 </template>
               </div>
             </template>
@@ -225,7 +245,7 @@
               </div>
             </template>
           </div>
-          <template x-for="(collectable, i) in emojiCollection">
+          <template x-for="(collectable, i) in unlockedEmojis">
             <div
               class="guesses-word"
               x-show="collectable.unlocked"
@@ -340,7 +360,7 @@
       }));
       keyboard.push({
         type: "back",
-        label: "←",
+        label: "",
         state: "unavailable",
       });
       keyboard.push({
@@ -517,7 +537,7 @@
             : "unavailable";
         },
         keyPressed(e) {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" || e.key === " ") {
             this.addLetter({ type: "enter" });
             this.cursorMode = false;
           } else if (e.key === "Backspace") {
