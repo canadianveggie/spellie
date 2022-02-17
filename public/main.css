@@ -42,7 +42,7 @@ html {
 body {
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: "Andika New Basic", sans-serif;
+  font-family: "Comic Neue", sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -158,6 +158,7 @@ main {
 }
 
 .guesses-tile {
+  font-weight: bold;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -209,6 +210,7 @@ main {
 .keyboard {
   justify-content: center;
   font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .keyboard-row {
@@ -254,6 +256,12 @@ main {
   box-shadow: rgba(0, 0, 0, 30) 2px 2px;
 }
 
+.radio-toolbar {
+  display: flex;
+  gap: 4px;
+  font-weight: bold;
+}
+
 .radio-toolbar input[type="radio"] {
   opacity: 0;
   position: fixed;
@@ -261,7 +269,7 @@ main {
 }
 
 .radio-toolbar label {
-  padding: 2px 8px;
+  padding: 4px 10px;
   font-size: 0.9rem;
   border-radius: 4px 4px 0 0;
   color: var(--color-title);
@@ -273,6 +281,7 @@ main {
 
 .radio-toolbar input[type="radio"]:checked + label {
   background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .guesses-tile:nth-of-type(1) {

@@ -29,8 +29,12 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
+    <!-- <link
       href="https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@400;700&display=swap"
+      rel="stylesheet"
+    /> -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -67,7 +71,7 @@
           </a>
         </div>
       </nav>
-      <div class="nav-tabs" x-cloak>
+      <div class="nav-tabs" x-cloak x-show="page === ''">
         <div class="radio-toolbar">
           <input
             type="radio"
@@ -82,7 +86,7 @@
               class="material-icons"
               >check</i
             > -->
-            <i class="status">😎</i>Easy</label
+            Easy</label
           >
           <input
             type="radio"
@@ -91,7 +95,7 @@
             x-model="settings.difficulty"
             @change="updateDifficulty"
           />
-          <label for="difficulty-medium"> <i class="status">🤔</i>Medium</label>
+          <label for="difficulty-medium">Medium</label>
           <input
             type="radio"
             id="difficulty-hard"
@@ -99,7 +103,7 @@
             x-model="settings.difficulty"
             @change="updateDifficulty"
           />
-          <label for="difficulty-hard"> <i class="status">😬</i>Hard</label>
+          <label for="difficulty-hard">Hard</label>
         </div>
       </div>
     </header>
