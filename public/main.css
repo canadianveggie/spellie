@@ -22,10 +22,7 @@
   --color-present: #ffcb22;
   --color-match: #9fef00;
 
-  --color-hint-text: var(--color-neutral-20);
-
-  --color-radio-bg: #004b84;
-  --color-radio-active: #ffffff;
+  --color-hint-text: var(--color-text);
 
   --color-notice-bg: var(--color-neutral-10);
   --color-notice-text: var(--color-neutral-100);
@@ -227,10 +224,12 @@ main {
   background-color: var(--color-available);
   border: 2px solid var(--color-border);
   color: var(--color-text);
-  text-align: center;
   cursor: pointer;
   width: 30px;
   line-height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .key-enter {
   min-width: 80px;

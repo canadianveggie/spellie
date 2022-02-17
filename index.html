@@ -245,7 +245,7 @@
               </div>
             </template>
           </div>
-          <template x-for="(collectable, i) in emojiCollection">
+          <template x-for="(collectable, i) in unlockedEmojis">
             <div
               class="guesses-word"
               x-show="collectable.unlocked"
@@ -537,7 +537,7 @@
             : "unavailable";
         },
         keyPressed(e) {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" || e.key === " ") {
             this.addLetter({ type: "enter" });
             this.cursorMode = false;
           } else if (e.key === "Backspace") {
