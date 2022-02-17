@@ -79,6 +79,12 @@ header nav {
   display: flex;
   justify-content: center;
 }
+.nav-tabs .status {
+  /* filter: grayscale(1); */
+  font: inherit;
+  padding: 0 4px 0 0;
+  font-size: 0.8rem;
+}
 
 .title {
   font-size: 1.5rem;
@@ -256,7 +262,7 @@ main {
 
 .radio-toolbar label {
   padding: 2px 8px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   border-radius: 4px 4px 0 0;
   color: var(--color-title);
 }

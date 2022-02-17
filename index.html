@@ -68,7 +68,6 @@
         </div>
       </nav>
       <div class="nav-tabs" x-cloak>
-        <!-- difficulty? 😎 😐 🤔 -->
         <div class="radio-toolbar">
           <input
             type="radio"
@@ -77,7 +76,14 @@
             x-model="settings.difficulty"
             @change="updateDifficulty"
           />
-          <label for="difficulty-easy">Easy</label>
+          <label for="difficulty-easy">
+            <!-- <i
+              x-show="settings.difficulty === 'easy' && solved"
+              class="material-icons"
+              >check</i
+            > -->
+            <i class="status">😎</i>Easy</label
+          >
           <input
             type="radio"
             id="difficulty-medium"
@@ -85,7 +91,7 @@
             x-model="settings.difficulty"
             @change="updateDifficulty"
           />
-          <label for="difficulty-medium">Medium</label>
+          <label for="difficulty-medium"> <i class="status">🤔</i>Medium</label>
           <input
             type="radio"
             id="difficulty-hard"
@@ -93,7 +99,7 @@
             x-model="settings.difficulty"
             @change="updateDifficulty"
           />
-          <label for="difficulty-hard">Hard</label>
+          <label for="difficulty-hard"> <i class="status">😬</i>Hard</label>
         </div>
       </div>
     </header>
