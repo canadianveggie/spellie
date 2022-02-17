@@ -370,7 +370,7 @@ main {
 .collection-tiles .guesses-word {
   margin-bottom: 8px;
   display: flex;
-  justify-content: center;
+  gap: 2px;
 }
 .collection-tiles .guesses-tile {
   width: 40px;
