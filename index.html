@@ -451,10 +451,7 @@
             if (!this.isCurrentWordComplete()) {
               return;
             }
-            if (
-              (this.settings.spellChecker === "on" || this.onLastGuess) &&
-              !validWords.has(this.currentWord)
-            ) {
+            if (this.isCurrentWordInvalid()) {
               window.dispatchEvent(
                 new CustomEvent("notice", {
                   detail: { text: "Not a valid word" },
@@ -572,9 +569,10 @@
           const backKey = this.keys.find((letter) => letter.type === "back");
           const enterKey = this.keys.find((letter) => letter.type === "enter");
           backKey.state = this.cursor > 0 ? "available" : "unavailable";
-          enterKey.state = this.isCurrentWordComplete()
-            ? "available pulse"
-            : "unavailable";
+          enterKey.state =
+            this.isCurrentWordComplete() && !this.isCurrentWordInvalid()
+              ? "available pulse"
+              : "unavailable";
         },
         keyPressed(e) {
           if (e.key === "Enter" || e.key === " ") {
@@ -648,6 +646,12 @@
           return (
             this.currentWord?.length === this.target.length &&
             this.currentWord.indexOf(" ") < 0
+          );
+        },
+        isCurrentWordInvalid() {
+          return (
+            (this.settings.spellChecker === "on" || this.onLastGuess) &&
+            !validWords.has(this.currentWord)
           );
         },
         isCursor(guessIndex, letterIndex) {
