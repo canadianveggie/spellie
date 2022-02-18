@@ -37,13 +37,23 @@ html {
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: "Comic Neue", sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
-  /* padding: 1rem 1rem 0; */
+  font-family: "Comic Neue", sans-serif;
+}
+
+.theme-container {
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.theme-high {
+  --color-bg: #f0f1f3;
+  --color-miss: #e3e4e8;
+  --color-present: #86c0f9;
+  --color-match: #f5793a;
 }
 
 h1,
