@@ -265,8 +265,8 @@
       </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <h1>Settings</h1>
-        <div>
-          <h2>Keyboard Layout</h2>
+        <section>
+          <h2>Keyboard layout</h2>
           <div>
             <input
               type="radio"
@@ -287,8 +287,8 @@
             />
             <label for="keyboardLayout-qwerty">QWERTY</label>
           </div>
-        </div>
-        <div>
+        </section>
+        <section>
           <h2>Letters</h2>
           <div>
             <input
@@ -310,9 +310,9 @@
             />
             <label for="case-uppercase">UPPERCASE</label>
           </div>
-        </div>
-        <div>
-          <h2>Spell Checker</h2>
+        </section>
+        <section>
+          <h2>Spell checker</h2>
           <div>
             <input
               type="radio"
@@ -333,9 +333,9 @@
             />
             <label for="spellChecker-on">On</label>
           </div>
-        </div>
-        <div>
-          <h2>Sharing Theme</h2>
+        </section>
+        <section>
+          <h2>Sharing theme</h2>
           <template x-for="entries in Object.entries(emojiMatchThemes)">
             <div>
               <input
@@ -351,7 +351,7 @@
               ></label>
             </div>
           </template>
-        </div>
+        </section>
       </div>
       <div
         x-data="noticesHandler()"

@@ -46,6 +46,18 @@ body {
   /* padding: 1rem 1rem 0; */
 }
 
+h1,
+h2,
+h3,
+section,
+p {
+  margin: 0 0 1rem;
+}
+
+p {
+  line-height: 1.3;
+}
+
 header {
   height: var(--header-height);
   background-color: var(--color-nav);
@@ -200,8 +212,13 @@ main {
   .guesses-grid {
     min-height: 280px;
   }
+  .guesses-row {
+    align-items: initial;
+  }
   .guesses-tile {
     width: 58px;
+    height: auto;
+    flex-grow: unset;
   }
   @media only screen and (min-width: 800px) {
     .guesses-grid {
@@ -372,15 +389,25 @@ main {
   background-color: var(--color-match);
 }
 
+.collection-tiles {
+  margin: 2rem 0 0;
+}
+
+.collection-tiles .emoji-tile {
+  margin-right: 4px;
+}
+
 .collection-tiles .guesses-word {
   margin-bottom: 8px;
   display: flex;
   gap: 2px;
 }
 .collection-tiles .guesses-tile {
+  flex-grow: unset;
   width: 40px;
   height: 40px;
-  font-size: 1.5rem;
+  padding: 0;
+  /* font-size: 1.5rem; */
 }
 
 .notice {
