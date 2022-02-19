@@ -159,17 +159,20 @@ main {
   padding: 8px;
 }
 
-.target-5 .guesses-row {
-  --guess-columns: calc(5 + 2);
+.target-4 {
+  --guess-columns: 4;
 }
-.target-6 .guesses-row {
-  --guess-columns: calc(6 + 2);
+.target-5 {
+  --guess-columns: 5;
+}
+.target-6 {
+  --guess-columns: 6;
 }
 .guesses-row {
   display: flex;
   justify-content: center;
   gap: var(--tile-spacing);
-  aspect-ratio: var(--guess-columns, 6) / 1;
+  aspect-ratio: var(--guess-columns, 4) / 1;
   margin: 0 auto;
   --margin-between-rows: calc(var(--total-guesses) * var(--tile-spacing));
   height: calc(calc(100% - var(--margin-between-rows)) / var(--total-guesses));
@@ -260,7 +263,7 @@ main {
 
 .key {
   transition: background 0.5s;
-  transition-delay: 1s;
+  transition-delay: calc(0.25s * var(--guess-columns));
   flex-grow: 1;
   border-radius: 15px;
   background-color: var(--color-available);
@@ -427,15 +430,16 @@ main {
 
 .notice {
   position: fixed;
+  top: 8%;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
   min-width: 250px;
   z-index: 1;
-  bottom: 15px;
-  left: 50%;
   text-align: center;
   align-items: center;
   border-radius: 15px;
-  padding: 4px;
-  transform: translateX(-50%);
+  padding: 8px 16px;
   font-size: 1.5rem;
   color: var(--color-notice-text);
   background-color: var(--color-notice-bg);
@@ -444,7 +448,10 @@ main {
 /* animations */
 
 .pulse {
-  animation: pulse 0.5s linear infinite alternate;
+  animation: grow 0.5s linear infinite alternate;
+}
+.pulse-small {
+  animation: grow-small 0.5s linear infinite alternate;
 }
 .pop {
   animation: pop 0.3s;
@@ -453,12 +460,21 @@ main {
   animation: fadein 0.5s;
 }
 
-@keyframes pulse {
+@keyframes grow {
   0% {
     transform: scale(1);
   }
   100% {
     transform: scale(1.1);
+  }
+}
+
+@keyframes grow-small {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
   }
 }
 
