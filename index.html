@@ -176,12 +176,12 @@
         <div class="keyboard">
           <template x-if="!solved && !failed">
             <template x-for="letter in keyboard" :key="level + letter.label">
-              <div
+              <button
                 class="key"
                 x-text="letter.label"
                 :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
                 @click="addLetter(letter)"
-              ></div>
+              ></button>
             </template>
           </template>
         </div>

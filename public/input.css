@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .key {
+    @apply h-14 w-8 text-black rounded-xl border-2 border-gray-900 text-center text-2xl bg-spellie-blue-dark;
+  }
+}
+
 :root {
   /* TODO: extract others */
   --color-neutral-0: #000;
@@ -90,16 +96,6 @@ a {
   font-size: 1.5rem;
 }
 
-.key {
-  border-radius: 15px;
-  background-color: #08adff;
-  border: 2px solid var(--color-neutral-10);
-  color: black;
-  text-align: center;
-  cursor: pointer;
-  width: 30px;
-  line-height: 42px;
-}
 .key-enter {
   min-width: 80px;
   text-transform: capitalize;
