@@ -83,6 +83,7 @@ const emojis = {
   CHILD: "👶",
   CIRCUS: "🎪",
   CLAMP: "🗜️",
+  CLAP: "👏",
   CLOUD: "☁️",
   CLOVER: "🍀",
   CLOWN: "🤡",
