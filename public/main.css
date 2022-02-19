@@ -10,9 +10,9 @@
   --color-neutral-100: #fff;
 
   --color-text: #040d14;
-  --color-bg: #30a3fc;
   --color-title: #ffffff;
   --color-nav: #004b84;
+  --color-bg: var(--color-nav); /* match nav until theme loaded */
   --color-border-header: #818384;
   --color-border: var(--color-neutral-10);
 
@@ -41,14 +41,17 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Comic Neue", sans-serif;
-}
-
-.theme-container {
-  height: 100%;
   background: var(--color-bg);
   color: var(--color-text);
+  transition: background 0.2s;
 }
 
+.theme-blue {
+  --color-bg: #30a3fc;
+  --color-miss: transparent;
+  --color-present: #ffcb22;
+  --color-match: #9fef00;
+}
 .theme-high {
   --color-bg: #f0f1f3;
   --color-miss: #e3e4e8;
@@ -256,6 +259,8 @@ main {
 }
 
 .key {
+  transition: background 0.5s;
+  transition-delay: 1s;
   flex-grow: 1;
   border-radius: 15px;
   background-color: var(--color-available);

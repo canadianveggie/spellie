@@ -29,10 +29,6 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- <link
-      href="https://fonts.googleapis.com/css2?family=Andika+New+Basic:wght@400;700&display=swap"
-      rel="stylesheet"
-    /> -->
     <link
       href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
       rel="stylesheet"
@@ -48,347 +44,346 @@
   <body
     x-data="gameState()"
     x-init="initialLoad()"
+    :class="`theme-${settings.theme}`"
     @keyup.document="keyPressed"
     @hashchange.window="page = location.hash"
   >
-    <div class="theme-container" :class="`theme-${settings.theme}`">
-      <header>
-        <nav>
-          <div>
-            <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
-              <i class="material-icons">arrow_back</i>
-            </a>
-          </div>
-          <div class="title">Spellie</div>
-          <div>
-            <a x-on:click="share" x-show="canShare" class="nav-link">
-              <i class="material-icons">share</i>
-            </a>
-            <a href="#collection" class="nav-link">
-              <i class="material-icons">collections</i>
-            </a>
-            <a href="#settings" class="nav-link">
-              <i class="material-icons">settings</i>
-            </a>
-          </div>
-        </nav>
-        <div class="nav-tabs" x-cloak x-show="page === ''">
-          <div class="radio-toolbar">
-            <input
-              type="radio"
-              id="difficulty-easy"
-              value="easy"
-              x-model="settings.difficulty"
-              @change="updateDifficulty"
-            />
-            <label for="difficulty-easy">
-              <!-- <i
+    <header>
+      <nav>
+        <div>
+          <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
+            <i class="material-icons">arrow_back</i>
+          </a>
+        </div>
+        <div class="title">Spellie</div>
+        <div>
+          <a x-on:click="share" x-show="canShare" class="nav-link">
+            <i class="material-icons">share</i>
+          </a>
+          <a href="#collection" class="nav-link">
+            <i class="material-icons">collections</i>
+          </a>
+          <a href="#settings" class="nav-link">
+            <i class="material-icons">settings</i>
+          </a>
+        </div>
+      </nav>
+      <div class="nav-tabs" x-cloak x-show="page === ''">
+        <div class="radio-toolbar">
+          <input
+            type="radio"
+            id="difficulty-easy"
+            value="easy"
+            x-model="settings.difficulty"
+            @change="updateDifficulty"
+          />
+          <label for="difficulty-easy">
+            <!-- <i
               x-show="settings.difficulty === 'easy' && solved"
               class="material-icons"
               >check</i
             > -->
-              Easy</label
-            >
-            <input
-              type="radio"
-              id="difficulty-medium"
-              value="medium"
-              x-model="settings.difficulty"
-              @change="updateDifficulty"
-            />
-            <label for="difficulty-medium">Medium</label>
-            <input
-              type="radio"
-              id="difficulty-hard"
-              value="hard"
-              x-model="settings.difficulty"
-              @change="updateDifficulty"
-            />
-            <label for="difficulty-hard">Hard</label>
+            Easy</label
+          >
+          <input
+            type="radio"
+            id="difficulty-medium"
+            value="medium"
+            x-model="settings.difficulty"
+            @change="updateDifficulty"
+          />
+          <label for="difficulty-medium">Medium</label>
+          <input
+            type="radio"
+            id="difficulty-hard"
+            value="hard"
+            x-model="settings.difficulty"
+            @change="updateDifficulty"
+          />
+          <label for="difficulty-hard">Hard</label>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="game-content" x-show="page === ''">
+        <div class="guesses-grid" :class="`target-${target.length}`">
+          <template
+            x-for="(guess, guessIndex) in guesses"
+            :key="`${level}-${guessIndex}`"
+          >
+            <div class="guesses-row" :class="settings.case">
+              <div class="guesses-tile emoji-tile">
+                <span
+                  x-text="guessEmojis[guessIndex]"
+                  x-show="guessEmojis[guessIndex]"
+                  x-transition.delay.2000ms
+                ></span>
+              </div>
+              <template x-for="(letter, letterIndex) in guess">
+                <div
+                  class="guesses-tile"
+                  :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
+                  @click="selectTile(guessIndex, letterIndex)"
+                >
+                  <span
+                    x-show="letter.letter"
+                    x-text="letter.letter"
+                    x-transition:enter="pop"
+                  ></span>
+                </div>
+              </template>
+              <div class="guesses-tile emoji-tile">
+                <span
+                  x-text="guessEmojis[guessIndex]"
+                  x-show="guessEmojis[guessIndex]"
+                  x-transition.delay.2000ms
+                ></span>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="hint-area">
+          <button
+            class="hint-button"
+            @click="showHint"
+            x-show="hint.available"
+            x-transition:enter.duration.500ms
+            x-cloak
+          >
+            Need a hint?
+          </button>
+          <div
+            class="hint"
+            x-show="hint.message"
+            @click="resetHint"
+            x-transition:enter.duration.1000ms
+            x-transition:leave.duration.500ms
+          >
+            <span x-text="hint.message"></span>
           </div>
         </div>
-      </header>
-      <main>
-        <div class="game-content" x-show="page === ''">
-          <div class="guesses-grid" :class="`target-${target.length}`">
+        <div x-show="solved" x-cloak>
+          <div
+            x-transition.enter.duration.1000ms
+            x-transition.leave.duration.0ms
+            class="victory"
+          >
+            <span class="emoji" x-text="victoryEmoji"></span> You win!
+          </div>
+        </div>
+        <div
+          x-cloak
+          x-show="failed"
+          x-transition.duration.1000ms
+          class="defeat"
+        >
+          Nice try! It was:
+          <p x-text="target"></p>
+        </div>
+        <div class="keyboard">
+          <template x-if="!solved && !failed">
             <template
-              x-for="(guess, guessIndex) in guesses"
-              :key="`${level}-${guessIndex}`"
+              x-for="(keyboardRow, rowIndex) in keyboard"
+              :key="level + rowIndex"
             >
-              <div class="guesses-row" :class="settings.case">
-                <div class="guesses-tile emoji-tile">
-                  <span
-                    x-text="guessEmojis[guessIndex]"
-                    x-show="guessEmojis[guessIndex]"
-                    x-transition.delay.2000ms
-                  ></span>
-                </div>
-                <template x-for="(letter, letterIndex) in guess">
+              <div class="keyboard-row">
+                <template
+                  x-for="letter in keyboardRow"
+                  :key="level + letter.label"
+                >
                   <div
-                    class="guesses-tile"
-                    :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
-                    @click="selectTile(guessIndex, letterIndex)"
+                    class="key"
+                    :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
+                    @click="addLetter(letter)"
                   >
-                    <span
-                      x-show="letter.letter"
-                      x-text="letter.letter"
-                      x-transition:enter="pop"
-                    ></span>
+                    <template x-if="letter.type === 'back'">
+                      <i class="material-icons">backspace</i>
+                    </template>
+                    <template x-if="letter.type !== 'back'">
+                      <span x-text="letter.label"></span>
+                    </template>
                   </div>
                 </template>
-                <div class="guesses-tile emoji-tile">
-                  <span
-                    x-text="guessEmojis[guessIndex]"
-                    x-show="guessEmojis[guessIndex]"
-                    x-transition.delay.2000ms
-                  ></span>
-                </div>
+              </div>
+            </template>
+          </template>
+        </div>
+      </div>
+      <div class="help-content" x-show="page === '#help'" x-cloak>
+        <h1>Help</h1>
+      </div>
+      <div class="collection-content" x-show="page === '#collection'" x-cloak>
+        <h1>Collection</h1>
+        <p x-show="unlockedEmojis.length === 0">
+          Your word guesses can unlock hidden emojis.<br />Maybe you'll find one
+          next game.
+        </p>
+        <p x-show="unlockedEmojis.length === 1">
+          You found your first emoji! Great job.<br />How many more can you
+          find?
+        </p>
+        <p x-show="unlockedEmojis.length > 1">
+          You've already found
+          <span x-text="unlockedEmojis.length"></span> emojis. That's
+          amazing!<br />I wonder if you can find any more.
+        </p>
+        <div class="collection-tiles">
+          <div
+            class="guesses-word"
+            x-show="unlockedEmojis.length === 0"
+            :class="settings.case"
+          >
+            <div class="guesses-tile emoji-tile">
+              <span>❓</span>
+            </div>
+            <template x-for="letter in '????'">
+              <div class="guesses-tile match">
+                <span x-text="letter"></span>
               </div>
             </template>
           </div>
-          <div class="hint-area">
-            <button
-              class="hint-button"
-              @click="showHint"
-              x-show="hint.available"
-              x-transition:enter.duration.500ms
-              x-cloak
-            >
-              Need a hint?
-            </button>
-            <div
-              class="hint"
-              x-show="hint.message"
-              @click="resetHint"
-              x-transition:enter.duration.1000ms
-              x-transition:leave.duration.500ms
-            >
-              <span x-text="hint.message"></span>
-            </div>
-          </div>
-          <div x-show="solved" x-cloak>
-            <div
-              x-transition.enter.duration.1000ms
-              x-transition.leave.duration.0ms
-              class="victory"
-            >
-              <span class="emoji" x-text="victoryEmoji"></span> You win!
-            </div>
-          </div>
-          <div
-            x-cloak
-            x-show="failed"
-            x-transition.duration.1000ms
-            class="defeat"
-          >
-            Nice try! It was:
-            <p x-text="target"></p>
-          </div>
-          <div class="keyboard">
-            <template x-if="!solved && !failed">
-              <template
-                x-for="(keyboardRow, rowIndex) in keyboard"
-                :key="level + rowIndex"
-              >
-                <div class="keyboard-row">
-                  <template
-                    x-for="letter in keyboardRow"
-                    :key="level + letter.label"
-                  >
-                    <div
-                      class="key"
-                      :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
-                      @click="addLetter(letter)"
-                    >
-                      <template x-if="letter.type === 'back'">
-                        <i class="material-icons">backspace</i>
-                      </template>
-                      <template x-if="letter.type !== 'back'">
-                        <span x-text="letter.label"></span>
-                      </template>
-                    </div>
-                  </template>
-                </div>
-              </template>
-            </template>
-          </div>
-        </div>
-        <div class="help-content" x-show="page === '#help'" x-cloak>
-          <h1>Help</h1>
-        </div>
-        <div class="collection-content" x-show="page === '#collection'" x-cloak>
-          <h1>Collection</h1>
-          <p x-show="unlockedEmojis.length === 0">
-            Your word guesses can unlock hidden emojis.<br />Maybe you'll find
-            one next game.
-          </p>
-          <p x-show="unlockedEmojis.length === 1">
-            You found your first emoji! Great job.<br />How many more can you
-            find?
-          </p>
-          <p x-show="unlockedEmojis.length > 1">
-            You've already found
-            <span x-text="unlockedEmojis.length"></span> emojis. That's
-            amazing!<br />I wonder if you can find any more.
-          </p>
-          <div class="collection-tiles">
+          <template x-for="(collectable, i) in unlockedEmojis">
             <div
               class="guesses-word"
-              x-show="unlockedEmojis.length === 0"
+              x-show="collectable.unlocked"
               :class="settings.case"
             >
               <div class="guesses-tile emoji-tile">
-                <span>❓</span>
+                <span x-text="collectable.emoji"></span>
               </div>
-              <template x-for="letter in '????'">
+              <template x-for="letter in collectable.word">
                 <div class="guesses-tile match">
                   <span x-text="letter"></span>
                 </div>
               </template>
             </div>
-            <template x-for="(collectable, i) in unlockedEmojis">
-              <div
-                class="guesses-word"
-                x-show="collectable.unlocked"
-                :class="settings.case"
-              >
-                <div class="guesses-tile emoji-tile">
-                  <span x-text="collectable.emoji"></span>
-                </div>
-                <template x-for="letter in collectable.word">
-                  <div class="guesses-tile match">
-                    <span x-text="letter"></span>
-                  </div>
-                </template>
-              </div>
-            </template>
+          </template>
+        </div>
+      </div>
+      <div class="settings-content" x-show="page === '#settings'" x-cloak>
+        <h1>Settings</h1>
+        <section>
+          <h2>Keyboard layout</h2>
+          <div>
+            <input
+              type="radio"
+              id="keyboardLayout-atoz"
+              value="atoz"
+              x-model="settings.keyboardLayout"
+              @change="updateSettings"
+            />
+            <label for="keyboardLayout-atoz">A to Z</label>
           </div>
-        </div>
-        <div class="settings-content" x-show="page === '#settings'" x-cloak>
-          <h1>Settings</h1>
-          <section>
-            <h2>Keyboard layout</h2>
+          <div>
+            <input
+              type="radio"
+              id="keyboardLayout-qwerty"
+              value="qwerty"
+              x-model="settings.keyboardLayout"
+              @change="updateSettings"
+            />
+            <label for="keyboardLayout-qwerty">QWERTY</label>
+          </div>
+        </section>
+        <section>
+          <h2>Letters</h2>
+          <div>
+            <input
+              type="radio"
+              id="case-lowercase"
+              value="lowercase"
+              x-model="settings.case"
+              @change="updateSettings"
+            />
+            <label for="case-lowercase">lowercase</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="case-uppercase"
+              value="uppercase"
+              x-model="settings.case"
+              @change="updateSettings"
+            />
+            <label for="case-uppercase">UPPERCASE</label>
+          </div>
+        </section>
+        <section>
+          <h2>Spell checker</h2>
+          <div>
+            <input
+              type="radio"
+              id="spellChecker-off"
+              value="off"
+              x-model="settings.spellChecker"
+              @change="updateSettings"
+            />
+            <label for="spellChecker-off">Off</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="spellChecker-on"
+              value="on"
+              x-model="settings.spellChecker"
+              @change="updateSettings"
+            />
+            <label for="spellChecker-on">On</label>
+          </div>
+        </section>
+        <section>
+          <h2>Theme</h2>
+          <div>
+            <input
+              type="radio"
+              id="theme-blue"
+              value="blue"
+              x-model="settings.theme"
+              @change="updateSettings"
+            />
+            <label for="theme-blue">Default</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="theme-high"
+              value="high"
+              x-model="settings.theme"
+              @change="updateSettings"
+            />
+            <label for="theme-high">High contrast</label>
+          </div>
+        </section>
+        <section>
+          <h2>Sharing theme</h2>
+          <template x-for="entries in Object.entries(emojiMatchThemes)">
             <div>
               <input
+                :id="'sharing-emojis-' + entries[0]"
                 type="radio"
-                id="keyboardLayout-atoz"
-                value="atoz"
-                x-model="settings.keyboardLayout"
+                :value="entries[0]"
+                x-model="settings.sharingEmojis"
                 @change="updateSettings"
               />
-              <label for="keyboardLayout-atoz">A to Z</label>
+              <label
+                :for="'sharing-emojis-' + entries[0]"
+                x-text="entries[1].match + entries[1].present + entries[1].miss"
+              ></label>
             </div>
-            <div>
-              <input
-                type="radio"
-                id="keyboardLayout-qwerty"
-                value="qwerty"
-                x-model="settings.keyboardLayout"
-                @change="updateSettings"
-              />
-              <label for="keyboardLayout-qwerty">QWERTY</label>
-            </div>
-          </section>
-          <section>
-            <h2>Letters</h2>
-            <div>
-              <input
-                type="radio"
-                id="case-lowercase"
-                value="lowercase"
-                x-model="settings.case"
-                @change="updateSettings"
-              />
-              <label for="case-lowercase">lowercase</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="case-uppercase"
-                value="uppercase"
-                x-model="settings.case"
-                @change="updateSettings"
-              />
-              <label for="case-uppercase">UPPERCASE</label>
-            </div>
-          </section>
-          <section>
-            <h2>Spell checker</h2>
-            <div>
-              <input
-                type="radio"
-                id="spellChecker-off"
-                value="off"
-                x-model="settings.spellChecker"
-                @change="updateSettings"
-              />
-              <label for="spellChecker-off">Off</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="spellChecker-on"
-                value="on"
-                x-model="settings.spellChecker"
-                @change="updateSettings"
-              />
-              <label for="spellChecker-on">On</label>
-            </div>
-          </section>
-          <section>
-            <h2>Theme</h2>
-            <div>
-              <input
-                type="radio"
-                id="theme-blue"
-                value="blue"
-                x-model="settings.theme"
-                @change="updateSettings"
-              />
-              <label for="theme-blue">Default</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="theme-high"
-                value="high"
-                x-model="settings.theme"
-                @change="updateSettings"
-              />
-              <label for="theme-high">High contrast</label>
-            </div>
-          </section>
-          <section>
-            <h2>Sharing theme</h2>
-            <template x-for="entries in Object.entries(emojiMatchThemes)">
-              <div>
-                <input
-                  :id="'sharing-emojis-' + entries[0]"
-                  type="radio"
-                  :value="entries[0]"
-                  x-model="settings.sharingEmojis"
-                  @change="updateSettings"
-                />
-                <label
-                  :for="'sharing-emojis-' + entries[0]"
-                  x-text="entries[1].match + entries[1].present + entries[1].miss"
-                ></label>
-              </div>
-            </template>
-          </section>
-        </div>
-        <div
-          x-data="noticesHandler()"
-          class="notice"
-          @notice.window="notify($event.detail)"
-          x-cloak
-          x-show="notice?.visible"
-          @click="remove(notice?.id)"
-          x-text="notice?.text"
-          x-transition:enter="fadein"
-        ></div>
-      </main>
-    </div>
+          </template>
+        </section>
+      </div>
+      <div
+        x-data="noticesHandler()"
+        class="notice"
+        @notice.window="notify($event.detail)"
+        x-cloak
+        x-show="notice?.visible"
+        @click="remove(notice?.id)"
+        x-text="notice?.text"
+        x-transition:enter="fadein"
+      ></div>
+    </main>
   </body>
 
   <script src="public/puzzles.js"></script>
@@ -453,6 +448,7 @@
       const HINT_DELAY = 15 * 1000;
 
       return {
+        settings: {}, // placeholder until x-init
         page: location.hash,
         puzzleId,
         target: "",
