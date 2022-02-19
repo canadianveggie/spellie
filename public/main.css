@@ -2,7 +2,7 @@
   --tile-spacing: 4px;
   --total-guesses: 6;
   --max-page-width: 500px;
-  --header-height: 100px;
+  --header-height: 75px;
 
   --color-neutral-0: #000;
   --color-neutral-10: #222;
@@ -27,8 +27,14 @@
   --color-notice-bg: var(--color-neutral-10);
   --color-notice-text: var(--color-neutral-100);
 }
+@media screen and (min-height: 400px) {
+  :root {
+    --header-height: 100px;
+  }
+}
 
-html {
+html,
+body {
   height: 100%;
 }
 
@@ -37,7 +43,6 @@ html {
 }
 
 body {
-  height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Comic Neue", sans-serif;
@@ -85,8 +90,12 @@ header nav {
   color: var(--color-title);
   font-weight: bolder;
   margin: 0 auto;
-  padding: 1.1rem 0.2rem;
   max-width: var(--max-page-width);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 35%;
+  transform: translateY(-50%);
 }
 
 .nav-link {
@@ -116,7 +125,7 @@ header nav {
   right: 0;
   pointer-events: none;
 }
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 600px) and (min-height: 400px) {
   .title {
     font-size: 2rem;
   }
@@ -136,7 +145,12 @@ main {
   height: calc(100% - var(--header-height));
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 4px;
+}
+@media screen and (min-height: 400px) {
+  main {
+    padding: 1rem;
+  }
 }
 
 .lowercase {
@@ -176,6 +190,7 @@ main {
   margin: 0 auto;
   --margin-between-rows: calc(var(--total-guesses) * var(--tile-spacing));
   height: calc(calc(100% - var(--margin-between-rows)) / var(--total-guesses));
+  min-height: 16px;
 }
 
 /* safari 15 etc needs this to avoid tiles enlarging */
@@ -271,7 +286,7 @@ main {
   color: var(--color-text);
   cursor: pointer;
   width: 30px;
-  line-height: 42px;
+  line-height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -279,6 +294,11 @@ main {
 .key-enter {
   min-width: 80px;
   text-transform: capitalize;
+}
+@media screen and (min-height: 400px) {
+  .key {
+    line-height: 42px;
+  }
 }
 @media screen and (min-width: 600px) and (min-height: 700px) {
   .keyboard {
