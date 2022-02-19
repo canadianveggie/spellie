@@ -88,12 +88,28 @@ a {
 
 .keyboard {
   user-select: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  margin: 0 auto 8px;
-  font-size: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.25rem;
+}
+
+/* Kind of redundant, here for completeness */
+.keyboard > button:nth-child(-1n + 12) {
+  grid-row-start: 1;
+}
+
+.keyboard > button:nth-child(n + 13) {
+  grid-row-start: 2;
+}
+
+.keyboard > button:nth-child(n + 22) {
+  grid-row-start: 3;
+}
+
+.keyboard > button:nth-last-child(2),
+.keyboard > button:nth-last-child(1) {
+  grid-row-start: 4;
+  grid-column: span 3;
 }
 
 .key-enter {
