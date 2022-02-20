@@ -54,6 +54,12 @@
           <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
             <i class="material-icons">arrow_back</i>
           </a>
+          <a href="#help" class="nav-link">
+            <i class="material-icons">help</i>
+          </a>
+          <a href="#about" class="nav-link">
+            <i class="material-icons">info</i>
+          </a>
         </div>
         <div class="title">Spellie</div>
         <div>
@@ -105,6 +111,101 @@
       </div>
     </header>
     <main>
+      <div class="help-content" x-show="page === '#help'" x-cloak>
+        <h1>How to play</h1>
+
+        <p>You have six (6) tries to guess the word on one of three difficulty modes.</p>
+
+        <p>With the spell checker on, the words have to be in the dictionary. Otherwise, enter letters in any order.</p>
+
+        <p>After you make your guess, the tile colours will be changed to help get you closer to the answer.</p>
+
+        <h2>Colour Hints</h2>
+
+        <div class="example">
+          <div class="example-row">
+            <div class="example-tile match">
+              <span>C</span>
+            </div>
+            <div class="example-tile">
+              <span>A</span>
+            </div>
+            <div class="example-tile">
+              <span>V</span>
+            </div>
+            <div class="example-tile">
+              <span>E</span>
+            </div>
+          </div>
+
+          <p class="example-text">The letter <strong>C</strong> is in the word and in the right spot.</p>
+        </div>
+
+        <div class="example">
+          <div class="example-row">
+            <div class="example-tile">
+              <span>D</span>
+            </div>
+            <div class="example-tile">
+              <span>O</span>
+            </div>
+            <div class="example-tile present">
+              <span>G</span>
+            </div>
+            <div class="example-tile">
+              <span>S</span>
+            </div>
+          </div>
+
+          <p class="example-text">The letter <strong>G</strong> is in the word but in the wrong spot.</p>
+        </div>
+
+        <div class="example">
+          <div class="example-row">
+            <div class="example-tile">
+              <span>S</span>
+            </div>
+            <div class="example-tile miss">
+              <span>T</span>
+            </div>
+            <div class="example-tile">
+              <span>A</span>
+            </div>
+            <div class="example-tile">
+              <span>R</span>
+            </div>
+          </div>
+
+          <p class="example-text">The letter <strong>T</strong> is not in the word in any spot.</p>
+        </div>
+
+        <p>Try to figure out one Spellie word at each difficulty level each day!</p>
+      </div>
+      <div class="about-content" x-show="page === '#about'" x-cloak>
+        <p>Spellie is a daily world puzzle geared toward young spellers.</p>
+
+        <h1>Features</h1>
+
+        <ul>
+          <li>3 difficulty modes</li>
+          <li>Enter letters in any order</li>
+          <li>Use upper or lower case letters</li>
+          <li>Kid-friendly colours and font</li>
+          <li>Unlock emoji "collectables"</li>
+          <li>Hints for avoiding getting stumped (easy mode)</li>
+          <li>Hard mode is challenging enough for adults, but with words that any Grade 4 student can spell</li>
+          <li>Alphabetically ordered or QWERTY keyboard options</li>
+          <li>Setting to prevent or allow words that may not be in the dictionary</li>
+        </ul>
+
+        <h1>Creators</h1>
+          <ul>
+            <li>Chris Porter</li>
+            <li>David Hirtle</li>
+            <li>and others...</li>
+            <li>and you? <a href="https://github.com/canadianveggie/spellie">Contribute here</a>.</li>
+          </ul>
+      </div>
       <div class="game-content" x-show="page === ''">
         <div class="guesses-grid" :class="`target-${target.length}`">
           <template
@@ -208,9 +309,6 @@
             </template>
           </template>
         </div>
-      </div>
-      <div class="help-content" x-show="page === '#help'" x-cloak>
-        <h1>Help</h1>
       </div>
       <div class="collection-content" x-show="page === '#collection'" x-cloak>
         <h1>Collection</h1>

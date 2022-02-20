@@ -355,6 +355,34 @@ main {
   background: none;
 }
 
+/* help page */
+.help-content, .about-content  {
+  font-size:  1.5rem;
+}
+
+.example-row {
+  display: flex;
+  gap: var(--tile-spacing);
+  aspect-ratio: var(--guess-columns, 6) / 1;
+}
+
+.example-tile {
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  font-size: 2rem;
+  background: var(--color-empty);
+}
+
+.example-text {
+  margin-top: 10px;
+}
+/* end help page */
+
 .cursor {
   box-shadow: 0 0 0px 1px rgba(0, 0, 0, 30), rgba(0, 0, 0, 30) 3px 3px;
 }
