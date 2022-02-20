@@ -57,6 +57,9 @@
         </div>
         <div class="title">Spellie</div>
         <div>
+          <a href="#about" class="nav-link">
+            <i class="material-icons">info</i>
+          </a>
           <a x-on:click="share" x-show="canShare" class="nav-link">
             <i class="material-icons">share</i>
           </a>
@@ -105,6 +108,65 @@
       </div>
     </header>
     <main :class="`target-${target.length}`">
+      <div class="about-content" x-show="page === '#about'" x-cloak>
+        <h1>About</h1>
+        <p>Spellie is a daily world puzzle game for young spellers.</p>
+        <p>
+          There are 3 daily puzzles of increasing difficulty. The easy puzzle
+          uses short words within the Grade 2 vocabulary. The hard mode is
+          challenging, but uses words within the Grade 5 vocabulary.
+        </p>
+
+        <h1>How to play</h1>
+        <p>
+          You have six (6) tries to guess the daily word, using the feedback to
+          narrow down the options.
+        </p>
+        <div class="example-word">
+          <div class="guesses-word" :class="settings.case">
+            <div class="guesses-tile match">
+              <span>W</span>
+            </div>
+            <div class="guesses-tile miss">
+              <span>O</span>
+            </div>
+            <div class="guesses-tile present">
+              <span>R</span>
+            </div>
+            <div class="guesses-tile miss">
+              <span>D</span>
+            </div>
+          </div>
+        </div>
+        <ul>
+          <li>
+            The letter
+            <span :class="settings.case" class="heavy-letter">W</span>
+            is in the word and in the right spot.
+          </li>
+          <li>
+            The letter
+            <span :class="settings.case" class="heavy-letter">R</span>
+            is in the word but in the wrong spot.
+          </li>
+          <li>
+            The letters
+            <span :class="settings.case" class="heavy-letter">O</span> and
+            <span :class="settings.case" class="heavy-letter">D</span>
+            are not in the word in any spot.
+          </li>
+        </ul>
+
+        <h1>Creators</h1>
+        <ul>
+          <li>Christopher Porter</li>
+          <li>David Hirtle</li>
+          <li>
+            Many other
+            <a href="https://github.com/canadianveggie/spellie">contributors</a>
+          </li>
+        </ul>
+      </div>
       <div class="game-content" x-show="page === ''">
         <div class="guesses-grid">
           <template
@@ -193,9 +255,6 @@
             </template>
           </template>
         </div>
-      </div>
-      <div class="help-content" x-show="page === '#help'" x-cloak>
-        <h1>Help</h1>
       </div>
       <div class="collection-content" x-show="page === '#collection'" x-cloak>
         <h1>Collection</h1>

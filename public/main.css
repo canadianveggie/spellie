@@ -445,12 +445,25 @@ main {
   display: flex;
   gap: 2px;
 }
-.collection-tiles .guesses-tile {
+.example-word .guesses-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  display: flex;
+  gap: 2px;
+}
+.collection-tiles .guesses-tile,
+.example-word .guesses-tile {
   flex-grow: unset;
   width: 40px;
   height: 40px;
   padding: 0;
   /* font-size: 1.5rem; */
+}
+
+.heavy-letter {
+  font-weight: bold;
 }
 
 .notice {
