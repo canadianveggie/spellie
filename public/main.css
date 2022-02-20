@@ -466,6 +466,12 @@ main {
   font-weight: bold;
 }
 
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
 .notice {
   position: fixed;
   top: 8%;
