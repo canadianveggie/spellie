@@ -1,5 +1,12 @@
 // @ts-check
 
+// constraints:
+// - 4-6 letter words
+// - prefer shorter where possible
+// - avoid obscure things
+// - avoid words not in valid words list (unless they should be, like "wifi")
+// - choose fun
+
 const { emojis } = require("../public/emojis");
 // get from https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json
 const json = require("./emoji.json");
@@ -16,6 +23,9 @@ const categoryBlockList = [
   "People & Body",
   "Smileys & Emotion",
   "Animals & Nature",
+  // below have been thoroughly reviewed:
+  "Objects",
+  "Symbols",
 ];
 
 const remaining = json
