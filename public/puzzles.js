@@ -1,3 +1,5 @@
+// @ts-check
+
 // spoiler alert
 const words_easy = [
   "VE9MRA==",
@@ -1006,6 +1008,7 @@ function compareTargetAndGuess(target, guess) {
   return result;
 }
 
+/** @type {import("../types").EmojiMatchThemes} */
 const emojiMatchThemes = {
   nature: {
     match: "🍀",
@@ -1034,6 +1037,7 @@ const emojiMatchThemes = {
   },
 };
 
+/** @returns {import("../types").EmojiMatchThemeValue} */
 function randomEmojiMatchTheme() {
   const themes = Object.values(emojiMatchThemes);
   return themes[Math.floor(Math.random() * themes.length)];

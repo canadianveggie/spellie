@@ -700,7 +700,8 @@
 
           const hint = getHint(
             this.target,
-            this.keys.filter((key) => key.type === "letter")
+            this.keys.filter((key) => key.type === "letter"),
+            this.settings
           );
           if (hint) {
             this.hint = hint;

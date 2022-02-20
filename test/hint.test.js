@@ -2,10 +2,7 @@
 
 const { getHint } = require("../public/hint");
 
-/**
- *
- * @returns {import("../types").KeyState[]}
- */
+/** @returns {import("../types").KeyState[]} */
 function getDefaultKeys() {
   return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => ({
     type: "letter",
@@ -14,71 +11,107 @@ function getDefaultKeys() {
   }));
 }
 
+/** @type {import("../types").Settings} */
+const settings = {
+  difficulty: "easy",
+  case: "lowercase",
+  keyboardLayout: "atoz",
+  theme: "blue",
+  sharingEmojis: "nature",
+  spellChecker: "off",
+};
+
 describe("hint", () => {
   describe("getHint", () => {
     it("find a vowel", () => {
       const target = "FEET";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "T").state = "present";
-      expect(getHint(target, keys).message).toBe(`How about a vowel like ⓔ?`);
-      expect(getHint(target, keys).letter).toBe("E");
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty("message", `How about a vowel like ⓔ?`);
+      expect(hint).toHaveProperty("letter", "E");
     });
+    it("uses settings.case", () => {
+      const target = "FEET";
+      const keys = getDefaultKeys();
+      keys.find((key) => key.label === "T").state = "present";
+
+      /** @type {import("../types").Settings} */
+      const customSettings = { ...settings, ...{ case: "uppercase" } };
+
+      const hint = getHint(target, keys, customSettings);
+      expect(hint).toHaveProperty("message", `How about a vowel like Ⓔ?`);
+    });
+
     it("multiples", () => {
       const target = "FEET";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "E").state = "present";
-      expect(getHint(target, keys).message).toBe(
-        `There could be more than one ⓔ`
-      );
-      expect(getHint(target, keys).letter).toBe("E");
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty("message", `There could be more than one ⓔ`);
+      expect(hint).toHaveProperty("letter", "E");
     });
     it("cluster - ch", () => {
       const target = "CHAT";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "A").state = "present";
       keys.find((key) => key.label === "H").state = "present";
-      expect(getHint(target, keys).message).toBe(
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty(
+        "message",
         `Did you know ⓗ and ⓒ often go together?`
       );
-      expect(getHint(target, keys).letter).toBe("C");
+      expect(hint).toHaveProperty("letter", "C");
     });
     it("cluster - th", () => {
       const target = "DENT";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "E").state = "present";
       keys.find((key) => key.label === "N").state = "match";
-      expect(getHint(target, keys).message).toBe(
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty(
+        "message",
         `Did you know ⓝ and ⓣ often go together?`
       );
-      expect(getHint(target, keys).letter).toBe("T");
+      expect(hint).toHaveProperty("letter", "T");
     });
     it("e at the end", () => {
       const target = "GAME";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "A").state = "present";
-      expect(getHint(target, keys).message).toBe(
-        `Quite a few words end with ⓔ`
-      );
-      expect(getHint(target, keys).letter).toBe("E");
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty("message", `Quite a few words end with ⓔ`);
+      expect(hint).toHaveProperty("letter", "E");
     });
     it("first letter", () => {
       const target = "GAME";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "E").state = "present";
-      expect(getHint(target, keys).message).toBe(
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty(
+        "message",
         `I just love the letter ⓖ, don't you?`
       );
-      expect(getHint(target, keys).letter).toBe("G");
+      expect(hint).toHaveProperty("letter", "G");
     });
     it("next letter", () => {
       const target = "HOUR";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "H").state = "match";
       keys.find((key) => key.label === "O").state = "match";
-      expect(getHint(target, keys).message).toBe(
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty(
+        "message",
         `I just love the letter ⓤ, don't you?`
       );
-      expect(getHint(target, keys).letter).toBe("U");
+      expect(hint).toHaveProperty("letter", "U");
     });
     it("no hint when all present", () => {
       const target = "HOPE";
@@ -87,7 +120,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "O").state = "present";
       keys.find((key) => key.label === "P").state = "present";
       keys.find((key) => key.label === "E").state = "present";
-      expect(getHint(target, keys)).toBeNull();
+      expect(getHint(target, keys, settings)).toBeNull();
     });
     it("subtle hint when only 1 remaining", () => {
       const target = "HUNT";
@@ -96,10 +129,13 @@ describe("hint", () => {
       keys.find((key) => key.label === "U").state = "match";
       keys.find((key) => key.label === "N").state = "match";
       keys.find((key) => key.label === "S").state = "miss";
-      expect(getHint(target, keys).message).toBe(
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty(
+        "message",
         `It's definitely *not* these: ⓒ, ⓛ, ⓡ`
       );
-      expect(getHint(target, keys).letter).toBeUndefined();
+      expect(hint).toHaveProperty("letter", undefined);
     });
   });
 });

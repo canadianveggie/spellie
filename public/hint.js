@@ -81,11 +81,12 @@ const hintLetterMap = {
 
 /**
  * @param {string} letter
+ * @param {import("../types").Settings["case"]} caseSetting
  * @returns {string}
  */
-function hintLetter(letter) {
-  // TODO: support uppercase config
-  return hintLetterMap[letter.toLowerCase()];
+function hintLetter(letter, caseSetting) {
+  const hint = hintLetterMap[letter.toLowerCase()];
+  return caseSetting === "uppercase" ? hint.toUpperCase() : hint;
 }
 
 /**
@@ -95,9 +96,10 @@ function hintLetter(letter) {
  *
  * @param {string} target - the answer to today's puzzle
  * @param {import("../types").KeyState[]} keys - the state of the keyboard
+ * @param {import("../types").Settings} settings - game settings
  * @returns {import("../types").Hint | null}
  */
-function getHint(target, keys) {
+function getHint(target, keys, settings) {
   const match = keys
     .filter((key) => key.state === "match")
     .map((key) => key.label)
@@ -110,6 +112,9 @@ function getHint(target, keys) {
   if (match.length + present.length === target.length) {
     return null;
   }
+
+  const prettyLetter = (/** @type {string} */ letter) =>
+    hintLetter(letter, settings.case);
 
   if (match.length + present.length === target.length - 1) {
     // they're almost there, so don't just give the answer
@@ -129,7 +134,7 @@ function getHint(target, keys) {
       if (hinted.length >= 3) break;
     }
     if (hinted.length === 3) {
-      const label = hinted.map(hintLetter).sort().join(", ");
+      const label = hinted.map(prettyLetter).sort().join(", ");
       return {
         message: `It's definitely *not* these: ${label}`,
       };
@@ -145,7 +150,7 @@ function getHint(target, keys) {
     const firstVowel = targetLetters.find((letter) => VOWELS.has(letter));
     if (firstVowel) {
       return {
-        message: `How about a vowel like ${hintLetter(firstVowel)}?`,
+        message: `How about a vowel like ${prettyLetter(firstVowel)}?`,
         letter: firstVowel,
       };
     }
@@ -155,7 +160,7 @@ function getHint(target, keys) {
   const multiple = findMultiple(targetLetters);
   if (multiple) {
     return {
-      message: `There could be more than one ${hintLetter(multiple)}`,
+      message: `There could be more than one ${prettyLetter(multiple)}`,
       letter: multiple,
     };
   }
@@ -177,7 +182,7 @@ function getHint(target, keys) {
       );
       if (firstFound && firstNotFound) {
         return {
-          message: `Did you know ${hintLetter(firstFound)} and ${hintLetter(
+          message: `Did you know ${prettyLetter(firstFound)} and ${prettyLetter(
             firstNotFound
           )} often go together?`,
           letter: firstNotFound,
@@ -190,7 +195,7 @@ function getHint(target, keys) {
   const eKey = keys.find((key) => key.label === "E");
   if (target.endsWith("E") && eKey.state === "available") {
     return {
-      message: `Quite a few words end with ${hintLetter("E")}`,
+      message: `Quite a few words end with ${prettyLetter("E")}`,
       letter: "E",
     };
   }
@@ -199,7 +204,7 @@ function getHint(target, keys) {
   for (const letter of targetLetters) {
     if (!match.includes(letter) && !present.includes(letter)) {
       return {
-        message: `I just love the letter ${hintLetter(letter)}, don't you?`,
+        message: `I just love the letter ${prettyLetter(letter)}, don't you?`,
         letter,
       };
     }
