@@ -1,6 +1,11 @@
+// @ts-check
+
 const VOWELS = "AEIOU".split("");
 const CLUSTERS = ["ST", "TH", "CH", "SH", "NT", "CK", "ND"];
 
+/**
+ * @param {string[]} letters
+ */
 function findMultiple(letters) {
   const seen = {};
   for (let i = 0; i < letters.length; i++) {
@@ -17,7 +22,11 @@ function findMultiple(letters) {
 /**
  * Provide a hint based on letters found so far and unique features of target.
  *
- * Goal: educate where possible and encourage if close.
+ * Goal: educate where possible and nudge in the right direction.
+ *
+ * @param {string} target - the answer to today's puzzle
+ * @param {import("../types").KeyState[]} keys - the state of the keyboard
+ * @returns {import("../types").Hint | null}
  */
 function getHint(target, keys) {
   const match = keys
@@ -28,6 +37,10 @@ function getHint(target, keys) {
     .filter((key) => key.state === "present")
     .map((key) => key.label)
     .sort();
+
+  if (match.length + present.length === target.length) {
+    return null;
+  }
 
   if (match.length === target.length - 1) {
     return { text: `You're almost there!` };
@@ -90,7 +103,7 @@ function getHint(target, keys) {
   // TODO: most common letters in English?
 
   // fallback: next unfound letter of the target
-  for (letter of targetLetters) {
+  for (const letter of targetLetters) {
     if (!match.includes(letter) && !present.includes(letter)) {
       return {
         text: `I just love the letter "${letter.toLowerCase()}", don't you?`,
@@ -102,6 +115,6 @@ function getHint(target, keys) {
   return { text: `You're almost there!` };
 }
 
-if (typeof exports !== "undefined") {
+if (typeof module !== "undefined") {
   module.exports = { getHint };
 }
