@@ -20,7 +20,7 @@ describe("hint", () => {
       const target = "FEET";
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "T").state = "present";
-      expect(getHint(target, keys).message).toBe(`How about a vowel like E?`);
+      expect(getHint(target, keys).message).toBe(`How about a vowel like ⓔ?`);
       expect(getHint(target, keys).letter).toBe("E");
     });
     it("multiples", () => {
@@ -28,7 +28,7 @@ describe("hint", () => {
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "E").state = "present";
       expect(getHint(target, keys).message).toBe(
-        `There could be more than one E`
+        `There could be more than one ⓔ`
       );
       expect(getHint(target, keys).letter).toBe("E");
     });
@@ -38,7 +38,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "A").state = "present";
       keys.find((key) => key.label === "H").state = "present";
       expect(getHint(target, keys).message).toBe(
-        `Did you know H and C often go together?`
+        `Did you know ⓗ and ⓒ often go together?`
       );
       expect(getHint(target, keys).letter).toBe("C");
     });
@@ -48,7 +48,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "E").state = "present";
       keys.find((key) => key.label === "N").state = "match";
       expect(getHint(target, keys).message).toBe(
-        `Did you know N and T often go together?`
+        `Did you know ⓝ and ⓣ often go together?`
       );
       expect(getHint(target, keys).letter).toBe("T");
     });
@@ -57,7 +57,7 @@ describe("hint", () => {
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "A").state = "present";
       expect(getHint(target, keys).message).toBe(
-        `Quite a few words end with E`
+        `Quite a few words end with ⓔ`
       );
       expect(getHint(target, keys).letter).toBe("E");
     });
@@ -66,7 +66,7 @@ describe("hint", () => {
       const keys = getDefaultKeys();
       keys.find((key) => key.label === "E").state = "present";
       expect(getHint(target, keys).message).toBe(
-        `I just love the letter G, don't you?`
+        `I just love the letter ⓖ, don't you?`
       );
       expect(getHint(target, keys).letter).toBe("G");
     });
@@ -76,7 +76,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "H").state = "match";
       keys.find((key) => key.label === "O").state = "match";
       expect(getHint(target, keys).message).toBe(
-        `I just love the letter U, don't you?`
+        `I just love the letter ⓤ, don't you?`
       );
       expect(getHint(target, keys).letter).toBe("U");
     });
@@ -97,7 +97,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "N").state = "match";
       keys.find((key) => key.label === "S").state = "miss";
       expect(getHint(target, keys).message).toBe(
-        `It's definitely *not* R, L, or C`
+        `It's definitely *not* these: ⓒ, ⓛ, ⓡ`
       );
       expect(getHint(target, keys).letter).toBeUndefined();
     });

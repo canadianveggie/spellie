@@ -50,6 +50,44 @@ function findMultiple(letters) {
   return null;
 }
 
+const hintLetterMap = {
+  a: "ⓐ",
+  b: "ⓑ",
+  c: "ⓒ",
+  d: "ⓓ",
+  e: "ⓔ",
+  f: "ⓕ",
+  g: "ⓖ",
+  h: "ⓗ",
+  i: "ⓘ",
+  j: "ⓙ",
+  k: "ⓚ",
+  l: "ⓛ",
+  m: "ⓜ",
+  n: "ⓝ",
+  o: "ⓞ",
+  p: "ⓟ",
+  q: "ⓠ",
+  r: "ⓡ",
+  s: "ⓢ",
+  t: "ⓣ",
+  u: "ⓤ",
+  v: "ⓥ",
+  w: "ⓦ",
+  x: "ⓧ",
+  y: "ⓨ",
+  z: "ⓩ",
+};
+
+/**
+ * @param {string} letter
+ * @returns {string}
+ */
+function hintLetter(letter) {
+  // TODO: support uppercase config
+  return hintLetterMap[letter.toLowerCase()];
+}
+
 /**
  * Provide a hint based on letters found so far and unique features of target.
  *
@@ -80,6 +118,7 @@ function getHint(target, keys) {
       keys.filter((key) => key.state === "available").map((key) => key.label)
     );
     const hinted = [];
+    // TODO: should we randomize these so they'll be less likely to get a repeat hint?
     for (const letter of LETTERS_BY_FREQUENCY) {
       if (VOWELS.has(letter)) continue; // will usually have the vowel
       if (target.includes(letter)) continue;
@@ -90,8 +129,9 @@ function getHint(target, keys) {
       if (hinted.length >= 3) break;
     }
     if (hinted.length === 3) {
+      const label = hinted.map(hintLetter).sort().join(", ");
       return {
-        message: `It's definitely *not* ${hinted[0]}, ${hinted[1]}, or ${hinted[2]}`,
+        message: `It's definitely *not* these: ${label}`,
       };
     }
   }
@@ -105,7 +145,7 @@ function getHint(target, keys) {
     const firstVowel = targetLetters.find((letter) => VOWELS.has(letter));
     if (firstVowel) {
       return {
-        message: `How about a vowel like ${firstVowel}?`,
+        message: `How about a vowel like ${hintLetter(firstVowel)}?`,
         letter: firstVowel,
       };
     }
@@ -115,7 +155,7 @@ function getHint(target, keys) {
   const multiple = findMultiple(targetLetters);
   if (multiple) {
     return {
-      message: `There could be more than one ${multiple}`,
+      message: `There could be more than one ${hintLetter(multiple)}`,
       letter: multiple,
     };
   }
@@ -137,7 +177,9 @@ function getHint(target, keys) {
       );
       if (firstFound && firstNotFound) {
         return {
-          message: `Did you know ${firstFound} and ${firstNotFound} often go together?`,
+          message: `Did you know ${hintLetter(firstFound)} and ${hintLetter(
+            firstNotFound
+          )} often go together?`,
           letter: firstNotFound,
         };
       }
@@ -147,14 +189,17 @@ function getHint(target, keys) {
   // e at the end is common
   const eKey = keys.find((key) => key.label === "E");
   if (target.endsWith("E") && eKey.state === "available") {
-    return { message: `Quite a few words end with E`, letter: "E" };
+    return {
+      message: `Quite a few words end with ${hintLetter("E")}`,
+      letter: "E",
+    };
   }
 
   // fallback: next unfound letter of the target
   for (const letter of targetLetters) {
     if (!match.includes(letter) && !present.includes(letter)) {
       return {
-        message: `I just love the letter ${letter}, don't you?`,
+        message: `I just love the letter ${hintLetter(letter)}, don't you?`,
         letter,
       };
     }
