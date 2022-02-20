@@ -125,8 +125,8 @@
 
         <h1>How to play</h1>
         <p>
-          You have 6 guesses to figure out the daily puzzle, using the feedback
-          to narrow down the options.
+          You have six (6) tries to guess the daily word, using the feedback to
+          narrow down the options.
         </p>
         <div class="example-word">
           <div class="guesses-word" :class="settings.case">
@@ -146,17 +146,20 @@
         </div>
         <ul>
           <li>
-            <span :class="settings.case" class="heavy-letter">W</span> is the
-            first letter in the answer
+            The letter
+            <span :class="settings.case" class="heavy-letter">W</span>
+            is in the word and in the right spot.
           </li>
           <li>
-            <span :class="settings.case" class="heavy-letter">R</span> is the
-            answer, but is not the 3rd letter
+            The letter
+            <span :class="settings.case" class="heavy-letter">R</span>
+            is in the word but in the wrong spot.
           </li>
           <li>
+            The letters
             <span :class="settings.case" class="heavy-letter">O</span> and
-            <span :class="settings.case" class="heavy-letter">D</span> are not
-            in the answer
+            <span :class="settings.case" class="heavy-letter">D</span>
+            are not in the word in any spot.
           </li>
         </ul>
 
