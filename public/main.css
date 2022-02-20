@@ -427,12 +427,6 @@ main {
   background-color: var(--color-match);
 }
 
-.about-content {
-  background-color: var(--color-neutral-100);
-  padding: 1rem;
-  border-radius: 15px;
-}
-
 .collection-tiles {
   margin: 2rem 0 0;
 }
@@ -441,9 +435,16 @@ main {
   margin-right: 4px;
 }
 
-.collection-tiles .guesses-word,
-.example-word .guesses-word {
+.collection-tiles .guesses-word {
   margin-bottom: 8px;
+  display: flex;
+  gap: 2px;
+}
+.example-word .guesses-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
   display: flex;
   gap: 2px;
 }
