@@ -132,7 +132,7 @@
           <button
             class="hint-button"
             @click="showHint"
-            x-show="hint.available"
+            x-show="hint.available && !hint.visible"
             x-transition:enter.duration.500ms
             x-cloak
           >
@@ -140,10 +140,9 @@
           </button>
           <div
             class="hint"
-            x-show="hint.message"
+            x-show="hint.visible"
             @click="resetHint"
             x-transition:enter.duration.1000ms
-            x-transition:leave.duration.500ms
           >
             <span x-text="hint.message"></span>
           </div>
@@ -431,6 +430,13 @@
         medium: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
         hard: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
       };
+      const DEFAULT_HINT = {
+        available: false,
+        visible: false,
+        message: null,
+        timer: null,
+      };
+
       const HINT_DELAY = 15 * 1000;
 
       return {
@@ -441,11 +447,7 @@
         guesses: [],
         solved: false,
         failed: false,
-        hint: {
-          available: false,
-          message: null,
-          timer: null,
-        },
+        hint: DEFAULT_HINT,
         currentGuessIndex: 0,
         cursor: 0,
         cursorMode: false,
@@ -604,8 +606,6 @@
           } else if (e.key === "ArrowRight") {
             this.cursor = Math.min(this.target.length - 1, this.cursor + 1);
             this.cursorMode = true;
-          } else if (e.key === "?") {
-            this.showHint();
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
             !e.altKey &&
@@ -694,35 +694,36 @@
             this.solved ||
             this.failed
           ) {
+            this.resetHint();
             return;
           }
-          this.hint.timer = setTimeout(() => {
-            if (!this.hint.message) {
-              this.hint.available = true;
-            }
-          }, HINT_DELAY);
-        },
-        resetHint() {
-          clearTimeout(this.hint.timer);
-          this.hint.available = false;
-          this.hint.letter = null;
-          this.hint.message = null;
-        },
-        showHint() {
+
           const hint = getHint(
             this.target,
             this.keys.filter((key) => key.type === "letter")
           );
+          if (hint) {
+            this.hint = hint;
+            this.hint.timer = setTimeout(() => {
+              this.hint.available = true;
+            }, HINT_DELAY);
+          } else {
+            this.resetHint();
+          }
+        },
+        resetHint() {
+          clearTimeout(this.hint.timer);
+          this.hint = { ...DEFAULT_HINT };
+        },
+        showHint() {
           amplitude.getInstance().logEvent("show_hint", {
             level_name: this.level,
             difficulty: this.settings.difficulty,
             guess: this.currentGuessIndex + 1,
-            message: hint.text,
-            letter: hint.letter,
+            message: this.hint.message,
+            letter: this.hint.letter,
           });
-          this.hint.message = hint.text;
-          this.hint.letter = hint.letter;
-          this.hint.available = false;
+          this.hint.visible = true;
         },
         showNotice(text) {
           window.dispatchEvent(

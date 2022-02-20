@@ -1,10 +1,41 @@
 // @ts-check
 
-const VOWELS = "AEIOU".split("");
+const VOWELS = new Set("AEIOU".split(""));
 const CLUSTERS = ["ST", "TH", "CH", "SH", "NT", "CK", "ND"];
+
+// generated from scripts/puzzlestats
+const LETTERS_BY_FREQUENCY = [
+  "E",
+  "A",
+  "S",
+  "T",
+  "R",
+  "O",
+  "L",
+  "N",
+  "I",
+  "H",
+  "C",
+  "D",
+  "U",
+  "G",
+  "P",
+  "M",
+  "B",
+  "K",
+  "W",
+  "F",
+  "Y",
+  "V",
+  "J",
+  "Z",
+  "Q",
+  "X",
+];
 
 /**
  * @param {string[]} letters
+ * @returns {string | null}
  */
 function findMultiple(letters) {
   const seen = {};
@@ -42,20 +73,39 @@ function getHint(target, keys) {
     return null;
   }
 
-  if (match.length === target.length - 1) {
-    return { text: `You're almost there!` };
+  if (match.length + present.length === target.length - 1) {
+    // they're almost there, so don't just give the answer
+    // instead, tell them a few things NOT in the answer
+    const remainingOptions = new Set(
+      keys.filter((key) => key.state === "available").map((key) => key.label)
+    );
+    const hinted = [];
+    for (const letter of LETTERS_BY_FREQUENCY) {
+      if (VOWELS.has(letter)) continue; // will usually have the vowel
+      if (target.includes(letter)) continue;
+
+      if (remainingOptions.has(letter)) {
+        hinted.push(letter);
+      }
+      if (hinted.length >= 3) break;
+    }
+    if (hinted.length === 3) {
+      return {
+        message: `It's definitely *not* ${hinted[0]}, ${hinted[1]}, or ${hinted[2]}`,
+      };
+    }
   }
 
   const targetLetters = target.split("");
-  const isVowelMatched = match.some((letter) => VOWELS.includes(letter));
-  const isVowelPresent = present.some((letter) => VOWELS.includes(letter));
+  const isVowelMatched = match.some((letter) => VOWELS.has(letter));
+  const isVowelPresent = present.some((letter) => VOWELS.has(letter));
 
   // first priority: find a vowel
   if (!isVowelMatched && !isVowelPresent) {
-    const firstVowel = targetLetters.find((letter) => VOWELS.includes(letter));
+    const firstVowel = targetLetters.find((letter) => VOWELS.has(letter));
     if (firstVowel) {
       return {
-        text: `How about a vowel like "${firstVowel.toLowerCase()}"?`,
+        message: `How about a vowel like ${firstVowel}?`,
         letter: firstVowel,
       };
     }
@@ -65,7 +115,7 @@ function getHint(target, keys) {
   const multiple = findMultiple(targetLetters);
   if (multiple) {
     return {
-      text: `There could be more than one "${multiple.toLowerCase()}".`,
+      message: `There could be more than one ${multiple}`,
       letter: multiple,
     };
   }
@@ -87,7 +137,7 @@ function getHint(target, keys) {
       );
       if (firstFound && firstNotFound) {
         return {
-          text: `Did you know "${firstFound.toLowerCase()}" and "${firstNotFound.toLowerCase()}" often go together?`,
+          message: `Did you know ${firstFound} and ${firstNotFound} often go together?`,
           letter: firstNotFound,
         };
       }
@@ -97,22 +147,20 @@ function getHint(target, keys) {
   // e at the end is common
   const eKey = keys.find((key) => key.label === "E");
   if (target.endsWith("E") && eKey.state === "available") {
-    return { text: `Quite a few words end with "e".`, letter: "E" };
+    return { message: `Quite a few words end with E`, letter: "E" };
   }
-
-  // TODO: most common letters in English?
 
   // fallback: next unfound letter of the target
   for (const letter of targetLetters) {
     if (!match.includes(letter) && !present.includes(letter)) {
       return {
-        text: `I just love the letter "${letter.toLowerCase()}", don't you?`,
+        message: `I just love the letter ${letter}, don't you?`,
         letter,
       };
     }
   }
 
-  return { text: `You're almost there!` };
+  return null;
 }
 
 if (typeof module !== "undefined") {

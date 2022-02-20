@@ -386,6 +386,7 @@ main {
 
 .hint-area {
   font-size: 1rem;
+  font-weight: bold;
   color: var(--color-hint-text);
   display: flex;
   justify-content: center;
@@ -394,6 +395,8 @@ main {
   min-height: 22px;
 }
 .hint-button {
+  font-family: inherit;
+  font-weight: bold;
   font-size: 1rem;
   appearance: none;
   background: none;

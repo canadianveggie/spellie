@@ -1,6 +1,6 @@
 export type Hint = {
   /** to display to user */
-  text: string;
+  message: string;
   /** to highlight on the keyboard */
   letter?: string;
 };
