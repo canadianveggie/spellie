@@ -277,8 +277,7 @@ main {
 }
 
 .key {
-  transition: background 0.5s;
-  transition-delay: calc(0.25s * var(--guess-columns));
+  transition: background 0.3s;
   flex-grow: 1;
   border-radius: 15px;
   background-color: var(--color-available);
@@ -290,6 +289,9 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.key-letter {
+  transition-delay: calc(0.25s * var(--guess-columns));
 }
 .key-enter {
   min-width: 80px;
