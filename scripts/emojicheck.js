@@ -1,3 +1,5 @@
+// @ts-check
+
 const { emojis } = require("../public/emojis");
 // get from https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json
 const json = require("./emoji.json");
