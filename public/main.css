@@ -2,7 +2,7 @@
   --tile-spacing: 4px;
   --total-guesses: 6;
   --max-page-width: 500px;
-  --header-height: 100px;
+  --header-height: 75px;
 
   --color-neutral-0: #000;
   --color-neutral-10: #222;
@@ -27,8 +27,14 @@
   --color-notice-bg: var(--color-neutral-10);
   --color-notice-text: var(--color-neutral-100);
 }
+@media screen and (min-height: 400px) {
+  :root {
+    --header-height: 100px;
+  }
+}
 
-html {
+html,
+body {
   height: 100%;
 }
 
@@ -37,7 +43,6 @@ html {
 }
 
 body {
-  height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Comic Neue", sans-serif;
@@ -85,8 +90,12 @@ header nav {
   color: var(--color-title);
   font-weight: bolder;
   margin: 0 auto;
-  padding: 1.1rem 0.2rem;
   max-width: var(--max-page-width);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 35%;
+  transform: translateY(-50%);
 }
 
 .nav-link {
@@ -116,7 +125,7 @@ header nav {
   right: 0;
   pointer-events: none;
 }
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 600px) and (min-height: 400px) {
   .title {
     font-size: 2rem;
   }
@@ -136,7 +145,12 @@ main {
   height: calc(100% - var(--header-height));
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 4px;
+}
+@media screen and (min-height: 400px) {
+  main {
+    padding: 1rem;
+  }
 }
 
 .lowercase {
@@ -159,20 +173,24 @@ main {
   padding: 8px;
 }
 
-.target-5 .guesses-row {
-  --guess-columns: calc(5 + 2);
+.target-4 {
+  --guess-columns: 4;
 }
-.target-6 .guesses-row {
-  --guess-columns: calc(6 + 2);
+.target-5 {
+  --guess-columns: 5;
+}
+.target-6 {
+  --guess-columns: 6;
 }
 .guesses-row {
   display: flex;
   justify-content: center;
   gap: var(--tile-spacing);
-  aspect-ratio: var(--guess-columns, 6) / 1;
+  aspect-ratio: var(--guess-columns, 4) / 1;
   margin: 0 auto;
   --margin-between-rows: calc(var(--total-guesses) * var(--tile-spacing));
   height: calc(calc(100% - var(--margin-between-rows)) / var(--total-guesses));
+  min-height: 16px;
 }
 
 /* safari 15 etc needs this to avoid tiles enlarging */
@@ -260,7 +278,7 @@ main {
 
 .key {
   transition: background 0.5s;
-  transition-delay: 1s;
+  transition-delay: calc(0.25s * var(--guess-columns));
   flex-grow: 1;
   border-radius: 15px;
   background-color: var(--color-available);
@@ -268,7 +286,7 @@ main {
   color: var(--color-text);
   cursor: pointer;
   width: 30px;
-  line-height: 42px;
+  line-height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -276,6 +294,11 @@ main {
 .key-enter {
   min-width: 80px;
   text-transform: capitalize;
+}
+@media screen and (min-height: 400px) {
+  .key {
+    line-height: 42px;
+  }
 }
 @media screen and (min-width: 600px) and (min-height: 700px) {
   .keyboard {
@@ -455,15 +478,16 @@ main {
 
 .notice {
   position: fixed;
+  top: 8%;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
   min-width: 250px;
   z-index: 1;
-  bottom: 15px;
-  left: 50%;
   text-align: center;
   align-items: center;
   border-radius: 15px;
-  padding: 4px;
-  transform: translateX(-50%);
+  padding: 8px 16px;
   font-size: 1.5rem;
   color: var(--color-notice-text);
   background-color: var(--color-notice-bg);
@@ -472,7 +496,10 @@ main {
 /* animations */
 
 .pulse {
-  animation: pulse 0.5s linear infinite alternate;
+  animation: grow 0.5s linear infinite alternate;
+}
+.pulse-small {
+  animation: grow-small 0.5s linear infinite alternate;
 }
 .pop {
   animation: pop 0.3s;
@@ -481,12 +508,21 @@ main {
   animation: fadein 0.5s;
 }
 
-@keyframes pulse {
+@keyframes grow {
   0% {
     transform: scale(1);
   }
   100% {
     transform: scale(1.1);
+  }
+}
+
+@keyframes grow-small {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
   }
 }
 

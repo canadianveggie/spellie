@@ -110,7 +110,8 @@
         </div>
       </div>
     </header>
-    <main>
+    
+    <main :class="`target-${target.length}`">
       <div class="help-content" x-show="page === '#help'" x-cloak>
         <h1>How to play</h1>
 
@@ -206,20 +207,14 @@
             <li>and you? <a href="https://github.com/canadianveggie/spellie">Contribute here</a>.</li>
           </ul>
       </div>
+    
       <div class="game-content" x-show="page === ''">
-        <div class="guesses-grid" :class="`target-${target.length}`">
+        <div class="guesses-grid">
           <template
             x-for="(guess, guessIndex) in guesses"
             :key="`${level}-${guessIndex}`"
           >
             <div class="guesses-row" :class="settings.case">
-              <div class="guesses-tile emoji-tile">
-                <span
-                  x-text="guessEmojis[guessIndex]"
-                  x-show="guessEmojis[guessIndex]"
-                  x-transition.delay.2000ms
-                ></span>
-              </div>
               <template x-for="(letter, letterIndex) in guess">
                 <div
                   class="guesses-tile"
@@ -233,13 +228,6 @@
                   ></span>
                 </div>
               </template>
-              <div class="guesses-tile emoji-tile">
-                <span
-                  x-text="guessEmojis[guessIndex]"
-                  x-show="guessEmojis[guessIndex]"
-                  x-transition.delay.2000ms
-                ></span>
-              </div>
             </div>
           </template>
         </div>
@@ -275,7 +263,7 @@
         <div
           x-cloak
           x-show="failed"
-          x-transition.duration.1000ms
+          x-transition:enter.duration.1000ms
           class="defeat"
         >
           Nice try! It was:
@@ -572,11 +560,7 @@
               return;
             }
             if (this.isCurrentWordInvalid()) {
-              window.dispatchEvent(
-                new CustomEvent("notice", {
-                  detail: { text: "Not a valid word" },
-                })
-              );
+              this.showNotice("Check your spelling... 🤔");
               return;
             }
             this.currentGuess.forEach(
@@ -625,6 +609,7 @@
             this.currentGuess[i].state = letterResult;
           });
           this.updateKeyboardForGuess(this.currentWord);
+          this.checkEmojiGuess();
           this.addToCollection(this.currentWord);
           this.solved = this.currentWord === this.target;
           this.currentGuessIndex += 1;
@@ -639,6 +624,15 @@
           ) {
             this.failed = true;
             this.levelEnd();
+          }
+        },
+        checkEmojiGuess() {
+          const emoji = emojis[this.currentWord];
+          const alreadyFound = this.unlockedEmojis.some(
+            (entry) => entry.word === this.currentWord
+          );
+          if (emoji && !alreadyFound) {
+            this.showNotice(`You unlocked ${emoji} !`);
           }
         },
         updateKeyboardForGuess(guess) {
@@ -691,7 +685,7 @@
           backKey.state = this.cursor > 0 ? "available" : "unavailable";
           enterKey.state =
             this.isCurrentWordComplete() && !this.isCurrentWordInvalid()
-              ? "available pulse"
+              ? "available pulse-small"
               : "unavailable";
         },
         keyPressed(e) {
@@ -830,6 +824,13 @@
           this.hint.letter = hint.letter;
           this.hint.available = false;
         },
+        showNotice(text) {
+          window.dispatchEvent(
+            new CustomEvent("notice", {
+              detail: { text },
+            })
+          );
+        },
         initialLoad() {
           this.loadSettings();
           this.loadGameState();
@@ -889,9 +890,7 @@
         },
         updateSettings() {
           this.saveSettings();
-          window.dispatchEvent(
-            new CustomEvent("notice", { detail: { text: "Settings updated" } })
-          );
+          this.showNotice("Settings updated");
         },
         updateDifficulty(e) {
           this.saveSettings();
@@ -1024,11 +1023,7 @@
             navigator.share(shareData);
           } else if (navigator?.clipboard) {
             navigator.clipboard.writeText(`${title}\n${text}\n${url}`);
-            window.dispatchEvent(
-              new CustomEvent("notice", {
-                detail: { text: "Copied to clipboard" },
-              })
-            );
+            this.showNotice("Copied to clipboard");
           }
           amplitude.getInstance().logEvent("clicked_share", {
             page: this.page,
@@ -1054,7 +1049,7 @@
           notice.id = Date.now();
           notice.visible = true;
           this.notice = notice;
-          const timeShown = 5000;
+          const timeShown = 5 * 1000;
           setTimeout(() => {
             this.remove(notice.id);
           }, timeShown);
