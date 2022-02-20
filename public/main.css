@@ -379,8 +379,9 @@ main {
 }
 
 /* help page */
-.help-content, .about-content  {
-  font-size:  1.5rem;
+.help-content,
+.about-content {
+  font-size: 1.5rem;
 }
 
 .example-row {
