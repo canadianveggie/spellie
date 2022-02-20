@@ -178,7 +178,7 @@
                 >
                   <div
                     class="key"
-                    :class="[settings.case, 'key-' + letter.type, letter.state, letter.label === hint.letter ? 'pulse' : '']"
+                    :class="[settings.case, 'key-' + letter.type, letter.state, hint.visible && letter.label === hint.letter ? 'pulse' : '']"
                     @click="addLetter(letter)"
                   >
                     <template x-if="letter.type === 'back'">
