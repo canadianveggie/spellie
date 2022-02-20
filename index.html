@@ -109,23 +109,65 @@
     </header>
     <main :class="`target-${target.length}`">
       <div class="about-content" x-show="page === '#about'" x-cloak>
-        <p>Wordling is a daily world puzzle geared at young spellers.</p>
+        <p>Spellie is a daily world puzzle geared at young spellers.</p>
 
         <h1>Features</h1>
         <ul>
-          <li>Age appropriate words</li>
-          <li>Enter letters in any order</li>
-          <li>3 difficulty settings</li>
+          <li>Age appropriate puzzles within 3 difficulty levels</li>
+          <li>Easy mode uses shorter words within the Grade 2 vocabulary</li>
+          <li>
+            Hard mode is challenging, but uses words within the Grade 5
+            vocabulary
+          </li>
+          <li>Kid-friendly colours and fonts</li>
           <li>Emoji colectables</li>
-          <li>Kid-friendly font</li>
         </ul>
 
         <h1>How To Play</h1>
+        <p>
+          You have 6 guesses to figure out the daily puzzle, using the feedback
+          to narrow down the options.
+        </p>
+        <div class="example-word">
+          <div class="guesses-word" :class="settings.case">
+            <div class="guesses-tile match">
+              <span>W</span>
+            </div>
+            <div class="guesses-tile miss">
+              <span>O</span>
+            </div>
+            <div class="guesses-tile present">
+              <span>R</span>
+            </div>
+            <div class="guesses-tile miss">
+              <span>D</span>
+            </div>
+          </div>
+        </div>
+        <ul>
+          <li>
+            <span :class="settings.case" class="heavy-letter">W</span> is the
+            first letter in the answer
+          </li>
+          <li>
+            <span :class="settings.case" class="heavy-letter">R</span> is the
+            answer, but is not the 3rd letter
+          </li>
+          <li>
+            <span :class="settings.case" class="heavy-letter">O</span> and
+            <span :class="settings.case" class="heavy-letter">D</span> are not
+            in the answer
+          </li>
+        </ul>
 
         <h1>Creators</h1>
         <ul>
-          <li>Chris Porter</li>
+          <li>Christopher Porter</li>
           <li>David Hirtle</li>
+          <li>
+            Many other
+            <a href="https://github.com/canadianveggie/spellie">contributors</a>
+          </li>
         </ul>
       </div>
       <div class="game-content" x-show="page === ''">

@@ -427,6 +427,12 @@ main {
   background-color: var(--color-match);
 }
 
+.about-content {
+  background-color: var(--color-neutral-100);
+  padding: 1rem;
+  border-radius: 15px;
+}
+
 .collection-tiles {
   margin: 2rem 0 0;
 }
@@ -435,17 +441,23 @@ main {
   margin-right: 4px;
 }
 
-.collection-tiles .guesses-word {
+.collection-tiles .guesses-word,
+.example-word .guesses-word {
   margin-bottom: 8px;
   display: flex;
   gap: 2px;
 }
-.collection-tiles .guesses-tile {
+.collection-tiles .guesses-tile,
+.example-word .guesses-tile {
   flex-grow: unset;
   width: 40px;
   height: 40px;
   padding: 0;
   /* font-size: 1.5rem; */
+}
+
+.heavy-letter {
+  font-weight: bold;
 }
 
 .notice {
