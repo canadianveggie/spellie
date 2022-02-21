@@ -23,9 +23,9 @@ describe("validWords", () => {
       }
     });
     // console.log({ valid: valid.length, invalid: invalid.length });
-    // Was { valid: 419, invalid: 66 }
+    // Was { valid: 487, invalid: 13 }
     // console.log(invalid);
-    // Invalid includes ABCD, ELSA, OLAF, TADA,  and country names
+    // Invalid includes ABCD, ELSA, OLAF, TADA
     expect(invalid.length).toBeGreaterThan(0);
     expect(valid.length).toBeGreaterThan(invalid.length);
     expect(invalid.length).toBeLessThan(valid.length / 5); // Less than 20% are invalid

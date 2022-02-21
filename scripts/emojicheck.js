@@ -7,6 +7,10 @@
 // - avoid words not in valid words list (unless they should be, like "wifi")
 // - choose fun
 
+// TODO: should we allow multiple ways to unlock emoji?
+// eg "⚾️" could be PITCH, BUNT, CATCH, etc
+// also DOLL, DOLLS
+
 const { emojis } = require("../public/emojis");
 // get from https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json
 const json = require("./emoji.json");
@@ -23,7 +27,10 @@ const categoryBlockList = [
   "People & Body",
   "Smileys & Emotion",
   "Animals & Nature",
+  // "Food & Drink",
+  // "Travel & Places",
   // below have been thoroughly reviewed:
+  "Activities",
   "Objects",
   "Symbols",
 ];
