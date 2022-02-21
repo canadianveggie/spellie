@@ -175,11 +175,11 @@
           /></a>
         </div>
       </div>
-      <div class="game-content" x-show="page === ''">
+      <div class="game-content" x-show="page === ''" x-ref="gameContent">
         <div class="guesses-grid">
           <template
             x-for="(guess, guessIndex) in guesses"
-            :key="`${level}-${guessIndex}`"
+            :key="`${level}-${attempt}-${guessIndex}`"
           >
             <div class="guesses-row" :class="settings.case">
               <template x-for="(letter, letterIndex) in guess">
@@ -190,7 +190,7 @@
                 >
                   <span
                     x-show="letter.letter"
-                    x-text="letter.letter"
+                    x-text="masked ? '' : letter.letter"
                     x-transition:enter="pop"
                   ></span>
                 </div>
@@ -217,7 +217,7 @@
             <span x-text="hint.message"></span>
           </div>
         </div>
-        <div x-show="solved" x-cloak>
+        <div x-show="solved && !masked" x-cloak>
           <div
             x-transition.enter.duration.1000ms
             x-transition.leave.duration.0ms
@@ -228,23 +228,31 @@
         </div>
         <div
           x-cloak
-          x-show="failed"
+          x-show="failed && !masked"
           x-transition:enter.duration.1000ms
           class="defeat"
         >
           Nice try! It was:
           <p x-text="target"></p>
         </div>
+        <div x-cloak x-show="masked" class="">
+          <div @click="resetLevel">
+            <span>Reset</span><i class="material-icons">replay</i>
+          </div>
+          <div @click="unmask">
+            <span>Reveal</span><i class="material-icons">visibility</i>
+          </div>
+        </div>
         <div class="keyboard">
           <template x-if="!solved && !failed">
             <template
               x-for="(keyboardRow, rowIndex) in keyboard"
-              :key="level + rowIndex"
+              :key="`${level}-${attempt}-${rowIndex}`"
             >
               <div class="keyboard-row">
                 <template
                   x-for="letter in keyboardRow"
-                  :key="level + letter.label"
+                  :key="`${level}-${attempt}-${letter.label}`"
                 >
                   <div
                     class="key"
@@ -514,7 +522,9 @@
         guesses: [],
         solved: false,
         failed: false,
+        masked: false,
         hint: DEFAULT_HINT,
+        attempt: 0,
         currentGuessIndex: 0,
         cursor: 0,
         cursorMode: false,
@@ -826,6 +836,7 @@
               emptyGuesses(this.target.length, maxGuesses);
             this.solved = initialState.solved || false;
             this.failed = initialState.failed || false;
+            this.masked = this.solved || this.failed;
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
@@ -927,6 +938,14 @@
         },
         get unlockedEmojis() {
           return this.emojiCollection?.filter((e) => e.unlocked);
+        },
+        resetLevel() {
+          localStorage.removeItem(`game-state-${this.settings.difficulty}`);
+          this.attempt += 1;
+          this.loadGameState();
+        },
+        unmask() {
+          this.masked = false;
         },
         toJson() {
           return {
