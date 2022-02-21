@@ -30,15 +30,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
-      rel="stylesheet"
     />
     <link
       rel="stylesheet"
+      media="print"
+      onload="this.onload=null;this.removeAttribute('media');"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
+    <link
+      rel="stylesheet"
+      media="print"
+      onload="this.onload=null;this.removeAttribute('media');"
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
+    />
+
     <link href="./public/main.css" rel="stylesheet" />
-    <script src="public/amplitude.js"></script>
+    <script src="public/amplitude.js" async></script>
   </head>
 
   <body
@@ -442,14 +457,11 @@
   <script src="public/hint.js"></script>
   <script src="public/emojis.js"></script>
   <script src="public/mobileCheck.js"></script>
-  <script src="public/dictionary.js"></script>
   <script>
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
 
-    // Add emoji keys to valid words
-    // So that ELSA and ROFL are accepted
-    Object.keys(emojis).forEach((key) => validWords.add(key));
+    const emojiKeys = new Set(Object.keys(emojis));
 
     function initialKeys() {
       const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -568,7 +580,7 @@
         },
         checkAnswer() {
           if (this.currentGuessIndex === 0) {
-            amplitude.getInstance().logEvent("level_start", {
+            this.logEvent("level_start", {
               level_name: this.level,
               difficulty: this.settings.difficulty,
             });
@@ -730,10 +742,19 @@
           );
         },
         isCurrentWordInvalid() {
-          return (
-            (this.settings.spellChecker === "on" || this.onLastGuess) &&
-            !validWords.has(this.currentWord)
-          );
+          try {
+            return (
+              ((this.settings.spellChecker === "on" || this.onLastGuess) &&
+                !validWords.has(this.currentWord)) ||
+              emojiKeys.has(this.currentWord)
+            );
+          } catch (error) {
+            console.warn(
+              "Unable to spell check word, maybe the dictionary isn't loaded yet",
+              error
+            );
+            return false; // Don't block progress
+          }
         },
         isCursor(guessIndex, letterIndex) {
           return (
@@ -784,7 +805,7 @@
           this.hint = { ...DEFAULT_HINT };
         },
         showHint() {
-          amplitude.getInstance().logEvent("show_hint", {
+          this.logEvent("show_hint", {
             level_name: this.level,
             difficulty: this.settings.difficulty,
             guess: this.currentGuessIndex + 1,
@@ -903,7 +924,7 @@
           }
         },
         levelEnd() {
-          amplitude.getInstance().logEvent("level_end", {
+          this.logEvent("level_end", {
             level_name: this.level,
             difficulty: this.settings.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
@@ -994,7 +1015,7 @@
             navigator.clipboard.writeText(`${title}\n${text}\n${url}`);
             this.showNotice("Copied to clipboard");
           }
-          amplitude.getInstance().logEvent("clicked_share", {
+          this.logEvent("clicked_share", {
             page: this.page,
             text,
             share_type: shareType,
@@ -1006,6 +1027,14 @@
             return JSON.parse(value);
           } else {
             return defaultValue;
+          }
+        },
+        logEvent(eventType, eventProperties) {
+          try {
+            amplitude.getInstance().logEvent(eventType, eventProperties);
+          } catch (error) {
+            // Ignore errors with amplitude
+            // These may be caused by async loading of the library on slow connections
           }
         },
       };
@@ -1031,4 +1060,5 @@
       };
     }
   </script>
+  <script src="public/dictionary.js" async></script>
 </html>
