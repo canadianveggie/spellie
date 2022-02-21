@@ -121,7 +121,7 @@ const emojis = {
   CODER: "👩‍💻",
   COFFIN: "⚰️",
   COIN: "🪙",
-  COLOR: "",
+  COLOR: "🌈",
   COMET: "☄️",
   CONGA: "🪘",
   COOK: "🍳",

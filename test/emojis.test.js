@@ -7,6 +7,14 @@ describe("emojis", () => {
       expect(key).toBe(key.toUpperCase());
     });
   });
+  it("values have length", () => {
+    Object.keys(emojis).forEach((key) => {
+      const emoji = emojis[key];
+      if (emoji.length < 1) {
+        throw new Error(`Emoji for ${key} has no length`);
+      }
+    });
+  });
   it("unique keys", () => {
     // read file as string to avoid treating as JS
     // (object keys silently overwrite one another)
