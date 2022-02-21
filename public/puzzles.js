@@ -956,12 +956,12 @@ function daysBetween(first, second) {
   return Math.floor((second - first) / MILLIS_PER_DAY);
 }
 
-function getTodayPuzzleId() {
-  return daysBetween(start, new Date());
+function getPuzzleIdForDate(date) {
+  return daysBetween(start, date);
 }
 
-function getTodayPuzzles() {
-  const index = getTodayPuzzleId();
+function getPuzzlesForDate(date) {
+  const index = getPuzzleIdForDate(date);
   const targets = {};
   for (const difficulty of Object.keys(words)) {
     const wordList = words[difficulty];
@@ -969,6 +969,14 @@ function getTodayPuzzles() {
       wordList[Math.abs(index % wordList.length)].toUpperCase();
   }
   return targets;
+}
+
+function getTodayPuzzleId() {
+  return getPuzzleIdForDate(new Date());
+}
+
+function getTodayPuzzles() {
+  return getPuzzlesForDate(new Date());
 }
 
 function compareTargetAndGuess(target, guess) {
@@ -1068,5 +1076,6 @@ if (typeof module !== "undefined") {
     compareTargetAndGuess,
     emojiMatchThemes,
     guessesAsEmojis,
+    getPuzzlesForDate,
   };
 }
