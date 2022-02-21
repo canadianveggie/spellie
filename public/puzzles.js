@@ -1043,6 +1043,10 @@ function randomEmojiMatchTheme() {
   return themes[Math.floor(Math.random() * themes.length)];
 }
 
+/**
+ * @param {import("../types").Guess[]} guesses
+ * @param {import("../types").EmojiMatchThemeKey} theme
+ */
 function guessesAsEmojis(guesses, theme) {
   const emojiTheme = emojiMatchThemes[theme] || randomEmojiMatchTheme();
   return guesses

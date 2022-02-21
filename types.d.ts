@@ -1,3 +1,12 @@
+export type GuessState = "pending" | "match" | "present" | "miss";
+
+export type LetterGuess = {
+  letter: string;
+  state: GuessState;
+};
+
+export type Guess = LetterGuess[];
+
 export type Hint = {
   /** to display to user */
   message: string;
