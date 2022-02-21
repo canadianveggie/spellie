@@ -7,6 +7,12 @@
 // - avoid words not in valid words list (unless they should be, like "wifi")
 // - choose fun
 
+// TODO: would schools take issue with pictures of WINE, BEER?
+
+// TODO: should we allow multiple ways to unlock emoji?
+// eg "⚾️" could be PITCH, BUNT, CATCH, etc
+// also DOLL, DOLLS
+
 const { emojis } = require("../public/emojis");
 // get from https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json
 const json = require("./emoji.json");
@@ -17,14 +23,16 @@ const takenKeys = Object.keys(emojis).map((key) => key.toLowerCase());
 // too new
 const versionBlockList = ["13.0", "13.1", "13.2", "14.0"];
 
-// adjust as needed to find
 const categoryBlockList = [
-  "Flags",
-  "People & Body",
   "Smileys & Emotion",
   "Animals & Nature",
+  "Travel & Places",
   // below have been thoroughly reviewed:
+  "Activities",
+  "Flags",
+  "Food & Drink",
   "Objects",
+  "People & Body",
   "Symbols",
 ];
 
