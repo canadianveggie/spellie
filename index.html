@@ -1079,6 +1079,8 @@
         notify(notice) {
           notice.id = Date.now();
           notice.visible = true;
+          // TODO: allow HTML for emoji unlock notices
+          // <img :src="getEmojiImage(emoji)" width="32" />
           this.notice = notice;
           const timeShown = 5 * 1000;
           setTimeout(() => {
