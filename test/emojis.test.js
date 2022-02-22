@@ -19,7 +19,7 @@ describe("emojis", () => {
     // read file as string to avoid treating as JS
     // (object keys silently overwrite one another)
     const input = fs.readFileSync("./public/emojis.js", "utf8");
-    const matches = input.matchAll(/\s*([A-Z]+)/g);
+    const matches = input.matchAll(/^\s\s([A-Z]+)/g);
     const keys = Array.from(matches).map((result) => result[1]);
     if (keys.length != new Set(keys).size) {
       Object.values(keys).reduce((memo, key) => {
