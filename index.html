@@ -175,11 +175,11 @@
           /></a>
         </div>
       </div>
-      <div class="game-content" x-show="page === ''" x-ref="gameContent">
+      <div class="game-content" x-show="page === ''">
         <div class="guesses-grid">
           <template
             x-for="(guess, guessIndex) in guesses"
-            :key="`${level}-${attempt}-${guessIndex}`"
+            :key="`${gameId}-${guessIndex}`"
           >
             <div class="guesses-row" :class="settings.case">
               <template x-for="(letter, letterIndex) in guess">
@@ -217,7 +217,7 @@
             <span x-text="hint.message"></span>
           </div>
         </div>
-        <div x-show="solved && !masked" x-cloak>
+        <div x-show="solved && endGame" x-cloak>
           <div
             x-transition.enter.duration.1000ms
             x-transition.leave.duration.0ms
@@ -228,18 +228,21 @@
         </div>
         <div
           x-cloak
-          x-show="failed && !masked"
+          x-show="failed && endGame"
           x-transition:enter.duration.1000ms
           class="defeat"
         >
           Nice try! It was:
           <p x-text="target"></p>
         </div>
-        <div x-cloak x-show="masked" class="masked-game-buttons">
-          <button @click="unmask">
+        <div x-cloak x-show="showResetButtons" class="masked-game-buttons">
+          <button aria-label="Reveal" @click="unmask" x-show="masked">
             Reveal <i class="material-icons">visibility</i>
           </button>
-          <button @click="resetLevel">
+          <button aria-label="Hide" @click="mask" x-show="!masked">
+            Hide <i class="material-icons">visibility_off</i>
+          </button>
+          <button aria-label="Reset" @click="resetLevel">
             Reset <i class="material-icons">replay</i>
           </button>
         </div>
@@ -247,12 +250,12 @@
           <template x-if="!solved && !failed">
             <template
               x-for="(keyboardRow, rowIndex) in keyboard"
-              :key="`${level}-${attempt}-${rowIndex}`"
+              :key="`${gameId}-${rowIndex}`"
             >
               <div class="keyboard-row">
                 <template
                   x-for="letter in keyboardRow"
-                  :key="`${level}-${attempt}-${letter.label}`"
+                  :key="`${gameId}-${letter.label}`"
                 >
                   <div
                     class="key"
@@ -523,8 +526,10 @@
         solved: false,
         failed: false,
         masked: false,
+        endGame: false,
+        gameId: 0,
+        showResetButtons: false,
         hint: DEFAULT_HINT,
-        attempt: 0,
         currentGuessIndex: 0,
         cursor: 0,
         cursorMode: false,
@@ -824,6 +829,8 @@
             if (initialState.puzzleId !== this.puzzleId) {
               initialState = {};
             }
+            // Create a unique id for each game state so that we redraw the grid and keyboard properly
+            this.gameId += 1;
             this.level =
               initialState.level ||
               `${this.settings.difficulty}-${this.puzzleId}`;
@@ -837,6 +844,9 @@
             this.solved = initialState.solved || false;
             this.failed = initialState.failed || false;
             this.masked = this.solved || this.failed;
+            this.showResetButtons =
+              !this.endGame && (this.solved || this.failed);
+            this.endGame = false;
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
@@ -922,6 +932,7 @@
             guessWords: this.guessWords,
             ...this.guessWordDictionary,
           });
+          this.endGame = true;
           const statistics = this.getFromLocalStorage(
             "statistics",
             DEFAULT_STATISTICS
@@ -941,8 +952,10 @@
         },
         resetLevel() {
           localStorage.removeItem(`game-state-${this.settings.difficulty}`);
-          this.attempt += 1;
           this.loadGameState();
+        },
+        mask() {
+          this.masked = true;
         },
         unmask() {
           this.masked = false;

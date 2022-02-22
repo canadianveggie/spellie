@@ -427,8 +427,14 @@ main {
 
 .masked-game-buttons button {
   cursor: pointer;
-  background-color: var(--color-notice-bg);
-  color: var(--color-notice-text);
+  background-color: var(--color-neutral-20);
+  color: var(--color-neutral-100);
+  width: 100px;
+  border-radius: 5px;
+}
+
+.masked-game-buttons button:hover {
+  background-color: var(--color-neutral-10);
 }
 
 .unavailable {
