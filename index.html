@@ -235,13 +235,13 @@
           Nice try! It was:
           <p x-text="target"></p>
         </div>
-        <div x-cloak x-show="masked" class="">
-          <div @click="resetLevel">
-            <span>Reset</span><i class="material-icons">replay</i>
-          </div>
-          <div @click="unmask">
-            <span>Reveal</span><i class="material-icons">visibility</i>
-          </div>
+        <div x-cloak x-show="masked" class="masked-game-buttons">
+          <button @click="unmask">
+            Reveal <i class="material-icons">visibility</i>
+          </button>
+          <button @click="resetLevel">
+            Reset <i class="material-icons">replay</i>
+          </button>
         </div>
         <div class="keyboard">
           <template x-if="!solved && !failed">

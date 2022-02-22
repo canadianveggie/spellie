@@ -418,6 +418,19 @@ main {
   font-size: 2rem;
 }
 
+.masked-game-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.masked-game-buttons button {
+  cursor: pointer;
+  background-color: var(--color-notice-bg);
+  color: var(--color-notice-text);
+}
+
 .unavailable {
   background-color: var(--color-miss);
   cursor: auto;
