@@ -1,3 +1,5 @@
+// @ts-check
+
 const emojis = {
   ABACUS: "🧮",
   ABCD: "🔠",
@@ -319,7 +321,7 @@ const emojis = {
   MOUSE: "🐭",
   MOUTH: "👄",
   MOVIE: "🎥",
-  MUSIC: "🎵",
+  MUSIC: "🎶",
   NAIL: "💅",
   NEEDLE: "💉",
   NERD: "🤓",
@@ -328,7 +330,7 @@ const emojis = {
   NINE: "9️⃣",
   NINJA: "🥷",
   NOSE: "👃",
-  NOTE: "♫",
+  NOTE: "🎵",
   NURSE: "🤱",
   ODEN: "🍢",
   OGRE: "👹",
@@ -588,6 +590,36 @@ const emojis = {
   ZOMBIE: "🧟",
 };
 
+/**
+ * @param {string} input
+ */
+function getUnicodeCodePoint(input) {
+  const result = [];
+  for (let codePoint of input) {
+    result.push(codePoint.codePointAt(0).toString(16));
+  }
+  return result.join("-");
+}
+
+const variantCharacter = /\uFE0F/g;
+const zeroWidthJoiner = "\u200D";
+
+/**
+ * Remove the possible variant and convert utf16 into code points.
+ * If there is a zero-width-joiner (U+200D), leave the variants in.
+ *
+ * @param {string} emoji - actual character, eg 😂
+ */
+function getEmojiImage(emoji) {
+  const normalized =
+    emoji.indexOf(zeroWidthJoiner) < 0
+      ? emoji.replace(variantCharacter, "")
+      : emoji;
+  const codePoint = getUnicodeCodePoint(normalized);
+  // or png: https://twemoji.maxcdn.com/v/13.1.0/72x72/1f004.png
+  return `https://twemoji.maxcdn.com/v/13.1.0/svg/${codePoint}.svg`;
+}
+
 if (typeof module !== "undefined") {
-  module.exports = { emojis };
+  module.exports = { emojis, getEmojiImage };
 }

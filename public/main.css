@@ -379,6 +379,24 @@ main {
   border: none;
   background: none;
 }
+.preview-light {
+  border: none;
+  background: none;
+  --preview-outline: #00000099;
+}
+.preview-dark {
+  border-radius: unset;
+  background-color: var(--color-notice-bg);
+  --preview-outline: #ffffffee;
+}
+.preview-light img,
+.preview-dark img {
+  filter: drop-shadow(0px 0px 1px var(--preview-outline));
+  /* filter: drop-shadow(1px 1px 0 var(--preview-outline))
+    drop-shadow(-1px 1px 0 var(--preview-outline))
+    drop-shadow(1px -1px 0 var(--preview-outline))
+    drop-shadow(-1px -1px 0 var(--preview-outline)); */
+}
 
 .cursor {
   box-shadow: 0 0 0px 1px rgba(0, 0, 0, 30), rgba(0, 0, 0, 30) 3px 3px;
