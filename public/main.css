@@ -427,14 +427,28 @@ main {
 
 .masked-game-buttons button {
   cursor: pointer;
-  background-color: var(--color-neutral-20);
+  background-color: var(--color-neutral-10);
   color: var(--color-neutral-100);
-  width: 100px;
-  border-radius: 5px;
+  border-radius: 4px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 6px 4px 12px;
+  font-size: 14px;
+}
+
+.masked-game-buttons .material-icons {
+  font-size: inherit;
 }
 
 .masked-game-buttons button:hover {
-  background-color: var(--color-neutral-10);
+  filter: brightness(1.5);
+}
+
+.masked-game-buttons button:focus-visible {
+  outline: 2px solid white;
 }
 
 .unavailable {

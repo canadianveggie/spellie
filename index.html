@@ -236,11 +236,11 @@
           <p x-text="target"></p>
         </div>
         <div x-cloak x-show="showResetButtons" class="masked-game-buttons">
-          <button aria-label="Reveal" @click="unmask" x-show="masked">
-            Reveal <i class="material-icons">visibility</i>
+          <button @click="unmask" x-show="masked">
+            Reveal <i class="material-icons" aria-hidden="true">visibility</i>
           </button>
-          <button aria-label="Hide" @click="mask" x-show="!masked">
-            Hide <i class="material-icons">visibility_off</i>
+          <button @click="mask" x-show="!masked">
+            Hide <i class="material-icons" aria-hidden="true">visibility_off</i>
           </button>
           <button aria-label="Reset" @click="resetLevel">
             Reset <i class="material-icons">replay</i>
