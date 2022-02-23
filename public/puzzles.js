@@ -309,6 +309,11 @@ const words_easy = [
   "DEAL",
   "MEAT",
   "BENT",
+  "JAWS",
+  "RAGS",
+  "TAPS",
+  "DOTS",
+  "TOES",
 ].map(btoa);
 
 const words_medium = [
@@ -519,7 +524,6 @@ const words_medium = [
   "FLASH",
   "ROUND",
   "WHAT",
-  "PROW",
   "SCALE",
   "CHILD",
   "GRIT",
@@ -627,6 +631,11 @@ const words_medium = [
   "SPEAK",
   "MARK",
   "SPARK",
+  "WORDS",
+  "CURLS",
+  "FACES",
+  "SWIMS",
+  "PARKS",
 ].map(btoa);
 
 const words_hard = [
