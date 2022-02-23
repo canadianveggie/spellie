@@ -20,5 +20,4 @@ Differences from classic Wordle:
 
 Future enhancements:
 
-- help page
-- light/dark mode
+- See our [Issues](https://github.com/canadianveggie/spellie/issues) backlog
