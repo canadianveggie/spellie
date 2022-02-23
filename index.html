@@ -314,7 +314,11 @@
               :class="settings.case"
             >
               <div class="guesses-tile emoji-tile">
-                <span x-text="collectable.emoji"></span>
+                <img
+                  :src="getEmojiImage(collectable.emoji)"
+                  class="emoji-image"
+                  width="32"
+                />
               </div>
               <template x-for="letter in collectable.word">
                 <div class="guesses-tile match">
@@ -445,7 +449,7 @@
         x-cloak
         x-show="notice?.visible"
         @click="remove(notice?.id)"
-        x-text="notice?.text"
+        x-html="message"
         x-transition:enter="fadein"
       ></div>
     </main>
@@ -618,7 +622,7 @@
             (entry) => entry.word === this.currentWord
           );
           if (emoji && !alreadyFound) {
-            this.showNotice(`You unlocked ${emoji} !`);
+            this.showNotice(`You unlocked #${emoji}# !`);
           }
         },
         updateKeyboardForGuess(guess) {
@@ -1066,6 +1070,24 @@
         remove(id) {
           if (this.notice.id === id) {
             this.notice.visible = false;
+          }
+        },
+        message() {
+          if (!this.notice) return;
+          const stripped = this.notice.text.replace(/(<([^>]+)>)/gi, "");
+
+          // extract emoji between # characters
+          // (actually detecting with regex has too many edge cases)
+          const emojiMatch = stripped.match(/#(?<emoji>\S+)#/i);
+          if (!emojiMatch) {
+            return stripped;
+          } else {
+            const emojiImage = `<img src="${getEmojiImage(
+              emojiMatch.groups.emoji
+            )}" class="emoji-image" width="20" />`;
+            return stripped
+              .replace(/#/g, "")
+              .replace(emojiMatch.groups.emoji, emojiImage);
           }
         },
       };
