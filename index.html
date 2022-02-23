@@ -179,7 +179,7 @@
         <div class="guesses-grid">
           <template
             x-for="(guess, guessIndex) in guesses"
-            :key="`${level}-${guessIndex}`"
+            :key="`${gameId}-${guessIndex}`"
           >
             <div class="guesses-row" :class="settings.case">
               <template x-for="(letter, letterIndex) in guess">
@@ -190,7 +190,7 @@
                 >
                   <span
                     x-show="letter.letter"
-                    x-text="letter.letter"
+                    x-text="masked ? '' : letter.letter"
                     x-transition:enter="pop"
                   ></span>
                 </div>
@@ -217,7 +217,7 @@
             <span x-text="hint.message"></span>
           </div>
         </div>
-        <div x-show="solved" x-cloak>
+        <div x-show="solved && endGame" x-cloak>
           <div
             x-transition.enter.duration.1000ms
             x-transition.leave.duration.0ms
@@ -228,23 +228,36 @@
         </div>
         <div
           x-cloak
-          x-show="failed"
+          x-show="failed && endGame"
           x-transition:enter.duration.1000ms
           class="defeat"
         >
           Nice try! It was:
           <p x-text="target"></p>
         </div>
+        <div x-cloak x-show="showResetButtons" class="masked-game-buttons">
+          <button @click="masked ? unmask : mask">
+            <span x-text="masked ? 'Reveal' : 'Hide'"></span>
+            <i
+              class="material-icons"
+              aria-hidden="true"
+              x-text="masked ? 'visibility' : 'visibility_off'"
+            ></i>
+          </button>
+          <button @click="resetLevel">
+            Reset <i class="material-icons" aria-hidden="true">replay</i>
+          </button>
+        </div>
         <div class="keyboard">
           <template x-if="!solved && !failed">
             <template
               x-for="(keyboardRow, rowIndex) in keyboard"
-              :key="level + rowIndex"
+              :key="`${gameId}-${rowIndex}`"
             >
               <div class="keyboard-row">
                 <template
                   x-for="letter in keyboardRow"
-                  :key="level + letter.label"
+                  :key="`${gameId}-${letter.label}`"
                 >
                   <div
                     class="key"
@@ -514,6 +527,10 @@
         guesses: [],
         solved: false,
         failed: false,
+        masked: false,
+        endGame: false,
+        gameId: 0,
+        showResetButtons: false,
         hint: DEFAULT_HINT,
         currentGuessIndex: 0,
         cursor: 0,
@@ -814,6 +831,8 @@
             if (initialState.puzzleId !== this.puzzleId) {
               initialState = {};
             }
+            // Create a unique id for each game state so that we redraw the grid and keyboard properly
+            this.gameId += 1;
             this.level =
               initialState.level ||
               `${this.settings.difficulty}-${this.puzzleId}`;
@@ -826,6 +845,10 @@
               emptyGuesses(this.target.length, maxGuesses);
             this.solved = initialState.solved || false;
             this.failed = initialState.failed || false;
+            this.masked = this.solved || this.failed;
+            this.showResetButtons =
+              !this.endGame && (this.solved || this.failed);
+            this.endGame = false;
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
@@ -911,6 +934,7 @@
             guessWords: this.guessWords,
             ...this.guessWordDictionary,
           });
+          this.endGame = true;
           const statistics = this.getFromLocalStorage(
             "statistics",
             DEFAULT_STATISTICS
@@ -927,6 +951,16 @@
         },
         get unlockedEmojis() {
           return this.emojiCollection?.filter((e) => e.unlocked);
+        },
+        resetLevel() {
+          localStorage.removeItem(`game-state-${this.settings.difficulty}`);
+          this.loadGameState();
+        },
+        mask() {
+          this.masked = true;
+        },
+        unmask() {
+          this.masked = false;
         },
         toJson() {
           return {
