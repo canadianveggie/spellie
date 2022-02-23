@@ -307,34 +307,6 @@
               </div>
             </template>
           </div>
-
-          <!-- testing purposes only -->
-          <template x-for="(emoji, i) in emojis">
-            <div class="guesses-word" :class="settings.case">
-              <!-- original character -->
-              <div class="guesses-tile emoji-tile">
-                <span x-text="emoji"></span>
-              </div>
-              <!-- on default background -->
-              <div class="guesses-tile emoji-tile">
-                <img :src="getEmojiImage(emoji)" width="32" />
-              </div>
-              <!-- on default background, dark drop-shadow to compensate for poor contrast for blue/grey emojis -->
-              <div class="guesses-tile preview-light">
-                <img :src="getEmojiImage(emoji)" width="32" />
-              </div>
-              <!-- on dark background (like notice), white drop-shadow to compensate for dark emojis -->
-              <div class="guesses-tile preview-dark">
-                <img :src="getEmojiImage(emoji)" width="32" />
-              </div>
-              <template x-for="letter in i">
-                <div class="guesses-tile match">
-                  <span x-text="letter"></span>
-                </div>
-              </template>
-            </div>
-          </template>
-
           <template x-for="(collectable, i) in unlockedEmojis">
             <div
               class="guesses-word"
@@ -342,7 +314,11 @@
               :class="settings.case"
             >
               <div class="guesses-tile emoji-tile">
-                <span x-text="collectable.emoji"></span>
+                <img
+                  :src="getEmojiImage(collectable.emoji)"
+                  class="emoji-image"
+                  width="32"
+                />
               </div>
               <template x-for="letter in collectable.word">
                 <div class="guesses-tile match">
