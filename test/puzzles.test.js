@@ -26,6 +26,13 @@ describe("puzzles", () => {
         expect(word).toMatch(/^[A-Z]{5,6}$/);
       });
     });
+    it("no duplicates", () => {
+      const allWords = []
+        .concat(words.easy)
+        .concat(words.medium)
+        .concat(words.hard);
+      expect(allWords.length).toEqual([...new Set(allWords)].length);
+    });
   });
 
   describe("daysBetween", () => {
