@@ -954,6 +954,12 @@
         },
         resetLevel() {
           localStorage.removeItem(`game-state-${this.settings.difficulty}`);
+          amplitude.getInstance().logEvent("level_reset", {
+            level_name: this.level,
+            difficulty: this.settings.difficulty,
+            guesses: this.solved ? this.currentGuessIndex : null,
+            success: this.solved,
+          });
           this.loadGameState();
         },
         mask() {
