@@ -116,7 +116,6 @@ header nav {
   justify-content: center;
 }
 .nav-tabs .status {
-  /* filter: grayscale(1); */
   font: inherit;
   padding: 0 4px 0 0;
   font-size: 0.8rem;
@@ -387,6 +386,10 @@ main {
 
 .emoji-image {
   filter: drop-shadow(0px 0px 1px var(--emoji-outline, var(--color-nav)));
+}
+
+.notice .emoji-image {
+  filter: drop-shadow(0px 0px 0px #fff);
 }
 
 .cursor {

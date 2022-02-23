@@ -449,7 +449,7 @@
         x-cloak
         x-show="notice?.visible"
         @click="remove(notice?.id)"
-        x-text="notice?.text"
+        x-html="message"
         x-transition:enter="fadein"
       ></div>
     </main>
@@ -1055,8 +1055,6 @@
         notify(notice) {
           notice.id = Date.now();
           notice.visible = true;
-          // TODO: allow HTML for emoji unlock notices
-          // <img :src="getEmojiImage(emoji)" width="32" />
           this.notice = notice;
           const timeShown = 5 * 1000;
           setTimeout(() => {
@@ -1066,6 +1064,20 @@
         remove(id) {
           if (this.notice.id === id) {
             this.notice.visible = false;
+          }
+        },
+        message() {
+          if (!this.notice) return;
+          const stripped = this.notice.text.replace(/(<([^>]+)>)/gi, "");
+
+          const emojis = stripped.match(/[\p{Emoji}\u200d\ufe0f]+/gu);
+          if (!emojis) {
+            return stripped;
+          } else {
+            const emojiImage = `<img src="${getEmojiImage(
+              emojis.join("")
+            )}" class="emoji-image" width="20" />`;
+            return stripped.replace(emojis, emojiImage);
           }
         },
       };
