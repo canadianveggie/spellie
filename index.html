@@ -622,7 +622,7 @@
             (entry) => entry.word === this.currentWord
           );
           if (emoji && !alreadyFound) {
-            this.showNotice(`You unlocked ${emoji} !`);
+            this.showNotice(`You unlocked #${emoji}# !`);
           }
         },
         updateKeyboardForGuess(guess) {
@@ -1070,14 +1070,18 @@
           if (!this.notice) return;
           const stripped = this.notice.text.replace(/(<([^>]+)>)/gi, "");
 
-          const emojis = stripped.match(/[\p{Emoji}\u200d\ufe0f]+/gu);
-          if (!emojis) {
+          // extract emoji between # characters
+          // (actually detecting with regex has too many edge cases)
+          const emojiMatch = stripped.match(/#(?<emoji>\S+)#/i);
+          if (!emojiMatch) {
             return stripped;
           } else {
             const emojiImage = `<img src="${getEmojiImage(
-              emojis.join("")
+              emojiMatch.groups.emoji
             )}" class="emoji-image" width="20" />`;
-            return stripped.replace(emojis, emojiImage);
+            return stripped
+              .replace(/#/g, "")
+              .replace(emojiMatch.groups.emoji, emojiImage);
           }
         },
       };
