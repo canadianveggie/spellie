@@ -125,18 +125,6 @@ function lookupDay(date) {
     return "Thanksgiving (USA)";
   }
 
-  if (date.getMonth() === 6 - 1 && date.getDate() === 29) {
-    return "Astrid 🎂";
-  }
-  if (date.getMonth() === 5 - 1 && date.getDate() === 3) {
-    return "Anna 🎂";
-  }
-  if (date.getMonth() === 1 - 1 && date.getDate() === 17) {
-    return "Zoe 🎂";
-  }
-  if (date.getMonth() === 12 - 1 && date.getDate() === 15) {
-    return "Emily 🎂";
-  }
   return "";
 }
 
