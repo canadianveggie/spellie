@@ -219,7 +219,6 @@ main {
   aspect-ratio: 1/1;
   border: 2px solid var(--color-border);
   border-radius: 50%;
-  padding-bottom: 0.2em;
   font-size: 0.5rem;
   line-height: 1;
   background: var(--color-empty);
@@ -515,6 +514,16 @@ main {
   display: flex;
   justify-content: center;
   gap: 16px;
+}
+
+.settings-content .sharing-theme-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.settings-content .sharing-theme-row img {
+  vertical-align: middle;
 }
 
 .notice {
