@@ -398,6 +398,13 @@ const words_easy = [
   "UElOUw==",
   "TElNUA==",
   "U1BPVA==",
+  "U1VSRg==",
+  "UExVRw==",
+  "RkFSTQ==",
+  "QkFDSw==",
+  "WU9HQQ==",
+  "U0VMRg==",
+  "RklTVA==",
 ];
 
 const words_medium = [
@@ -807,6 +814,15 @@ const words_medium = [
   "UFVTSA==",
   "V0FUQ0g=",
   "RkxBVw==",
+  "U0hJTlk=",
+  "UlVMRVI=",
+  "UE9XRVI=",
+  "UElMT1Q=",
+  "T0xERVI=",
+  "UkFESU8=",
+  "UEFJTlQ=",
+  "Q1VSTFk=",
+  "Q09NRVQ=",
 ];
 
 const words_hard = [
@@ -1211,6 +1227,21 @@ const words_hard = [
   "Vk9ZQUdF",
   "Q1JPU1M=",
   "RkFVTFQ=",
+  "V0laQVJE",
+  "T1lTVEVS",
+  "U0hPUlRT",
+  "Uk9DS0VU",
+  "UklCQk9O",
+  "TFVOQVI=",
+  "Sk9LRVI=",
+  "RkVOQ0U=",
+  "Q0hFRVNF",
+  "Q0FTVExF",
+  "Q0FSUk9U",
+  "Q0FORExF",
+  "Q0FNRVJB",
+  "Qk9VTkNF",
+  "QVJUSVNU",
 ];
 
 const words = {
