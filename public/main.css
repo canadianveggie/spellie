@@ -516,6 +516,16 @@ main {
   gap: 16px;
 }
 
+.settings-content .sharing-theme-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.settings-content .sharing-theme-row img {
+  vertical-align: middle;
+}
+
 .notice {
   position: fixed;
   top: 8%;

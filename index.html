@@ -426,7 +426,7 @@
         <section>
           <h2>Sharing theme</h2>
           <template x-for="entries in Object.entries(emojiMatchThemes)">
-            <div>
+            <div class="sharing-theme-row">
               <input
                 :id="'sharing-emojis-' + entries[0]"
                 type="radio"
@@ -436,8 +436,24 @@
               />
               <label
                 :for="'sharing-emojis-' + entries[0]"
-                x-text="entries[1].match + entries[1].present + entries[1].miss"
-              ></label>
+                dddx-text="entries[1].match + entries[1].present + entries[1].miss"
+              >
+                <img
+                  :src="getEmojiImage(entries[1].match)"
+                  class="emoji-image"
+                  width="20"
+                />
+                <img
+                  :src="getEmojiImage(entries[1].present)"
+                  class="emoji-image"
+                  width="20"
+                />
+                <img
+                  :src="getEmojiImage(entries[1].miss)"
+                  class="emoji-image"
+                  width="20"
+                />
+              </label>
             </div>
           </template>
         </section>
