@@ -130,7 +130,7 @@ function lookupDay(date) {
 
 const date = new Date(2022, 2 - 1, 10, 12);
 const calendar = [];
-const days = Math.min(
+const days = Math.max(
   words.easy.length,
   words.medium.length,
   words.hard.length
