@@ -27,6 +27,9 @@ function lookupDay(date) {
   if (date.getMonth() === 4 - 1 && date.getDate() === 22) {
     return "Earth";
   }
+  if (date.getMonth() === 5 - 1 && date.getDate() === 4) {
+    return "May the Fourth";
+  }
   if (date.getMonth() === 6 - 1 && date.getDate() === 21) {
     return "Summer Solstice";
   }
