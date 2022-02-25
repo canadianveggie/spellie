@@ -306,6 +306,7 @@ const emojis = {
   MANGO: "🥭",
   MAPLE: "🍁",
   MASK: "😷",
+  MATH: "🔢",
   MEAT: "🍖",
   MEDAL: "🏅",
   MEGA: "📣",
