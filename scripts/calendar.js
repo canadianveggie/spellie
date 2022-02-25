@@ -12,6 +12,9 @@ function lookupDay(date) {
   if (date.getMonth() === 2 - 1 && date.getDate() === 14) {
     return "Valentine's";
   }
+  if (date.getMonth() === 3 - 1 && date.getDate() === 14) {
+    return "Pi Day";
+  }
   if (date.getMonth() === 3 - 1 && date.getDate() === 17) {
     return "St. Patrick's";
   }
