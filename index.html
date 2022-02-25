@@ -1002,7 +1002,7 @@
           return navigator?.share || navigator?.clipboard;
         },
         share() {
-          let title = "Spellie";
+          const title = "Spellie";
           let text;
           let shareType;
           if ((this.solved || this.failed) && this.page === "") {
@@ -1011,8 +1011,9 @@
             // 🕸️🕸️🌻🍀🕸️
             // 🍀🍀🕸️🍀🕸️
             // 🍀🍀🍀🍀🍀
-            title = `Spellie #${this.puzzleId} (${this.settings.difficulty})`;
-            text = guessesAsEmojis(this.guesses, this.settings.sharingEmojis);
+            text = `Spellie #${this.puzzleId} (${
+              this.settings.difficulty
+            })\n${guessesAsEmojis(this.guesses, this.settings.sharingEmojis)}`;
             shareType = "puzzle";
           } else if (
             this.page === "#collection" &&
@@ -1057,12 +1058,12 @@
 
           const shareData = {
             title,
-            text: `${text}\n`,
+            text,
           };
           if (navigator?.canShare?.(shareData) && onMobile()) {
             navigator.share(shareData);
           } else if (navigator?.clipboard) {
-            navigator.clipboard.writeText(`${title}\n${text}`);
+            navigator.clipboard.writeText(shareData.text);
             this.showNotice("Copied to clipboard");
           }
           amplitude.getInstance().logEvent("clicked_share", {
