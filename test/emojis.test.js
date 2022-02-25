@@ -15,6 +15,16 @@ describe("emojis", () => {
       }
     });
   });
+  it("keys are between 4-6 characters", () => {
+    Object.keys(emojis).forEach((key) => {
+      if (key.length < 4) {
+        throw new Error(`Emoji for ${key} is too short`);
+      }
+      if (key.length > 6) {
+        throw new Error(`Emoji for ${key} is too long`);
+      }
+    });
+  });
   it("unique keys", () => {
     // read file as string to avoid treating as JS
     // (object keys silently overwrite one another)
