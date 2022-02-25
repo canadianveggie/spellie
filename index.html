@@ -584,7 +584,7 @@
             const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
             if (
               deleteIndex >= 0 &&
-              this.currentGuess[deleteIndex].state !== "match" // keep easy mode freebie
+              this.currentGuess[deleteIndex].state !== "match" // keep freebie
             ) {
               this.currentGuess[deleteIndex].letter = "";
               if (this.cursorMode) {
@@ -703,7 +703,7 @@
           } else if (e.key === "ArrowLeft") {
             const nextCursorIndex = Math.max(0, this.cursor - 1);
             if (this.currentGuess[nextCursorIndex].state === "match") {
-              return; // don't allow reaching easy mode freebie
+              return; // don't allow reaching a freebie letter
             }
             this.cursor = nextCursorIndex;
             this.cursorMode = true;
@@ -781,12 +781,9 @@
           const victoryEmojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return victoryEmojis[this.currentGuessIndex - 1 ?? 5];
         },
-        /** First letter provided free on easy difficulty */
+        /** First letter provided free for 4-letter words */
         prepareFreebie() {
-          if (
-            this.settings.difficulty === "easy" &&
-            this.guesses[0][0].letter === ""
-          ) {
+          if (this.target.length <= 4 && this.guesses[0][0].letter === "") {
             this.addLetter({ type: "letter", label: this.target[0] });
             this.guesses[0][0].state = "match"; // set this already as signal to player
           }
