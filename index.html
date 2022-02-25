@@ -557,6 +557,7 @@
         cursorMode: false,
         keys: initialKeys(),
         emojiCollection: [],
+        newEmojis: [],
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -639,6 +640,7 @@
           );
           if (emoji && !alreadyFound) {
             this.showNotice(`You unlocked #${emoji}# !`);
+            this.newEmojis.push(emoji);
           }
         },
         updateKeyboardForGuess(guess) {
@@ -869,6 +871,7 @@
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
+            this.newEmojis = initialState.newEmojis || [];
             this.updateKeyboard();
             this.resetHint();
             this.prepareHint();
@@ -949,6 +952,8 @@
             guesses: this.solved ? this.currentGuessIndex : null,
             success: this.solved,
             guessWords: this.guessWords,
+            newEmojis: this.newEmojis,
+            newEmojiCount: this.newEmojis.length,
             emojiCount: this.unlockedEmojis.length,
             ...this.guessWordDictionary,
           });
@@ -997,6 +1002,7 @@
             currentGuessIndex: this.currentGuessIndex,
             cursor: this.cursor,
             cursorMode: this.cursorMode,
+            newEmojis: this.newEmojis,
           };
         },
         get canShare() {
