@@ -1,5 +1,6 @@
 // @ts-check
 
+const { emojis } = require("../public/emojis");
 const { getPuzzlesForDate, words } = require("../public/puzzles");
 
 function lookupDay(date) {
@@ -143,10 +144,16 @@ const days = Math.max(
 );
 for (let i = 0; i < days; i++) {
   const puzzles = getPuzzlesForDate(date);
+  const puzzleEmojis = Object.values(puzzles)
+    .map((word) => {
+      return emojis[word] || "  ";
+    })
+    .join("");
   const holiday = lookupDay(date);
   calendar.push({
     date: date.toISOString().split("T")[0],
     ...puzzles,
+    emojis: puzzleEmojis,
     holiday,
   });
   date.setDate(date.getDate() + 1);
