@@ -1026,20 +1026,20 @@
             this.page === "#collection" &&
             this.unlockedEmojis.length === 1
           ) {
-            // Spellie
-            // I collected my first emoji! 👩‍🦱
-            text = `I collected my first emoji! ${this.unlockedEmojis[0].emoji}`;
+            // I collected my first emoji in Spellie! 👩‍🦱
+            text = `I collected my first emoji in Spellie! ${this.unlockedEmojis[0].emoji}`;
             shareType = "emojis";
           } else if (
             this.page === "#collection" &&
             this.unlockedEmojis.length > 1
           ) {
-            // Spellie
-            // I've collected 10 emojis:
+            // I've collected 10 emojis in Spellie:
             // 🐈🐩5️⃣4️⃣👧🌳🖌️♟️🧗‍♀️👩‍🦱
             text = `I've collected ${
               this.unlockedEmojis.length
-            } emojis:\n${this.unlockedEmojis.map((e) => e.emoji).join("")}`;
+            } emojis in Spellie:\n${this.unlockedEmojis
+              .map((e) => e.emoji)
+              .join("")}`;
             shareType = "emojis";
           } else {
             // Spellie
@@ -1059,7 +1059,7 @@
               wordsMatch,
               this.settings.sharingEmojis
             );
-            text = `ⓦⓞⓡⓓ\n${wordsEmojis}\n🤔🤔🤔🤔\nⓗⓔⓡⓞ🦸`;
+            text = `Spellie\nⓦⓞⓡⓓ\n${wordsEmojis}\n🤔🤔🤔🤔\nⓗⓔⓡⓞ🦸`;
             shareType = "basic";
           }
 
