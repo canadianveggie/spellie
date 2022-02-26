@@ -21,13 +21,14 @@ const takenEmojis = Object.values(emojis);
 const takenKeys = Object.keys(emojis).map((key) => key.toLowerCase());
 
 // too new
+// TODO: allow 13 now that we're using twemojis
 const versionBlockList = ["13.0", "13.1", "13.2", "14.0"];
 
 const categoryBlockList = [
   "Smileys & Emotion",
   "Animals & Nature",
   "Travel & Places",
-  // below have been thoroughly reviewed:
+  // below have been thoroughly reviewed for version < 13:
   "Activities",
   "Flags",
   "Food & Drink",
