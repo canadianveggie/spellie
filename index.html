@@ -289,8 +289,8 @@
         </p>
         <p x-show="unlockedEmojis.length > 1">
           You've already found
-          <span x-text="unlockedEmojis.length"></span> emojis. That's
-          amazing!<br />I wonder if you can find any more.
+          <strong x-text="unlockedEmojis.length"></strong> emojis. That's
+          amazing!<br />Can you find any more?
         </p>
         <div class="collection-tiles">
           <div
@@ -328,6 +328,13 @@
             </div>
           </template>
         </div>
+        <p x-show="unlockedEmojis.length > 1">
+          Psst. There are over
+          <span
+            x-text="Math.floor(Object.keys(emojis).length / 100)  * 100"
+          ></span>
+          in total...
+        </p>
       </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <h1>Settings</h1>
@@ -915,14 +922,7 @@
           });
           this.emojiCollection = Object.entries(emojis)
             .sort((a, b) => {
-              // Sort by length, alphabetical
-              if (a[0].length < b[0].length) {
-                return -1;
-              } else if (a[0].length < b[0].length) {
-                return 1;
-              } else {
-                return a[0] - b[0];
-              }
+              return a[0] - b[0]; // Sort alphabetical
             })
             .map(([word, emoji]) => {
               return {
