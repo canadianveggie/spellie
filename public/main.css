@@ -516,6 +516,11 @@ main {
   vertical-align: middle;
 }
 
+.about-content a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 .notice {
   position: fixed;
   top: 8%;
