@@ -60,7 +60,13 @@
           <a href="#about" class="nav-link">
             <i class="material-icons">info</i>
           </a>
-          <a x-on:click="share" x-show="canShare" class="nav-link">
+          <a
+            @click="share"
+            @keyup.enter="share"
+            tabindex="0"
+            x-show="canShare"
+            class="nav-link"
+          >
             <i class="material-icons">share</i>
           </a>
           <a href="#collection" class="nav-link">
@@ -72,39 +78,24 @@
         </div>
       </nav>
       <div class="nav-tabs" x-cloak x-show="page === ''">
-        <div class="radio-toolbar">
-          <input
-            type="radio"
-            id="difficulty-easy"
-            value="easy"
-            x-model="settings.difficulty"
-            @change="updateDifficulty"
-          />
-          <label for="difficulty-easy">
-            <!-- <i
-              x-show="settings.difficulty === 'easy' && solved"
-              class="material-icons"
-              >check</i
-            > -->
-            Easy</label
-          >
-          <input
-            type="radio"
-            id="difficulty-medium"
-            value="medium"
-            x-model="settings.difficulty"
-            @change="updateDifficulty"
-          />
-          <label for="difficulty-medium">Medium</label>
-          <input
-            type="radio"
-            id="difficulty-hard"
-            value="hard"
-            x-model="settings.difficulty"
-            @change="updateDifficulty"
-          />
-          <label for="difficulty-hard">Hard</label>
-        </div>
+        <button
+          :class="{ 'active': settings.difficulty === 'easy' }"
+          @click="updateDifficulty('easy')"
+        >
+          Easy
+        </button>
+        <button
+          :class="{ 'active': settings.difficulty === 'medium' }"
+          @click="updateDifficulty('medium')"
+        >
+          Medium
+        </button>
+        <button
+          :class="{ 'active': settings.difficulty === 'hard' }"
+          @click="updateDifficulty('hard')"
+        >
+          Hard
+        </button>
       </div>
     </header>
     <main :class="`target-${target.length}`">
@@ -163,14 +154,16 @@
           <li>David Hirtle</li>
           <li>
             Many other
-            <a href="https://github.com/canadianveggie/spellie">contributors</a>
+            <a href="https://github.com/canadianveggie/spellie" target="_blank"
+              >contributors</a
+            >
           </li>
         </ul>
         <div class="social-links">
-          <a href="https://twitter.com/SpellieGame"
+          <a href="https://twitter.com/SpellieGame" target="_blank"
             ><img src="public/twitter.png"
           /></a>
-          <a href="https://github.com/canadianveggie/spellie"
+          <a href="https://github.com/canadianveggie/spellie" target="_blank"
             ><img src="public/github.png"
           /></a>
         </div>
@@ -263,6 +256,9 @@
                     class="key"
                     :class="[settings.case, 'key-' + letter.type, letter.state, hint.visible && letter.label === hint.letter ? 'pulse' : '']"
                     @click="addLetter(letter)"
+                    @keyup.enter.stop="addLetter(letter)"
+                    role="button"
+                    tabindex="0"
                   >
                     <template x-if="letter.type === 'back'">
                       <i class="material-icons">backspace</i>
@@ -316,8 +312,11 @@
               <div class="guesses-tile emoji-tile">
                 <img
                   :src="getEmojiImage(collectable.emoji)"
+                  :onerror="`this.onerror=null;this.replaceWith('${collectable.emoji}')`"
                   class="emoji-image"
                   width="32"
+                  height="32"
+                  :alt="collectable.word"
                 />
               </div>
               <template x-for="letter in collectable.word">
@@ -449,16 +448,25 @@
                   :src="getEmojiImage(entries[1].match)"
                   class="emoji-image"
                   width="20"
+                  height="20"
+                  :onerror="`this.onerror=null;this.replaceWith('${entries[1].match}')`"
+                  :alt="entries[1].match"
                 />
                 <img
                   :src="getEmojiImage(entries[1].present)"
                   class="emoji-image"
                   width="20"
+                  height="20"
+                  :onerror="`this.onerror=null;this.replaceWith('${entries[1].present}')`"
+                  :alt="entries[1].present"
                 />
                 <img
                   :src="getEmojiImage(entries[1].miss)"
                   class="emoji-image"
                   width="20"
+                  height="20"
+                  :onerror="`this.onerror=null;this.replaceWith('${entries[1].miss}')`"
+                  :alt="entries[1].miss"
                 />
               </label>
             </div>
@@ -915,10 +923,9 @@
           this.saveSettings();
           this.showNotice("Settings updated");
         },
-        updateDifficulty(e) {
+        updateDifficulty(value) {
+          this.settings.difficulty = value;
           this.saveSettings();
-          // release focus so that arrow key presses only affect puzzle
-          e.target?.blur();
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
@@ -1123,7 +1130,9 @@
           } else {
             const emojiImage = `<img src="${getEmojiImage(
               emojiMatch.groups.emoji
-            )}" class="emoji-image" width="20" />`;
+            )}" class="emoji-image" width="20" alt="${
+              emojiMatch.groups.emoji
+            }" />`;
             return stripped
               .replace(/#/g, "")
               .replace(emojiMatch.groups.emoji, emojiImage);
