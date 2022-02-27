@@ -177,7 +177,7 @@ function getHint(target, keys, settings) {
       const [firstFound] = Array.from(clusterLetters).filter((letter) =>
         combinedMatchPresent.has(letter)
       );
-      const [firstNotFound] = Array.from(clusterLetters).find(
+      const firstNotFound = Array.from(clusterLetters).find(
         (letter) => !combinedMatchPresent.has(letter)
       );
       if (firstFound && firstNotFound) {
