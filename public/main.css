@@ -104,6 +104,7 @@ header nav {
 }
 
 .nav-link {
+  display: inline-block;
   color: var(--color-bg);
   cursor: pointer;
 }
@@ -114,11 +115,28 @@ header nav {
   width: 100%;
   display: flex;
   justify-content: center;
+  gap: 4px;
+  font-weight: bold;
 }
-.nav-tabs .status {
+
+.nav-tabs button {
+  background: none;
+  border: none;
+  padding: 4px 10px;
+  margin: 0;
   font: inherit;
-  padding: 0 4px 0 0;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 4px 4px 0 0;
+  color: var(--color-title);
+}
+
+.nav-tabs button:hover {
+  cursor: pointer;
+}
+
+.nav-tabs .active {
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .title {
@@ -323,34 +341,6 @@ main {
 .key.present,
 .key.match {
   box-shadow: rgba(0, 0, 0, 30) 2px 2px;
-}
-
-.radio-toolbar {
-  display: flex;
-  gap: 4px;
-  font-weight: bold;
-}
-
-.radio-toolbar input[type="radio"] {
-  opacity: 0;
-  position: fixed;
-  width: 0;
-}
-
-.radio-toolbar label {
-  padding: 4px 10px;
-  font-size: 0.9rem;
-  border-radius: 4px 4px 0 0;
-  color: var(--color-title);
-}
-
-.radio-toolbar label:hover {
-  cursor: pointer;
-}
-
-.radio-toolbar input[type="radio"]:checked + label {
-  background-color: var(--color-bg);
-  color: var(--color-text);
 }
 
 .guesses-tile:nth-of-type(1) {

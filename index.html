@@ -60,7 +60,13 @@
           <a href="#about" class="nav-link">
             <i class="material-icons">info</i>
           </a>
-          <a x-on:click="share" x-show="canShare" class="nav-link">
+          <a
+            @click="share"
+            @keyup.enter="share"
+            tabindex="0"
+            x-show="canShare"
+            class="nav-link"
+          >
             <i class="material-icons">share</i>
           </a>
           <a href="#collection" class="nav-link">
@@ -72,39 +78,24 @@
         </div>
       </nav>
       <div class="nav-tabs" x-cloak x-show="page === ''">
-        <div class="radio-toolbar">
-          <input
-            type="radio"
-            id="difficulty-easy"
-            value="easy"
-            x-model="settings.difficulty"
-            @change="updateDifficulty"
-          />
-          <label for="difficulty-easy">
-            <!-- <i
-              x-show="settings.difficulty === 'easy' && solved"
-              class="material-icons"
-              >check</i
-            > -->
-            Easy</label
-          >
-          <input
-            type="radio"
-            id="difficulty-medium"
-            value="medium"
-            x-model="settings.difficulty"
-            @change="updateDifficulty"
-          />
-          <label for="difficulty-medium">Medium</label>
-          <input
-            type="radio"
-            id="difficulty-hard"
-            value="hard"
-            x-model="settings.difficulty"
-            @change="updateDifficulty"
-          />
-          <label for="difficulty-hard">Hard</label>
-        </div>
+        <button
+          :class="{ 'active': settings.difficulty === 'easy' }"
+          @click="updateDifficulty('easy')"
+        >
+          Easy
+        </button>
+        <button
+          :class="{ 'active': settings.difficulty === 'medium' }"
+          @click="updateDifficulty('medium')"
+        >
+          Medium
+        </button>
+        <button
+          :class="{ 'active': settings.difficulty === 'hard' }"
+          @click="updateDifficulty('hard')"
+        >
+          Hard
+        </button>
       </div>
     </header>
     <main :class="`target-${target.length}`">
@@ -263,6 +254,9 @@
                     class="key"
                     :class="[settings.case, 'key-' + letter.type, letter.state, hint.visible && letter.label === hint.letter ? 'pulse' : '']"
                     @click="addLetter(letter)"
+                    @keyup.enter.stop="addLetter(letter)"
+                    role="button"
+                    tabindex="0"
                   >
                     <template x-if="letter.type === 'back'">
                       <i class="material-icons">backspace</i>
@@ -911,10 +905,9 @@
           this.saveSettings();
           this.showNotice("Settings updated");
         },
-        updateDifficulty(e) {
+        updateDifficulty(value) {
+          this.settings.difficulty = value;
           this.saveSettings();
-          // release focus so that arrow key presses only affect puzzle
-          e.target?.blur();
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
