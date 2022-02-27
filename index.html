@@ -310,8 +310,11 @@
               <div class="guesses-tile emoji-tile">
                 <img
                   :src="getEmojiImage(collectable.emoji)"
+                  :onerror="`this.onerror=null;this.replaceWith('${collectable.emoji}')`"
                   class="emoji-image"
                   width="32"
+                  height="32"
+                  :alt="collectable.word"
                 />
               </div>
               <template x-for="letter in collectable.word">
@@ -443,16 +446,25 @@
                   :src="getEmojiImage(entries[1].match)"
                   class="emoji-image"
                   width="20"
+                  height="20"
+                  :onerror="`this.onerror=null;this.replaceWith('${entries[1].match}')`"
+                  :alt="entries[1].match"
                 />
                 <img
                   :src="getEmojiImage(entries[1].present)"
                   class="emoji-image"
                   width="20"
+                  height="20"
+                  :onerror="`this.onerror=null;this.replaceWith('${entries[1].present}')`"
+                  :alt="entries[1].present"
                 />
                 <img
                   :src="getEmojiImage(entries[1].miss)"
                   class="emoji-image"
                   width="20"
+                  height="20"
+                  :onerror="`this.onerror=null;this.replaceWith('${entries[1].miss}')`"
+                  :alt="entries[1].miss"
                 />
               </label>
             </div>
@@ -1112,7 +1124,9 @@
           } else {
             const emojiImage = `<img src="${getEmojiImage(
               emojiMatch.groups.emoji
-            )}" class="emoji-image" width="20" />`;
+            )}" class="emoji-image" width="20" alt="${
+              emojiMatch.groups.emoji
+            }" />`;
             return stripped
               .replace(/#/g, "")
               .replace(emojiMatch.groups.emoji, emojiImage);
