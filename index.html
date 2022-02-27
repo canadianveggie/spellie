@@ -808,18 +808,22 @@
             return;
           }
 
-          const hint = getHint(
-            this.target,
-            this.keys.filter((key) => key.type === "letter"),
-            this.settings
-          );
-          if (hint) {
-            this.hint = hint;
-            this.hint.timer = setTimeout(() => {
-              this.hint.available = true;
-            }, HINT_DELAY);
-          } else {
-            this.resetHint();
+          try {
+            const hint = getHint(
+              this.target,
+              this.keys.filter((key) => key.type === "letter"),
+              this.settings
+            );
+            if (hint) {
+              this.hint = hint;
+              this.hint.timer = setTimeout(() => {
+                this.hint.available = true;
+              }, HINT_DELAY);
+            } else {
+              this.resetHint();
+            }
+          } catch (e) {
+            console.error("Unable to prepare a hint.", e);
           }
         },
         resetHint() {
