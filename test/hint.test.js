@@ -29,7 +29,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "T").state = "present";
 
       const hint = getHint(target, keys, settings);
-      expect(hint).toHaveProperty("message", `How about a vowel like ⓔ?`);
+      expect(hint).toHaveProperty("message", "How about a vowel like ⓔ?");
       expect(hint).toHaveProperty("letter", "E");
     });
     it("uses settings.case", () => {
@@ -41,7 +41,7 @@ describe("hint", () => {
       const customSettings = { ...settings, ...{ case: "uppercase" } };
 
       const hint = getHint(target, keys, customSettings);
-      expect(hint).toHaveProperty("message", `How about a vowel like Ⓔ?`);
+      expect(hint).toHaveProperty("message", "How about a vowel like Ⓔ?");
     });
 
     it("multiples", () => {
@@ -50,7 +50,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "E").state = "present";
 
       const hint = getHint(target, keys, settings);
-      expect(hint).toHaveProperty("message", `There could be more than one ⓔ`);
+      expect(hint).toHaveProperty("message", "There could be more than one ⓔ");
       expect(hint).toHaveProperty("letter", "E");
     });
     it("cluster - ch", () => {
@@ -62,7 +62,7 @@ describe("hint", () => {
       const hint = getHint(target, keys, settings);
       expect(hint).toHaveProperty(
         "message",
-        `Did you know ⓗ and ⓒ often go together?`
+        "Did you know ⓗ and ⓒ often go together?"
       );
       expect(hint).toHaveProperty("letter", "C");
     });
@@ -75,9 +75,23 @@ describe("hint", () => {
       const hint = getHint(target, keys, settings);
       expect(hint).toHaveProperty(
         "message",
-        `Did you know ⓝ and ⓣ often go together?`
+        "Did you know ⓝ and ⓣ often go together?"
       );
       expect(hint).toHaveProperty("letter", "T");
+    });
+    it("cluster - when cluster already found", () => {
+      const target = "STEAM";
+      const keys = getDefaultKeys();
+      keys.find((key) => key.label === "S").state = "match";
+      keys.find((key) => key.label === "T").state = "match";
+      keys.find((key) => key.label === "A").state = "match";
+
+      const hint = getHint(target, keys, settings);
+      expect(hint).toHaveProperty(
+        "message",
+        "I just love the letter ⓔ, don't you?"
+      );
+      expect(hint).toHaveProperty("letter", "E");
     });
     it("e at the end", () => {
       const target = "GAME";
@@ -85,7 +99,7 @@ describe("hint", () => {
       keys.find((key) => key.label === "A").state = "present";
 
       const hint = getHint(target, keys, settings);
-      expect(hint).toHaveProperty("message", `Quite a few words end with ⓔ`);
+      expect(hint).toHaveProperty("message", "Quite a few words end with ⓔ");
       expect(hint).toHaveProperty("letter", "E");
     });
     it("first letter", () => {
@@ -96,7 +110,7 @@ describe("hint", () => {
       const hint = getHint(target, keys, settings);
       expect(hint).toHaveProperty(
         "message",
-        `I just love the letter ⓖ, don't you?`
+        "I just love the letter ⓖ, don't you?"
       );
       expect(hint).toHaveProperty("letter", "G");
     });
@@ -109,7 +123,7 @@ describe("hint", () => {
       const hint = getHint(target, keys, settings);
       expect(hint).toHaveProperty(
         "message",
-        `I just love the letter ⓤ, don't you?`
+        "I just love the letter ⓤ, don't you?"
       );
       expect(hint).toHaveProperty("letter", "U");
     });
@@ -133,7 +147,7 @@ describe("hint", () => {
       const hint = getHint(target, keys, settings);
       expect(hint).toHaveProperty(
         "message",
-        `It's definitely *not* these: ⓒ, ⓛ, ⓡ`
+        "It's definitely *not* these: ⓒ, ⓛ, ⓡ"
       );
       expect(hint).toHaveProperty("letter", undefined);
     });
