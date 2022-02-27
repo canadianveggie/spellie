@@ -712,10 +712,14 @@
               : "unavailable";
         },
         keyPressed(e) {
+          if (e.key === "Tab") return;
+
           if (e.key === "Enter" || e.key === " ") {
+            e.target.blur();
             this.addLetter({ type: "enter" });
             this.cursorMode = false;
           } else if (e.key === "Backspace") {
+            e.target.blur();
             this.addLetter({ type: "back" });
           } else if (e.key === "ArrowLeft") {
             const nextCursorIndex = Math.max(0, this.cursor - 1);
@@ -733,6 +737,7 @@
             !e.ctrlKey &&
             !e.metaKey
           ) {
+            e.target.blur(); // user is no longer navigating by tab
             this.addLetter({ type: "letter", label: e.key });
             this.cursorMode = false;
           }
