@@ -90,6 +90,65 @@ function hintLetter(letter, caseSetting) {
 }
 
 /**
+ * Convert keys into a usable state object
+ *
+ * @param {import("../types").KeyState[]} keys - the state of the keyboard
+ * @returns {import("../types").Knowledge}
+ */
+function keysToKnowledge(keys) {
+  return {
+    matches: keys
+      .filter((key) => key.state === "match")
+      .map((key) => key.label)
+      .sort(),
+    presents: keys
+      .filter((key) => key.state === "present")
+      .map((key) => key.label)
+      .sort(),
+    misses: keys
+      .filter((key) => key.state === "miss")
+      .map((key) => key.label)
+      .sort(),
+    availables: keys
+      .filter((key) => key.state === "available")
+      .map((key) => key.label)
+      .sort(),
+  };
+}
+
+/**
+ * Merges two Knowledge objects and ensures each letter is only present in one state
+ *
+ * @param {import("../types").Knowledge} k1
+ * @param {import("../types").Knowledge} k2
+ * @returns {import("../types").Knowledge}
+ */
+function combineKnowledge(k1, k2) {
+  const newKnowledge = {
+    matches: [...new Set([].concat(k1.matches).concat(k2.matches))].sort(),
+    presents: [...new Set([].concat(k1.presents).concat(k2.presents))].sort(),
+    misses: [...new Set([].concat(k1.misses).concat(k2.misses))].sort(),
+    availables: [
+      ...new Set([].concat(k1.availables).concat(k2.availables)),
+    ].sort(),
+  };
+
+  // If a letter is a match it can't also be present
+  newKnowledge.presents = newKnowledge.presents.filter(
+    (letter) => !newKnowledge.matches.includes(letter)
+  );
+  // Only letters not in any other state are available
+  newKnowledge.availables = newKnowledge.availables.filter(
+    (letter) =>
+      !newKnowledge.matches.includes(letter) &&
+      !newKnowledge.presents.includes(letter) &&
+      !newKnowledge.misses.includes(letter)
+  );
+
+  return newKnowledge;
+}
+
+/**
  * Provide a hint based on letters found so far and unique features of target.
  *
  * Goal: educate where possible and nudge in the right direction.
@@ -214,5 +273,5 @@ function getHint(target, keys, settings) {
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { getHint };
+  module.exports = { combineKnowledge, getHint, keysToKnowledge };
 }

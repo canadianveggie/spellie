@@ -1,6 +1,6 @@
 // @ts-check
 
-const { getHint } = require("../public/hint");
+const { getHint, keysToKnowledge } = require("../public/hint");
 
 /** @returns {import("../types").KeyState[]} */
 function getDefaultKeys() {
@@ -22,6 +22,28 @@ const settings = {
 };
 
 describe("hint", () => {
+  describe("keysToKnowledge", () => {
+    it("converts keys into knowledge", () => {
+      /** @type {import("../types").KeyState[]} */
+      const keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => ({
+        type: "letter",
+        label: letter,
+        state: "available",
+      }));
+      keys.find((key) => key.label === "T").state = "present";
+      keys.find((key) => key.label === "E").state = "miss";
+      keys.find((key) => key.label === "R").state = "match";
+
+      const knowledge = keysToKnowledge(keys);
+
+      expect(knowledge.matches).toEqual(["R"]);
+      expect(knowledge.presents).toEqual(["T"]);
+      expect(knowledge.misses).toEqual(["E"]);
+      expect(knowledge.misses.length).toEqual(1);
+      expect(knowledge.availables.length).toEqual(23);
+    });
+  });
+
   describe("getHint", () => {
     it("find a vowel", () => {
       const target = "FEET";

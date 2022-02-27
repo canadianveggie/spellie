@@ -23,6 +23,13 @@ export type KeyState = {
   state: "available" | "match" | "present" | "miss";
 };
 
+export type Knowledge = {
+  matches: string[];
+  presents: string[];
+  misses: string[];
+  availables: string[];
+};
+
 export type Settings = {
   difficulty: "easy" | "medium" | "hard";
   keyboardLayout: "atoz" | "qwerty";
