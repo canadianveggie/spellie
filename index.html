@@ -1022,7 +1022,7 @@
           };
         },
         get canShare() {
-          return navigator?.share || navigator?.clipboard;
+          return !!navigator?.share || !!navigator?.clipboard;
         },
         share() {
           const title = "Spellie";
@@ -1085,7 +1085,7 @@
           };
           if (navigator?.canShare?.(shareData) && onMobile()) {
             navigator.share(shareData);
-          } else if (navigator?.clipboard) {
+          } else if (!!navigator?.clipboard) {
             navigator.clipboard.writeText(shareData.text);
             this.showNotice("Copied to clipboard");
           }
