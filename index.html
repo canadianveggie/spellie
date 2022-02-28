@@ -1149,6 +1149,10 @@
 
     window.onerror = function (message, url, lineNo, columnNo, error) {
       try {
+        if (url?.includes("extension://")) {
+          // Ignore problems with extensions
+          return false;
+        }
         amplitude.getInstance().logEvent("error_encountered", {
           message,
           url: window.location.href,
