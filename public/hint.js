@@ -98,19 +98,19 @@ function hintLetter(letter, caseSetting) {
 function keysToKnowledge(keys) {
   return {
     matches: keys
-      .filter((key) => key.state === "match")
+      .filter((key) => key.type === "letter" && key.state === "match")
       .map((key) => key.label)
       .sort(),
     presents: keys
-      .filter((key) => key.state === "present")
+      .filter((key) => key.type === "letter" && key.state === "present")
       .map((key) => key.label)
       .sort(),
     misses: keys
-      .filter((key) => key.state === "miss")
+      .filter((key) => key.type === "letter" && key.state === "miss")
       .map((key) => key.label)
       .sort(),
     availables: keys
-      .filter((key) => key.state === "available")
+      .filter((key) => key.type === "letter" && key.state === "available")
       .map((key) => key.label)
       .sort(),
   };
@@ -125,12 +125,10 @@ function keysToKnowledge(keys) {
  */
 function combineKnowledge(k1, k2) {
   const newKnowledge = {
-    matches: [...new Set([].concat(k1.matches).concat(k2.matches))].sort(),
-    presents: [...new Set([].concat(k1.presents).concat(k2.presents))].sort(),
-    misses: [...new Set([].concat(k1.misses).concat(k2.misses))].sort(),
-    availables: [
-      ...new Set([].concat(k1.availables).concat(k2.availables)),
-    ].sort(),
+    matches: [...new Set(k1.matches.concat(k2.matches))].sort(),
+    presents: [...new Set(k1.presents.concat(k2.presents))].sort(),
+    misses: [...new Set(k1.misses.concat(k2.misses))].sort(),
+    availables: [...new Set(k1.availables.concat(k2.availables))].sort(),
   };
 
   // If a letter is a match it can't also be present
@@ -154,40 +152,30 @@ function combineKnowledge(k1, k2) {
  * Goal: educate where possible and nudge in the right direction.
  *
  * @param {string} target - the answer to today's puzzle
- * @param {import("../types").KeyState[]} keys - the state of the keyboard
+ * @param {import("../types").Knowledge} knowledge - the state of what we know
  * @param {import("../types").Settings} settings - game settings
  * @returns {import("../types").Hint | null}
  */
-function getHint(target, keys, settings) {
-  const match = keys
-    .filter((key) => key.state === "match")
-    .map((key) => key.label)
-    .sort();
-  const present = keys
-    .filter((key) => key.state === "present")
-    .map((key) => key.label)
-    .sort();
-
-  if (match.length + present.length === target.length) {
+function getHint(target, knowledge, settings) {
+  if (knowledge.matches.length + knowledge.presents.length === target.length) {
     return null;
   }
 
   const prettyLetter = (/** @type {string} */ letter) =>
     hintLetter(letter, settings.case);
 
-  if (match.length + present.length === target.length - 1) {
+  if (
+    knowledge.matches.length + knowledge.presents.length ===
+    target.length - 1
+  ) {
     // they're almost there, so don't just give the answer
     // instead, tell them a few things NOT in the answer
-    const remainingOptions = new Set(
-      keys.filter((key) => key.state === "available").map((key) => key.label)
-    );
     const hinted = [];
-    // TODO: should we randomize these so they'll be less likely to get a repeat hint?
     for (const letter of LETTERS_BY_FREQUENCY) {
       if (VOWELS.has(letter)) continue; // will usually have the vowel
       if (target.includes(letter)) continue;
 
-      if (remainingOptions.has(letter)) {
+      if (knowledge.availables.includes(letter)) {
         hinted.push(letter);
       }
       if (hinted.length >= 3) break;
@@ -201,8 +189,10 @@ function getHint(target, keys, settings) {
   }
 
   const targetLetters = target.split("");
-  const isVowelMatched = match.some((letter) => VOWELS.has(letter));
-  const isVowelPresent = present.some((letter) => VOWELS.has(letter));
+  const isVowelMatched = knowledge.matches.some((letter) => VOWELS.has(letter));
+  const isVowelPresent = knowledge.presents.some((letter) =>
+    VOWELS.has(letter)
+  );
 
   // first priority: find a vowel
   if (!isVowelMatched && !isVowelPresent) {
@@ -226,7 +216,9 @@ function getHint(target, keys, settings) {
 
   // common clusters:
   // if you have one of these matched/present, suggest the other
-  const combinedMatchPresent = new Set(match.concat(present));
+  const combinedMatchPresent = new Set(
+    knowledge.matches.concat(knowledge.presents)
+  );
   const clustersInTarget = CLUSTERS.filter((cluster) =>
     target.includes(cluster)
   );
@@ -251,8 +243,7 @@ function getHint(target, keys, settings) {
   }
 
   // e at the end is common
-  const eKey = keys.find((key) => key.label === "E");
-  if (target.endsWith("E") && eKey.state === "available") {
+  if (target.endsWith("E") && knowledge.availables.includes("E")) {
     return {
       message: `Quite a few words end with ${prettyLetter("E")}`,
       letter: "E",
@@ -261,7 +252,10 @@ function getHint(target, keys, settings) {
 
   // fallback: next unfound letter of the target
   for (const letter of targetLetters) {
-    if (!match.includes(letter) && !present.includes(letter)) {
+    if (
+      !knowledge.matches.includes(letter) &&
+      !knowledge.presents.includes(letter)
+    ) {
       return {
         message: `I just love the letter ${prettyLetter(letter)}, don't you?`,
         letter,

@@ -830,7 +830,7 @@
           try {
             const hint = getHint(
               this.target,
-              this.keys.filter((key) => key.type === "letter"),
+              keysToKnowledge(this.keys),
               this.settings
             );
             if (hint) {
