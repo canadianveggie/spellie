@@ -600,6 +600,7 @@
             const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
             if (
               deleteIndex >= 0 &&
+              deleteIndex < this.currentGuess.length &&
               this.currentGuess[deleteIndex].state !== "match" // keep freebie
             ) {
               this.currentGuess[deleteIndex].letter = "";
