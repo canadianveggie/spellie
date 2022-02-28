@@ -1157,5 +1157,22 @@
         },
       };
     }
+
+    window.onerror = function (message, url, lineNo, columnNo, error) {
+      try {
+        amplitude.getInstance().logEvent("error_encountered", {
+          message,
+          url: window.location.href,
+          source: `${url}:${lineNo}:${columnNo}`,
+          error: JSON.stringify(error),
+        });
+      } catch (err) {
+        // If we're having problems talking to amplitude
+        // Don't throw another error in here
+        console.error("Error encountered.", err);
+      }
+
+      return false;
+    };
   </script>
 </html>
