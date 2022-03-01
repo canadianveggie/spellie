@@ -125,10 +125,14 @@ function keysToKnowledge(keys) {
  */
 function combineKnowledge(k1, k2) {
   const newKnowledge = {
-    matches: [...new Set(k1.matches.concat(k2.matches))].sort(),
-    presents: [...new Set(k1.presents.concat(k2.presents))].sort(),
-    misses: [...new Set(k1.misses.concat(k2.misses))].sort(),
-    availables: [...new Set(k1.availables.concat(k2.availables))].sort(),
+    matches: [...new Set((k1.matches || []).concat(k2.matches || []))].sort(),
+    presents: [
+      ...new Set((k1.presents || []).concat(k2.presents || [])),
+    ].sort(),
+    misses: [...new Set((k1.misses || []).concat(k2.misses || []))].sort(),
+    availables: [
+      ...new Set((k1.availables || []).concat(k2.availables || [])),
+    ].sort(),
   };
 
   // If a letter is a match it can't also be present

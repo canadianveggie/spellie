@@ -92,11 +92,17 @@ describe("hint", () => {
         misses: [],
         availables: [],
       };
+      const partial1b = {
+        presents: ["A"],
+      };
       const partial2 = {
         matches: [],
         presents: [],
         misses: ["R", "S", "T"],
         availables: [],
+      };
+      const partial2b = {
+        misses: ["R", "S", "T"],
       };
       const expected1 = {
         matches: [],
@@ -115,6 +121,10 @@ describe("hint", () => {
       expect(combineKnowledge(partial1, noKnowledge)).toEqual(expected1);
       expect(combineKnowledge(noKnowledge, partial2)).toEqual(expected2);
       expect(combineKnowledge(partial2, noKnowledge)).toEqual(expected2);
+      expect(combineKnowledge(noKnowledge, partial1b)).toEqual(expected1);
+      expect(combineKnowledge(partial1b, noKnowledge)).toEqual(expected1);
+      expect(combineKnowledge(noKnowledge, partial2b)).toEqual(expected2);
+      expect(combineKnowledge(partial2b, noKnowledge)).toEqual(expected2);
 
       expect(
         combineKnowledge(combineKnowledge(noKnowledge, partial1), partial2)
