@@ -804,7 +804,10 @@
         },
         get victoryEmoji() {
           const victoryEmojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
-          return victoryEmojis[this.currentGuessIndex - 1 ?? 5];
+          return (
+            victoryEmojis[this.currentGuessIndex - 1] ||
+            victoryEmojis[victoryEmojis.length - 1]
+          );
         },
         /** First letter provided free for 4-letter words */
         prepareFreebie() {
