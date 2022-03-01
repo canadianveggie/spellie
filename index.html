@@ -478,8 +478,8 @@
         class="notice"
         @notice.window="notify($event.detail)"
         x-cloak
-        x-show="notice?.visible"
-        @click="remove(notice?.id)"
+        x-show="notice && notice.visible"
+        @click="remove(notice && notice.id)"
         x-html="message"
         x-transition:enter="fadein"
       ></div>
@@ -612,7 +612,7 @@
               this.updateControls();
             }
           } else if (letterState.type === "letter") {
-            if (this.cursor < this.currentGuess?.length) {
+            if (this.currentGuess && this.cursor < this.currentGuess.length) {
               this.currentGuess[this.cursor].letter =
                 letterState.label.toUpperCase();
               this.cursor += 1;
@@ -757,9 +757,10 @@
           return this.guesses[this.currentGuessIndex];
         },
         guessToWord(guess) {
-          return guess
-            ?.map((letterGuess) => letterGuess.letter || " ")
-            .join("");
+          return (
+            guess &&
+            guess.map((letterGuess) => letterGuess.letter || " ").join("")
+          );
         },
         get currentWord() {
           return this.guessToWord(this.currentGuess);
@@ -785,7 +786,8 @@
         },
         isCurrentWordComplete() {
           return (
-            this.currentWord?.length === this.target.length &&
+            this.currentWord &&
+            this.currentWord.length === this.target.length &&
             this.currentWord.indexOf(" ") < 0
           );
         },
@@ -990,7 +992,7 @@
           localStorage.setItem("statistics", JSON.stringify(statistics));
         },
         get unlockedEmojis() {
-          return this.emojiCollection?.filter((e) => e.unlocked);
+          return this.emojiCollection.filter((e) => e.unlocked);
         },
         resetLevel() {
           localStorage.removeItem(`game-state-${this.settings.difficulty}`);
@@ -1023,7 +1025,7 @@
           };
         },
         get canShare() {
-          return !!navigator?.share || !!navigator?.clipboard;
+          return !!navigator && (!!navigator.share || !!navigator.clipboard);
         },
         share() {
           const title = "Spellie";
@@ -1084,9 +1086,13 @@
             title,
             text,
           };
-          if (navigator?.canShare?.(shareData) && onMobile()) {
+          if (
+            !!navigator.canShare &&
+            navigator.canShare(shareData) &&
+            onMobile()
+          ) {
             navigator.share(shareData);
-          } else if (!!navigator?.clipboard) {
+          } else if (!!navigator.clipboard) {
             navigator.clipboard.writeText(shareData.text);
             this.showNotice("Copied to clipboard");
           }
@@ -1149,7 +1155,7 @@
 
     window.onerror = function (message, url, lineNo, columnNo, error) {
       try {
-        if (url?.includes("extension://")) {
+        if (url && url.includes("extension://")) {
           // Ignore problems with extensions
           return false;
         }
