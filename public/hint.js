@@ -184,6 +184,7 @@ function getHint(target, knowledge, settings) {
       const label = hinted.map(prettyLetter).sort().join(", ");
       return {
         message: `It's definitely *not* these: ${label}`,
+        misses: hinted,
       };
     }
   }

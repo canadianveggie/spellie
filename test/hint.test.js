@@ -261,6 +261,7 @@ describe("hint", () => {
         "It's definitely *not* these: ⓒ, ⓛ, ⓡ"
       );
       expect(hint).toHaveProperty("letter", undefined);
+      expect(hint).toHaveProperty("misses", ["R", "L", "C"]);
     });
   });
 });

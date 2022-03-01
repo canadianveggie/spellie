@@ -12,6 +12,8 @@ export type Hint = {
   message: string;
   /** to highlight on the keyboard */
   letter?: string;
+  /** letters that are definitely not in the target */
+  misses?: string[];
 };
 
 export type KeyState = {
