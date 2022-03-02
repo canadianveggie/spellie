@@ -193,6 +193,7 @@ main {
 .guesses-grid {
   min-height: 0;
   padding: 8px;
+  font-size: 1rem;
 }
 
 .target-4 {
@@ -237,26 +238,10 @@ main {
   aspect-ratio: 1/1;
   border: 2px solid var(--color-border);
   border-radius: 50%;
-  font-size: 0.5rem;
+  font-size: 1em; /* inherit from font-size of .guesses-grid, set via JS */
   line-height: 1;
   background: var(--color-empty);
   transition: background linear 0.5s;
-}
-
-@media screen and (min-height: 565px) {
-  .guesses-tile {
-    font-size: 1rem;
-  }
-}
-@media screen and (min-height: 650px) {
-  .guesses-tile {
-    font-size: 1.5rem;
-  }
-}
-@media screen and (min-height: 750px) {
-  .guesses-tile {
-    font-size: 2rem;
-  }
 }
 
 /* use fixed sizes for legacy safari */
@@ -493,7 +478,7 @@ main {
   width: 40px;
   height: 40px;
   padding: 0;
-  /* font-size: 1.5rem; */
+  font-size: 1.5rem;
 }
 
 .heavy-letter {
