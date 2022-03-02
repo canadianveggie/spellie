@@ -860,10 +860,8 @@
           });
           this.hint.visible = true;
           const newKnowledge = {
-            matches: [],
             presents: this.hint.letter ? [this.hint.letter] : [],
             misses: this.hint.misses || [],
-            availables: [],
           };
           this.hintKnowledge = combineKnowledge(
             this.hintKnowledge,
