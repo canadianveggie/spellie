@@ -273,5 +273,26 @@ describe("hint", () => {
       expect(hint).toHaveProperty("letter", undefined);
       expect(hint).toHaveProperty("misses", ["R", "L", "C"]);
     });
+    it("unique misses on subsequent hints", () => {
+      const target = "HUNT";
+      let knowledge = getKnowledge(["H", "U"], ["N"], ["S"]);
+
+      const expected_misses_array = [
+        ["R", "L", "C"],
+        ["D", "G", "P"],
+        ["M", "B", "K"],
+        ["W", "F", "Y"],
+        ["V", "J", "Z"],
+      ];
+      for (const expected_misses of expected_misses_array) {
+        const hint = getHint(target, knowledge, settings);
+        expect(hint).toHaveProperty("misses", expected_misses);
+
+        knowledge = combineKnowledge(knowledge, { misses: hint.misses });
+      }
+
+      const lastHint = getHint(target, knowledge, settings);
+      expect(lastHint).toHaveProperty("letter", "T");
+    });
   });
 });
