@@ -573,6 +573,7 @@
         keys: initialKeys(),
         emojiCollection: [],
         newEmojis: [],
+        hintKnowledge: {},
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
@@ -830,7 +831,7 @@
           try {
             const hint = getHint(
               this.target,
-              this.keys.filter((key) => key.type === "letter"),
+              combineKnowledge(keysToKnowledge(this.keys), this.hintKnowledge),
               this.settings
             );
             if (hint) {
@@ -858,6 +859,14 @@
             letter: this.hint.letter,
           });
           this.hint.visible = true;
+          const newKnowledge = {
+            presents: this.hint.letter ? [this.hint.letter] : [],
+            misses: this.hint.misses || [],
+          };
+          this.hintKnowledge = combineKnowledge(
+            this.hintKnowledge,
+            newKnowledge
+          );
         },
         showNotice(text) {
           window.dispatchEvent(
@@ -902,6 +911,7 @@
             this.cursor = initialState.cursor || 0;
             this.cursorMode = initialState.cursorMode || false;
             this.newEmojis = initialState.newEmojis || [];
+            this.hintKnowledge = initialState.hintKnowledge || {};
             this.updateKeyboard();
             this.resetHint();
             this.prepareHint();
@@ -1025,6 +1035,7 @@
             cursor: this.cursor,
             cursorMode: this.cursorMode,
             newEmojis: this.newEmojis,
+            hintKnowledge: this.hintKnowledge,
           };
         },
         get canShare() {

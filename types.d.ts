@@ -12,6 +12,8 @@ export type Hint = {
   message: string;
   /** to highlight on the keyboard */
   letter?: string;
+  /** letters that are definitely not in the target */
+  misses?: string[];
 };
 
 export type KeyState = {
@@ -21,6 +23,13 @@ export type KeyState = {
   label: string;
   /** keys start as "available" and update as user guesses (based on presence in the target word) */
   state: "available" | "match" | "present" | "miss";
+};
+
+export type Knowledge = {
+  matches?: string[];
+  presents?: string[];
+  misses?: string[];
+  availables?: string[];
 };
 
 export type Settings = {
