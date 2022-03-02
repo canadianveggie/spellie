@@ -250,6 +250,7 @@ main {
     min-height: 280px;
   }
   .guesses-row {
+    min-height: 32px;
     align-items: initial;
   }
   .guesses-tile {
