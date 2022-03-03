@@ -658,7 +658,7 @@ const emojis = {
  */
 function getUnicodeCodePoint(input) {
   const result = [];
-  for (let codePoint of input) {
+  for (const codePoint of input) {
     result.push(codePoint.codePointAt(0).toString(16));
   }
   return result.join("-");
