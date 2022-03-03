@@ -500,6 +500,7 @@
 
     const puzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
+    initScalingFontSize();
 
     // Add emoji keys to valid words
     // So that ELSA and ROFL are accepted
@@ -1171,6 +1172,49 @@
           }
         },
       };
+    }
+
+    function initScalingFontSize() {
+      if ("ResizeObserver" in window === false) {
+        amplitude.getInstance().logEvent("error_encountered", {
+          message: "ResizeObserver not supported",
+        });
+        return;
+      }
+
+      const MAX_FONT_SIZE = 48;
+      const grid = document.querySelector(".guesses-grid");
+
+      /** Set grid font, which in turn impacts all guess tiles */
+      function setGridFontSize(container) {
+        if (!container.offsetWidth) return;
+
+        let tileWidth;
+        const sampleTile = container.querySelector(".guesses-tile");
+        if (sampleTile && sampleTile.offsetWidth) {
+          // found a tile, so base it on the tile dimensions
+          tileWidth = sampleTile.offsetWidth;
+        } else if (container.offsetHeight < container.offsetWidth) {
+          // no tile (probably not yet rendered), so estimate it based on container
+          tileWidth = container.offsetHeight / 6;
+        } else {
+          tileWidth = container.offsetWidth / 6;
+        }
+
+        const fontSize = 0.7 * tileWidth;
+        // console.log("setting font size", fontSize, tileWidth);
+        grid.style.fontSize = Math.min(MAX_FONT_SIZE, fontSize) + "px";
+      }
+
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          if (entry.target) {
+            setGridFontSize(entry.target);
+          }
+        }
+      });
+
+      resizeObserver.observe(grid);
     }
 
     window.onerror = function (message, url, lineNo, columnNo, error) {
