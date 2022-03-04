@@ -4,9 +4,14 @@ module.exports = {
     commonjs: true,
     es2021: true,
   },
-  extends: ["eslint:recommended", "airbnb-base", "prettier"],
+  extends: [
+    "eslint:recommended",
+    "airbnb-base",
+    "plugin:compat/recommended",
+    "prettier",
+  ],
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: "2019", // no optional chaining / nullish coalescing
   },
   rules: {
     // allow it in for loops

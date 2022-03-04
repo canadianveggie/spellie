@@ -34,6 +34,12 @@
     "lint-staged": "^12.2.1",
     "prettier": "2.5.1"
   },
+  "browserslist": [
+    ">0.2%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead"
+  ],
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
