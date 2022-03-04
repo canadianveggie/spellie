@@ -320,6 +320,7 @@
                   :src="getEmojiImage(collectable.emoji)"
                   :onerror="`this.onerror=null;this.replaceWith('${collectable.emoji}')`"
                   class="emoji-image"
+                  :class="collectable.new ? 'pulse' : ''"
                   width="32"
                   height="32"
                   :alt="collectable.word"
