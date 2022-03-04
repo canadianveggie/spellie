@@ -70,6 +70,12 @@
             <i class="material-icons">share</i>
           </a>
           <a href="#collection" class="nav-link">
+            <span
+              class="nav-notification"
+              x-cloak
+              x-show="sessionNewEmojis.length > 0"
+              x-text="sessionNewEmojis.length"
+            ></span>
             <i class="material-icons">collections</i>
           </a>
           <a href="#settings" class="nav-link">
@@ -307,7 +313,7 @@
             <div
               class="guesses-word"
               x-show="collectable.unlocked"
-              :class="settings.case"
+              :class="[settings.case, collectable.new ? 'pulse' : '']"
             >
               <div class="guesses-tile emoji-tile">
                 <img
@@ -641,7 +647,6 @@
           });
           this.updateKeyboardForGuess(this.currentWord);
           this.checkEmojiGuess();
-          this.addToCollection(this.currentWord);
           this.solved = this.currentWord === this.target;
           this.currentGuessIndex += 1;
           if (this.solved) {
@@ -665,6 +670,18 @@
           if (emoji && !alreadyFound) {
             this.showNotice(`You unlocked #${emoji}# !`);
             this.newEmojis.push(emoji);
+            const collection = this.getFromLocalStorage("collection", {
+              unlocked: {},
+            });
+            collection.unlocked[this.currentWord] = {
+              date: new Date().toISOString(),
+            };
+            localStorage.setItem("collection", JSON.stringify(collection));
+            const collectable = this.emojiCollection.find(
+              (collectable) => collectable.word === this.currentWord
+            );
+            collectable.unlocked = true;
+            collectable.new = true;
           }
         },
         updateKeyboardForGuess(guess) {
@@ -971,19 +988,6 @@
               };
             });
         },
-        addToCollection(newWord) {
-          if (emojis[newWord]) {
-            const collection = this.getFromLocalStorage("collection", {
-              unlocked: {},
-            });
-            collection.unlocked[newWord] = { date: new Date().toISOString() };
-            localStorage.setItem("collection", JSON.stringify(collection));
-            const collectable = this.emojiCollection.find(
-              (collectable) => collectable.word === newWord
-            );
-            collectable.unlocked = true;
-          }
-        },
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {
             level_name: this.level,
@@ -1013,6 +1017,9 @@
         },
         get unlockedEmojis() {
           return this.emojiCollection.filter((e) => e.unlocked);
+        },
+        get sessionNewEmojis() {
+          return this.unlockedEmojis.filter((e) => e.new);
         },
         resetLevel() {
           localStorage.removeItem(`game-state-${this.settings.difficulty}`);
