@@ -313,7 +313,7 @@
             <div
               class="guesses-word"
               x-show="collectable.unlocked"
-              :class="[settings.case, collectable.new ? 'pulse' : '']"
+              :class="[settings.case]"
             >
               <div class="guesses-tile emoji-tile">
                 <img
@@ -326,7 +326,10 @@
                 />
               </div>
               <template x-for="letter in collectable.word">
-                <div class="guesses-tile match">
+                <div
+                  class="guesses-tile"
+                  :class="collectable.new ? 'present' : 'match'"
+                >
                   <span x-text="letter"></span>
                 </div>
               </template>
