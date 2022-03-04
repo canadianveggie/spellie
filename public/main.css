@@ -111,9 +111,9 @@ header nav {
 }
 
 .nav-notification {
-  background-color: red;
+  background-color: var(--color-present);
   border-radius: 50%;
-  color: var(--color-title);
+  color: var(--color-text);
 
   padding: 0px 3px;
   font-size: 10px;
