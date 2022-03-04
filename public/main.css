@@ -105,8 +105,22 @@ header nav {
 
 .nav-link {
   display: inline-block;
+  position: relative;
   color: var(--color-bg);
   cursor: pointer;
+}
+
+.nav-notification {
+  background-color: var(--color-present);
+  border-radius: 50%;
+  color: var(--color-text);
+
+  padding: 0px 3px;
+  font-size: 10px;
+
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .nav-tabs {
