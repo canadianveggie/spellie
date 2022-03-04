@@ -25,6 +25,9 @@ describe("emojis", () => {
       }
     });
   });
+  it("keys are sorted", () => {
+    expect(Object.keys(emojis)).toEqual(Object.keys(emojis).sort());
+  });
   it("unique keys", () => {
     // read file as string to avoid treating as JS
     // (object keys silently overwrite one another)
