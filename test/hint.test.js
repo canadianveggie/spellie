@@ -6,11 +6,6 @@ const {
   keysToKnowledge,
 } = require("../public/hint");
 
-/** @returns {import("../types").Knowledge} */
-function getDefaultKnowledge() {
-  return getKnowledge([], [], []);
-}
-
 /**
  * @param {string[]} matches
  * @param {string[]} presents
@@ -29,6 +24,11 @@ function getKnowledge(matches, presents, misses) {
       );
     }),
   };
+}
+
+/** @returns {import("../types").Knowledge} */
+function getDefaultKnowledge() {
+  return getKnowledge([], [], []);
 }
 
 /** @type {import("../types").Settings} */
@@ -277,16 +277,16 @@ describe("hint", () => {
       const target = "HUNT";
       let knowledge = getKnowledge(["H", "U"], ["N"], ["S"]);
 
-      const expected_misses_array = [
+      const expectedMissesArray = [
         ["R", "L", "C"],
         ["D", "G", "P"],
         ["M", "B", "K"],
         ["W", "F", "Y"],
         ["V", "J", "Z"],
       ];
-      for (const expected_misses of expected_misses_array) {
+      for (const expectedMisses of expectedMissesArray) {
         const hint = getHint(target, knowledge, settings);
-        expect(hint).toHaveProperty("misses", expected_misses);
+        expect(hint).toHaveProperty("misses", expectedMisses);
 
         knowledge = combineKnowledge(knowledge, { misses: hint.misses });
       }

@@ -1,4 +1,4 @@
-const { isMobileBrowser } = require("../public/mobileCheck.js");
+const { isMobileBrowser } = require("../public/mobileCheck");
 
 describe("mobileCheck", () => {
   it("isMobileBrowser", () => {

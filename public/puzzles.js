@@ -1,7 +1,7 @@
 // @ts-check
 
 // spoiler alert
-const words_easy = [
+const wordsEasy = [
   "VE9MRA==",
   "UE9ORA==",
   "V09SRA==",
@@ -417,7 +417,7 @@ const words_easy = [
   "V0lTSA==",
 ];
 
-const words_medium = [
+const wordsMedium = [
   "UExPVA==",
   "Rk9VTkQ=",
   "VEhJTks=",
@@ -833,7 +833,7 @@ const words_medium = [
   "TUVUQUw=",
 ];
 
-const words_hard = [
+const wordsHard = [
   "U0FVQ1k=",
   "TE9ZQUw=",
   "Q1JBTkU=",
@@ -1250,9 +1250,9 @@ const words_hard = [
 ];
 
 const words = {
-  easy: words_easy.map(atob),
-  medium: words_medium.map(atob),
-  hard: words_hard.map(atob),
+  easy: wordsEasy.map(atob),
+  medium: wordsMedium.map(atob),
+  hard: wordsHard.map(atob),
 };
 
 const start = new Date(2022, 2 - 1, 10);
@@ -1287,31 +1287,30 @@ function getTodayPuzzles() {
 }
 
 function compareTargetAndGuess(target, guess) {
-  target = target.toUpperCase();
-  guess = guess.toUpperCase();
-  const length = target.length;
+  const targetUpper = target.toUpperCase();
+  const guessUpper = guess.toUpperCase();
+  const { length } = targetUpper;
   const result = Array(length);
   const letterUsed = Array(length).fill(false);
 
   // 1st pass - matches
   for (let i = 0; i < length; i++) {
-    if (target[i] === guess[i]) {
+    if (targetUpper[i] === guessUpper[i]) {
       result[i] = "match";
       letterUsed[i] = true;
     }
   }
 
   // 2nd pass - miss and present positions
-  for (let i = 0; i < target.length; i++) {
+  for (let i = 0; i < targetUpper.length; i++) {
     if (result[i] !== "match") {
-      const otherLetters = target.split("").map((letter, j) => {
+      const otherLetters = targetUpper.split("").map((letter, j) => {
         if (i === j || letterUsed[j]) {
           return "";
-        } else {
-          return letter;
         }
+        return letter;
       });
-      const targetIndex = otherLetters.indexOf(guess[i]);
+      const targetIndex = otherLetters.indexOf(guessUpper[i]);
       if (targetIndex >= 0) {
         result[i] = "present";
         letterUsed[targetIndex] = true;
@@ -1365,13 +1364,9 @@ function randomEmojiMatchTheme() {
 function guessesAsEmojis(guesses, theme) {
   const emojiTheme = emojiMatchThemes[theme] || randomEmojiMatchTheme();
   return guesses
-    .map((guess) => {
-      return guess
-        .map((letter) => {
-          return emojiTheme[letter.state] || "";
-        })
-        .join("");
-    })
+    .map((guess) =>
+      guess.map((letter) => emojiTheme[letter.state] || "").join("")
+    )
     .join("\n")
     .trim();
 }
@@ -1382,7 +1377,9 @@ if (typeof module !== "undefined") {
     daysBetween,
     compareTargetAndGuess,
     emojiMatchThemes,
-    guessesAsEmojis,
     getPuzzlesForDate,
+    getTodayPuzzles,
+    getTodayPuzzleId,
+    guessesAsEmojis,
   };
 }
