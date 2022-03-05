@@ -2,7 +2,7 @@
 
 A kid-friendly version of the popular Wordle game
 
-[Try it out](https://spelliegame.com)
+Try it out: [Spellie - Wordle for Kids](https://spelliegame.com)
 
 Differences from classic Wordle:
 
@@ -11,7 +11,7 @@ Differences from classic Wordle:
   - Easy is appropriate for K-2 and has hints and help
   - Medium is appropriate for Grade 3 and has hints
   - Hard mode is challenging enough for adults, but with words that any Grade 4 student can spell
-- 400+ emojis that you can collect as rewards for spelling and imagination
+- 600+ emojis that you can collect as rewards for spelling and imagination
 - Brighter, more kid friendly colours
 - Kid-friendly font with either uppercase or lowercase letters
 - Letters can be entered in any order
