@@ -3,8 +3,12 @@ module.exports = {
     browser: true,
     commonjs: true,
     es2021: true,
+    jest: true,
   },
-  plugins: ["html"],
+  plugins: [
+    "html", // lint index.html too
+    "only-warn", // downgrade all to warnings for now
+  ],
   extends: [
     "eslint:recommended",
     "airbnb-base",
@@ -15,11 +19,16 @@ module.exports = {
     ecmaVersion: "2019", // no optional chaining / nullish coalescing
   },
   rules: {
+    // allow warn and error
+    "no-console": ["error", { allow: ["warn", "error"] }],
+
+    // sometimes it's more readable
+    "arrow-body-style": "off",
+    "consistent-return": "off",
+    "no-continue": "off",
+
     // allow it in for loops
     "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
-
-    // continue is useful
-    "no-continue": "off",
 
     // override airbnb default to allow for...of
     // see https://github.com/airbnb/javascript/issues/1271#issuecomment-281254652
@@ -44,6 +53,12 @@ module.exports = {
         message:
           "`with` is disallowed in strict mode because it makes code impossible to predict and optimize.",
       },
+    ],
+
+    // function declarations are hoisted and it leads to more readable code
+    "no-use-before-define": [
+      "error",
+      { functions: false, classes: true, variables: true },
     ],
   },
 };

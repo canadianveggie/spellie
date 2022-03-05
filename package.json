@@ -18,7 +18,7 @@
     "test": "jest --verbose --watch",
     "test:ci": "jest",
     "lint": "npm run lint:eslint && npm run lint:prettier",
-    "lint:eslint": "eslint index.html public",
+    "lint:eslint": "eslint index.html public test",
     "lint:prettier": "prettier --check '**/*.{css,js,html}'",
     "prepare": "husky install"
   },
@@ -30,6 +30,7 @@
     "eslint-plugin-compat": "^4.0.2",
     "eslint-plugin-html": "^6.2.0",
     "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-only-warn": "^1.0.3",
     "husky": "^7.0.4",
     "jest": "^27.4.7",
     "lint-staged": "^12.2.1",

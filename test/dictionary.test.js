@@ -1,4 +1,4 @@
-const { validWords } = require("../public/dictionary.js");
+const { validWords } = require("../public/dictionary");
 const { emojis } = require("../public/emojis");
 const { words } = require("../public/puzzles");
 

@@ -503,7 +503,7 @@
   <script src="public/mobileCheck.js"></script>
   <script src="public/dictionary.js"></script>
   <script>
-    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getTodayPuzzles, getTodayPuzzleId, guessesAsEmojis, onMobile, validWords */
+    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getTodayPuzzles, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
 
     const identify = new amplitude.Identify().set(
       "host",
@@ -551,7 +551,7 @@
       return guesses;
     }
 
-    /* exported gameState */
+    // eslint-disable-next-line no-unused-vars
     function gameState() {
       const DEFAULT_SETTINGS = {
         difficulty: "easy", // easy, medium, hard
@@ -577,7 +577,7 @@
 
       return {
         settings: {}, // placeholder until x-init
-        page: location.hash,
+        page: window.location.hash,
         puzzleId,
         target: "",
         guesses: [],
@@ -688,7 +688,7 @@
             };
             localStorage.setItem("collection", JSON.stringify(collection));
             const collectable = this.emojiCollection.find(
-              (collectable) => collectable.word === this.currentWord
+              (c) => c.word === this.currentWord
             );
             collectable.unlocked = true;
             collectable.new = true;
@@ -801,9 +801,9 @@
           return this.guessToWord(this.currentGuess);
         },
         get guessWords() {
-          return this.guesses.slice(0, this.currentGuessIndex).map((guess) => {
-            return this.guessToWord(guess);
-          });
+          return this.guesses
+            .slice(0, this.currentGuessIndex)
+            .map((guess) => this.guessToWord(guess));
         },
         get guessWordDictionary() {
           return this.guessWords.reduce((dict, guessWord, i) => {
@@ -812,9 +812,7 @@
           }, {});
         },
         get guessEmojis() {
-          return this.guessWords.map((guessWord) => {
-            return emojis[guessWord];
-          });
+          return this.guessWords.map((guessWord) => emojis[guessWord]);
         },
         get onLastGuess() {
           return this.currentGuessIndex === maxGuesses - 1;
@@ -989,16 +987,14 @@
             unlocked: {},
           });
           this.emojiCollection = Object.entries(emojis)
-            .sort((a, b) => {
-              return a[0] - b[0]; // Sort alphabetical
-            })
-            .map(([word, emoji]) => {
-              return {
-                word,
-                emoji,
-                unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
-              };
-            });
+            .sort(
+              (a, b) => a[0] - b[0] // Sort alphabetical
+            )
+            .map(([word, emoji]) => ({
+              word,
+              emoji,
+              unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
+            }));
         },
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {
@@ -1151,9 +1147,8 @@
           const value = localStorage.getItem(key);
           if (value) {
             return JSON.parse(value);
-          } else {
-            return defaultValue;
           }
+          return defaultValue;
         },
       };
     }
@@ -1184,16 +1179,15 @@
           const emojiMatch = stripped.match(/#(?<emoji>\S+)#/i);
           if (!emojiMatch) {
             return stripped;
-          } else {
-            const emojiImage = `<img src="${getEmojiImage(
-              emojiMatch.groups.emoji
-            )}" class="emoji-image" width="20" alt="${
-              emojiMatch.groups.emoji
-            }" />`;
-            return stripped
-              .replace(/#/g, "")
-              .replace(emojiMatch.groups.emoji, emojiImage);
           }
+          const emojiImage = `<img src="${getEmojiImage(
+            emojiMatch.groups.emoji
+          )}" class="emoji-image" width="20" alt="${
+            emojiMatch.groups.emoji
+          }" />`;
+          return stripped
+            .replace(/#/g, "")
+            .replace(emojiMatch.groups.emoji, emojiImage);
         },
       };
     }
