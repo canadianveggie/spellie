@@ -503,6 +503,8 @@
   <script src="public/mobileCheck.js"></script>
   <script src="public/dictionary.js"></script>
   <script>
+    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getTodayPuzzles, getTodayPuzzleId, guessesAsEmojis, onMobile, validWords */
+
     const identify = new amplitude.Identify().set(
       "host",
       window.location.hostname
@@ -549,6 +551,7 @@
       return guesses;
     }
 
+    /* exported gameState */
     function gameState() {
       const DEFAULT_SETTINGS = {
         difficulty: "easy", // easy, medium, hard
@@ -719,11 +722,11 @@
           this.updateControls();
         },
         get keyboard() {
-          const a_z = ["ABCDEFGHI", "JKLMNOPQR", "STUVWXYZ"];
+          const aToZ = ["ABCDEFGHI", "JKLMNOPQR", "STUVWXYZ"];
           const qwerty = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
           const layout =
-            this.settings.keyboardLayout === "qwerty" ? qwerty : a_z;
+            this.settings.keyboardLayout === "qwerty" ? qwerty : aToZ;
           const keyboard = [];
           layout.forEach((row) => {
             const rowKeys = row.split("").map((letter) => {
@@ -1223,12 +1226,11 @@
         }
 
         const fontSize = 0.7 * tileWidth;
-        // console.log("setting font size", fontSize, tileWidth);
-        grid.style.fontSize = Math.min(MAX_FONT_SIZE, fontSize) + "px";
+        grid.style.fontSize = `${Math.min(MAX_FONT_SIZE, fontSize)}px`;
       }
 
       const resizeObserver = new ResizeObserver((entries) => {
-        for (let entry of entries) {
+        for (const entry of entries) {
           if (entry.target) {
             setGridFontSize(entry.target);
           }
@@ -1238,7 +1240,7 @@
       resizeObserver.observe(grid);
     }
 
-    window.onerror = function (message, url, lineNo, columnNo, error) {
+    window.onerror = function onError(message, url, lineNo, columnNo, error) {
       try {
         if (url && url.includes("extension://")) {
           // Ignore problems with extensions
