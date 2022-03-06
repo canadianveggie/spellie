@@ -1,0 +1,15 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": ["stylelint-no-unsupported-browser-features"],
+  "rules": {
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
+    "custom-property-empty-line-before": null,
+    "no-descending-specificity ": null,
+    "rule-empty-line-before": null
+  }
+}
