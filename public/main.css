@@ -526,9 +526,13 @@ main {
   position: fixed;
   top: 8%;
   bottom: auto;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  /* transform: translateX(-50%); */
   min-width: 250px;
+  width: fit-content;
+  max-width: 500px;
   z-index: 1;
   text-align: center;
   align-items: center;
