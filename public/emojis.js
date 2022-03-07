@@ -80,7 +80,7 @@ const emojis = {
   BROWN: "🟤",
   BRUSH: "🖌️",
   BUCKET: "🪣",
-  BUGS: "🐞",
+  BUGS: "🪲",
   BUILD: "👷",
   BULB: "💡",
   BUNCH: "💐",
