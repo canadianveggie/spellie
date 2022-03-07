@@ -17,9 +17,10 @@
     "start": "python -m SimpleHTTPServer",
     "test": "jest --verbose --watch",
     "test:ci": "jest",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
-    "lint:eslint": "eslint index.html public test",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:prettier",
+    "lint:js": "eslint index.html public test",
     "lint:prettier": "prettier --check '**/*.{css,js,html}'",
+    "lint:css": "stylelint '**/*.css'",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -34,13 +35,15 @@
     "husky": "^7.0.4",
     "jest": "^27.4.7",
     "lint-staged": "^12.2.1",
-    "prettier": "2.5.1"
+    "prettier": "2.5.1",
+    "stylelint": "^14.5.3",
+    "stylelint-config-standard": "^25.0.0"
   },
   "browserslist": [
     ">0.5%",
     "last 2 versions",
-    "Firefox ESR",
-    "not IE 11",
+    "not ie <= 11",
+    "not op_mini all",
     "not dead"
   ],
   "lint-staged": {
