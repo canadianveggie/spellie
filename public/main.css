@@ -529,7 +529,6 @@ main {
   margin: 0 auto;
   left: 0;
   right: 0;
-  /* transform: translateX(-50%); */
   min-width: 250px;
   width: fit-content;
   max-width: 500px;
