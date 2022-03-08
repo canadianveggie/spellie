@@ -1,5 +1,7 @@
 // @ts-check
 
+// NOTE: this file should require('./wordHints') instead of using global
+
 const VOWELS = new Set("AEIOU".split(""));
 const CLUSTERS = ["ST", "TH", "CH", "SH", "NT", "CK", "ND"];
 
@@ -150,6 +152,8 @@ function combineKnowledge(k1, k2) {
   return newKnowledge;
 }
 
+const finalGuessIndex = 6 - 1;
+
 /**
  * Provide a hint based on letters found so far and unique features of target.
  *
@@ -158,11 +162,29 @@ function combineKnowledge(k1, k2) {
  * @param {string} target - the answer to today's puzzle
  * @param {import("../types").Knowledge} knowledge - the state of what we know
  * @param {import("../types").Settings} settings - game settings
+ * @param {number} guessIndex - 0-based guess number
  * @returns {import("../types").Hint | null}
  */
-function getHint(target, knowledge, settings) {
+function getHint(target, knowledge, settings, guessIndex) {
   if (knowledge.matches.length + knowledge.presents.length === target.length) {
     return null;
+  }
+
+  // last chance, so provide a strong hint
+  const wordHint = window.wordHints[target];
+  if (guessIndex === finalGuessIndex) {
+    if (wordHint && wordHint.emoji) {
+      return { message: wordHint.emoji };
+    }
+    if (wordHint && wordHint.category) {
+      return { message: wordHint.category };
+    }
+  }
+
+  if (guessIndex === finalGuessIndex - 1) {
+    if (wordHint && wordHint.category) {
+      return { message: wordHint.category };
+    }
   }
 
   const prettyLetter = (/** @type {string} */ letter) =>

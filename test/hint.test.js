@@ -1,5 +1,6 @@
 // @ts-check
 
+require("../public/wordHints");
 const {
   combineKnowledge,
   getHint,
@@ -169,7 +170,7 @@ describe("hint", () => {
       const target = "FEET";
       const knowledge = getKnowledge([], ["T"], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 2);
       expect(hint).toHaveProperty("message", "How about a vowel like ⓔ?");
       expect(hint).toHaveProperty("letter", "E");
     });
@@ -180,7 +181,7 @@ describe("hint", () => {
       /** @type {import("../types").Settings} */
       const customSettings = { ...settings, ...{ case: "uppercase" } };
 
-      const hint = getHint(target, knowledge, customSettings);
+      const hint = getHint(target, knowledge, customSettings, 2);
       expect(hint).toHaveProperty("message", "How about a vowel like Ⓔ?");
     });
 
@@ -188,7 +189,7 @@ describe("hint", () => {
       const target = "FEET";
       const knowledge = getKnowledge([], ["E"], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 3);
       expect(hint).toHaveProperty("message", "There could be more than one ⓔ");
       expect(hint).toHaveProperty("letter", "E");
     });
@@ -196,7 +197,7 @@ describe("hint", () => {
       const target = "CHAT";
       const knowledge = getKnowledge([], ["A", "H"], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 3);
       expect(hint).toHaveProperty(
         "message",
         "Did you know ⓗ and ⓒ often go together?"
@@ -207,7 +208,7 @@ describe("hint", () => {
       const target = "DENT";
       const knowledge = getKnowledge(["N"], ["E"], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 3);
       expect(hint).toHaveProperty(
         "message",
         "Did you know ⓝ and ⓣ often go together?"
@@ -218,7 +219,7 @@ describe("hint", () => {
       const target = "STEAM";
       const knowledge = getKnowledge(["S", "T", "A"], [], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 3);
       expect(hint).toHaveProperty(
         "message",
         "I just love the letter ⓔ, don't you?"
@@ -229,7 +230,7 @@ describe("hint", () => {
       const target = "GAME";
       const knowledge = getKnowledge([], ["A"], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 2);
       expect(hint).toHaveProperty("message", "Quite a few words end with ⓔ");
       expect(hint).toHaveProperty("letter", "E");
     });
@@ -237,7 +238,7 @@ describe("hint", () => {
       const target = "GAME";
       const knowledge = getKnowledge([], ["E"], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 3);
       expect(hint).toHaveProperty(
         "message",
         "I just love the letter ⓖ, don't you?"
@@ -248,7 +249,7 @@ describe("hint", () => {
       const target = "HOUR";
       const knowledge = getKnowledge(["H", "O"], [], []);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 3);
       expect(hint).toHaveProperty(
         "message",
         "I just love the letter ⓤ, don't you?"
@@ -259,13 +260,27 @@ describe("hint", () => {
       const target = "HOPE";
       const knowledge = getKnowledge([], ["H", "O", "P", "E"], []);
 
-      expect(getHint(target, knowledge, settings)).toBeNull();
+      expect(getHint(target, knowledge, settings, 3)).toBeNull();
+    });
+    it("word-specific category hint", () => {
+      const target = "SALT";
+      const knowledge = getKnowledge(["S", "A"], [], []);
+
+      const hint = getHint(target, knowledge, settings, 4);
+      expect(hint).toHaveProperty("message", "Something you put on food");
+    });
+    it("word-specific emoji hint if available", () => {
+      const target = "SALT";
+      const knowledge = getKnowledge(["S", "A"], [], []);
+
+      const hint = getHint(target, knowledge, settings, 5);
+      expect(hint).toHaveProperty("message", "🧂");
     });
     it("subtle hint when only 1 remaining", () => {
       const target = "HUNT";
       const knowledge = getKnowledge(["H", "U"], ["N"], ["S"]);
 
-      const hint = getHint(target, knowledge, settings);
+      const hint = getHint(target, knowledge, settings, 4);
       expect(hint).toHaveProperty(
         "message",
         "It's definitely *not* these: ⓒ, ⓛ, ⓡ"
@@ -285,13 +300,13 @@ describe("hint", () => {
         ["V", "J", "Z"],
       ];
       for (const expectedMisses of expectedMissesArray) {
-        const hint = getHint(target, knowledge, settings);
+        const hint = getHint(target, knowledge, settings, 4);
         expect(hint).toHaveProperty("misses", expectedMisses);
 
         knowledge = combineKnowledge(knowledge, { misses: hint.misses });
       }
 
-      const lastHint = getHint(target, knowledge, settings);
+      const lastHint = getHint(target, knowledge, settings, 5);
       expect(lastHint).toHaveProperty("letter", "T");
     });
   });

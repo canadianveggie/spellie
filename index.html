@@ -508,6 +508,7 @@
   </body>
 
   <script src="public/puzzles.js"></script>
+  <script src="public/wordHints.js"></script>
   <script src="public/hint.js"></script>
   <script src="public/emojis.js"></script>
   <script src="public/mobileCheck.js"></script>
@@ -899,7 +900,8 @@
             const hint = getHint(
               this.target,
               combineKnowledge(keysToKnowledge(this.keys), this.hintKnowledge),
-              this.settings
+              this.settings,
+              this.currentGuessIndex
             );
             if (hint) {
               this.hint = hint;
@@ -1204,7 +1206,7 @@
             id: Date.now(),
             visible: true,
           };
-          const timeShown = (notice.type === "hint" ? 20 : 5) * 1000;
+          const timeShown = (notice.type === "hint" ? 10 : 5) * 1000;
           setTimeout(() => {
             this.remove(this.notice.id);
           }, timeShown);
