@@ -1201,14 +1201,15 @@
         notice: null,
         type: null,
         notify(notice) {
-          this.notice = {
+          const visibleNotice = {
             ...notice,
             id: Date.now(),
             visible: true,
           };
+          this.notice = visibleNotice;
           const timeShown = (notice.type === "hint" ? 10 : 5) * 1000;
           setTimeout(() => {
-            this.remove(this.notice.id);
+            this.remove(visibleNotice.id);
           }, timeShown);
         },
         remove(id) {
