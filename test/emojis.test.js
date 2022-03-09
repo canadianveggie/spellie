@@ -1,5 +1,10 @@
 const fs = require("fs");
-const { emojis, getEmojiImage } = require("../public/emojis");
+const {
+  emojis,
+  getEmojiImage,
+  getUnicodeCodePoint,
+} = require("../public/emojis");
+const { twemoji } = require("./twemoji");
 
 describe("emojis", () => {
   it("uppercase keys", () => {
@@ -27,6 +32,16 @@ describe("emojis", () => {
   });
   it("keys are sorted", () => {
     expect(Object.keys(emojis)).toEqual(Object.keys(emojis).sort());
+  });
+  it("values exist as twemoji images", () => {
+    Object.values(emojis).forEach((emoji) => {
+      const codepoint = getUnicodeCodePoint(emoji);
+      if (!twemoji.has(codepoint) && !twemoji.has(`${codepoint}-fe0f`)) {
+        throw new Error(
+          `No twemoji image found for emoji ${emoji} as ${codepoint}`
+        );
+      }
+    });
   });
   it("unique keys", () => {
     // read file as string to avoid treating as JS

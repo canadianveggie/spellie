@@ -672,19 +672,24 @@ const emojis = {
   ZOMBIE: "🧟",
 };
 
+const variantCharacter = /\uFE0F/g;
+const zeroWidthJoiner = "\u200D";
+
 /**
- * @param {string} input
+ * @param {string} emoji
  */
-function getUnicodeCodePoint(input) {
+function getUnicodeCodePoint(emoji) {
+  const normalized =
+    emoji.indexOf(zeroWidthJoiner) < 0
+      ? emoji.replace(variantCharacter, "")
+      : emoji;
+
   const result = [];
-  for (const codePoint of input) {
+  for (const codePoint of normalized) {
     result.push(codePoint.codePointAt(0).toString(16));
   }
   return result.join("-");
 }
-
-const variantCharacter = /\uFE0F/g;
-const zeroWidthJoiner = "\u200D";
 
 /**
  * Remove the possible variant and convert utf16 into code points.
@@ -693,15 +698,11 @@ const zeroWidthJoiner = "\u200D";
  * @param {string} emoji - actual character, eg 😂
  */
 function getEmojiImage(emoji) {
-  const normalized =
-    emoji.indexOf(zeroWidthJoiner) < 0
-      ? emoji.replace(variantCharacter, "")
-      : emoji;
-  const codePoint = getUnicodeCodePoint(normalized);
+  const codePoint = getUnicodeCodePoint(emoji);
   // or png: https://twemoji.maxcdn.com/v/13.1.0/72x72/1f004.png
   return `https://twemoji.maxcdn.com/v/13.1.0/svg/${codePoint}.svg`;
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { emojis, getEmojiImage };
+  module.exports = { emojis, getEmojiImage, getUnicodeCodePoint };
 }
