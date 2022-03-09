@@ -433,16 +433,17 @@ main {
 
 .masked-game-buttons button {
   cursor: pointer;
-  background-color: var(--color-neutral-10);
-  color: var(--color-neutral-100);
-  border-radius: 4px;
-  border: none;
-  display: flex;
+  background-color: var(--color-empty);
+  color: var(--color-text);
+  border-radius: 15px;
+  border: 2px solid var(--color-border);
+  box-shadow: rgb(0 0 0) 2px 2px;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  padding: 4px 6px 4px 12px;
-  font-size: 14px;
+  padding: 4px;
+  font-size: 1rem;
+  width: 70px;
 }
 
 .masked-game-buttons .material-icons {
@@ -450,11 +451,7 @@ main {
 }
 
 .masked-game-buttons button:hover {
-  filter: brightness(1.5);
-}
-
-.masked-game-buttons button:focus-visible {
-  outline: 2px solid white;
+  outline: 2px solid var(--color-neutral-100);
 }
 
 .unavailable {
