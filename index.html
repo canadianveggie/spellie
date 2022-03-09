@@ -247,6 +247,9 @@
           <button @click="resetLevel">
             Reset <i class="material-icons" aria-hidden="true">replay</i>
           </button>
+          <button @click="share" x-show="canShare">
+            Share <i class="material-icons" aria-hidden="true">share</i>
+          </button>
         </div>
         <div class="keyboard">
           <template x-if="!solved && !failed">
