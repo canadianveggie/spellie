@@ -51,7 +51,12 @@
     <header>
       <nav>
         <div>
-          <a href="#" class="nav-link" x-show="page !== ''" x-cloak>
+          <a
+            x-bind:href="`#${difficulty}`"
+            class="nav-link"
+            x-show="!isGamePage()"
+            x-cloak
+          >
             <i class="material-icons">arrow_back</i>
           </a>
         </div>
@@ -83,21 +88,21 @@
           </a>
         </div>
       </nav>
-      <div class="nav-tabs" x-cloak x-show="page === ''">
+      <div class="nav-tabs" x-cloak x-show="isGamePage">
         <button
-          :class="{ 'active': settings.difficulty === 'easy' }"
+          :class="{ 'active': difficulty === 'easy' }"
           @click="updateDifficulty('easy')"
         >
           Easy
         </button>
         <button
-          :class="{ 'active': settings.difficulty === 'medium' }"
+          :class="{ 'active': difficulty === 'medium' }"
           @click="updateDifficulty('medium')"
         >
           Medium
         </button>
         <button
-          :class="{ 'active': settings.difficulty === 'hard' }"
+          :class="{ 'active': difficulty === 'hard' }"
           @click="updateDifficulty('hard')"
         >
           Hard
@@ -175,7 +180,7 @@
           /></a>
         </div>
       </div>
-      <div class="game-content" x-show="page === ''">
+      <div class="game-content" x-show="isGamePage">
         <div class="guesses-grid">
           <template
             x-for="(guess, guessIndex) in guesses"
@@ -554,21 +559,33 @@
       return guesses;
     }
 
+    const DIFFICULTIES = ["easy", "medium", "hard"];
+
+    function getInitialDifficulty() {
+      const page = window.location.hash.replace("#", "");
+      if (DIFFICULTIES.includes(page)) {
+        return page;
+      }
+      return "easy";
+    }
+
     // eslint-disable-next-line no-unused-vars
     function gameState() {
       const DEFAULT_SETTINGS = {
-        difficulty: "easy", // easy, medium, hard
         keyboardLayout: "atoz", // atoz, qwerty
         theme: "blue", // blue, high
         case: "lowercase", // lowercase, uppercase
         sharingEmojis: "nature", // fruit, vegetable, nature, tree
         spellChecker: "on", // on, off
       };
-      const DEFAULT_STATISTICS = {
-        easy: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
-        medium: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
-        hard: { success: 0, fail: 0, guesses: [0, 0, 0, 0, 0, 0, 0] },
-      };
+      const DEFAULT_STATISTICS = {};
+      DIFFICULTIES.forEach((difficulty) => {
+        DEFAULT_STATISTICS[difficulty] = {
+          success: 0,
+          fail: 0,
+          guesses: [0, 0, 0, 0, 0, 0, 0],
+        };
+      });
       const DEFAULT_HINT = {
         available: false,
         visible: false,
@@ -581,6 +598,7 @@
       return {
         settings: {}, // placeholder until x-init
         page: window.location.hash,
+        difficulty: getInitialDifficulty(),
         puzzleId,
         target: "",
         guesses: [],
@@ -662,7 +680,7 @@
           if (this.currentGuessIndex === 0) {
             amplitude.getInstance().logEvent("level_start", {
               level_name: this.level,
-              difficulty: this.settings.difficulty,
+              difficulty: this.difficulty,
               repeatedGame: this.repeatedGame,
             });
           }
@@ -866,7 +884,7 @@
         },
         prepareHint() {
           if (
-            this.settings.difficulty === "hard" ||
+            this.difficulty === "hard" ||
             this.currentGuessIndex < 2 ||
             this.solved ||
             this.failed
@@ -900,7 +918,7 @@
         showHint() {
           amplitude.getInstance().logEvent("show_hint", {
             level_name: this.level,
-            difficulty: this.settings.difficulty,
+            difficulty: this.difficulty,
             repeatedGame: this.repeatedGame,
             guess: this.currentGuessIndex + 1,
             message: this.hint.message,
@@ -931,7 +949,7 @@
         loadGameState() {
           try {
             let initialState = this.getFromLocalStorage(
-              `game-state-${this.settings.difficulty}`,
+              `game-state-${this.difficulty}`,
               {}
             );
             if (initialState.puzzleId !== this.puzzleId) {
@@ -940,11 +958,9 @@
             // Create a unique id for each game state so that we redraw the grid and keyboard properly
             this.gameId += 1;
             this.level =
-              initialState.level ||
-              `${this.settings.difficulty}-${this.puzzleId}`;
+              initialState.level || `${this.difficulty}-${this.puzzleId}`;
             this.target =
-              initialState.target ||
-              getTodayPuzzles()[this.settings.difficulty];
+              initialState.target || getTodayPuzzles()[this.difficulty];
 
             this.guesses =
               initialState.guesses ||
@@ -971,7 +987,7 @@
         },
         saveGameState() {
           localStorage.setItem(
-            `game-state-${this.settings.difficulty}`,
+            `game-state-${this.difficulty}`,
             JSON.stringify(this.toJson())
           );
         },
@@ -993,9 +1009,13 @@
           this.saveSettings();
           this.showNotice("Settings updated");
         },
-        updateDifficulty(value) {
-          this.settings.difficulty = value;
-          this.saveSettings();
+        isGamePage() {
+          return ["", ...DIFFICULTIES.map((d) => `#${d}`)].includes(this.page);
+        },
+        updateDifficulty(difficulty) {
+          this.difficulty = difficulty;
+          window.location.hash = `#${difficulty}`;
+          this.loadGameState();
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
@@ -1014,7 +1034,7 @@
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {
             level_name: this.level,
-            difficulty: this.settings.difficulty,
+            difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
             success: this.solved,
             repeatedGame: this.repeatedGame,
@@ -1030,12 +1050,10 @@
             DEFAULT_STATISTICS
           );
           if (this.solved) {
-            statistics[this.settings.difficulty].success += 1;
-            statistics[this.settings.difficulty].guesses[
-              this.currentGuessIndex
-            ] += 1;
+            statistics[this.difficulty].success += 1;
+            statistics[this.difficulty].guesses[this.currentGuessIndex] += 1;
           } else {
-            statistics[this.settings.difficulty].fail += 1;
+            statistics[this.difficulty].fail += 1;
           }
           localStorage.setItem("statistics", JSON.stringify(statistics));
         },
@@ -1047,12 +1065,12 @@
         },
         resetLevel() {
           localStorage.setItem(
-            `game-state-${this.settings.difficulty}`,
+            `game-state-${this.difficulty}`,
             JSON.stringify({ repeatedGame: true, puzzleId: this.puzzleId })
           );
           amplitude.getInstance().logEvent("level_reset", {
             level_name: this.level,
-            difficulty: this.settings.difficulty,
+            difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
             success: this.solved,
           });
@@ -1087,14 +1105,14 @@
           const title = "Spellie";
           let text;
           let shareType;
-          if ((this.solved || this.failed) && this.page === "") {
+          if ((this.solved || this.failed) && this.isGamePage()) {
             // Spellie #10 (medium)
             // 🕸️🕸️🕸️🕸️🕸️
             // 🕸️🕸️🌻🍀🕸️
             // 🍀🍀🕸️🍀🕸️
             // 🍀🍀🍀🍀🍀
             text = `Spellie #${this.puzzleId} (${
-              this.settings.difficulty
+              this.difficulty
             })\n${guessesAsEmojis(this.guesses, this.settings.sharingEmojis)}`;
             shareType = "puzzle";
           } else if (
