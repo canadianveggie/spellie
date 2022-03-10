@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Spellie</title>
+    <title>Spellie | Wordle for Kids</title>
     <meta
       name="description"
       content="A kid-friendly version of the popular Wordle game"
@@ -46,7 +46,7 @@
     x-init="initialLoad()"
     :class="`theme-${settings.theme}`"
     @keyup.document="keyPressed"
-    @hashchange.window="page = location.hash"
+    @hashchange.window="updatePage(location.hash)"
   >
     <header>
       <nav>
@@ -599,6 +599,18 @@
         emojiCollection: [],
         newEmojis: [],
         hintKnowledge: {},
+        updatePage(page) {
+          this.page = page;
+          const titles = {
+            "#easy": "Spellie | Easy",
+            "#medium": "Spellie | Medium",
+            "#hard": "Spellie | Hard",
+            "#collection": "Spellie | Emoji Collection",
+            "#settings": "Spellie | Settings",
+            "#about": "Spellie | About",
+          };
+          document.title = titles[page] || "Spellie | Wordle for Kids";
+        },
         addLetter(letterState) {
           if (this.solved || this.failed) {
             return;
