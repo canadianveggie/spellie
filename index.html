@@ -1030,6 +1030,11 @@
               emoji,
               unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
             }));
+          const identify = new amplitude.Identify().set(
+            "emojiCount",
+            this.unlockedEmojis.length
+          );
+          amplitude.getInstance().identify(identify);
         },
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {
