@@ -207,20 +207,12 @@
           <button
             class="hint-button"
             @click="showHint"
-            x-show="hint.available && !hint.visible"
+            x-show="hint.available"
             x-transition:enter.duration.500ms
             x-cloak
           >
             Need a hint? 🤔
           </button>
-          <div
-            class="hint"
-            x-show="hint.visible"
-            @click="resetHint"
-            x-transition:enter.duration.1000ms
-          >
-            <span x-text="hint.message"></span>
-          </div>
         </div>
         <div x-show="solved && endGame" x-cloak>
           <div
@@ -269,7 +261,7 @@
                 >
                   <div
                     class="key"
-                    :class="[settings.case, 'key-' + letter.type, letter.state, hint.visible && letter.label === hint.letter ? 'pulse' : '']"
+                    :class="[settings.case, 'key-' + letter.type, letter.state, hint.shown && letter.label === hint.letter ? 'pulse' : '']"
                     @click="addLetter(letter)"
                     @keyup.enter.stop="addLetter(letter)"
                     role="button"
@@ -591,7 +583,7 @@
       });
       const DEFAULT_HINT = {
         available: false,
-        visible: false,
+        shown: false,
         message: null,
         timer: null,
       };
@@ -920,14 +912,17 @@
           this.hint = { ...DEFAULT_HINT };
         },
         showHint() {
-          amplitude.getInstance().logEvent("show_hint", {
-            level_name: this.level,
-            difficulty: this.difficulty,
-            repeatedGame: this.repeatedGame,
-            guess: this.currentGuessIndex + 1,
-            message: this.hint.message,
-            letter: this.hint.letter,
-          });
+          if (!this.hint.shown) {
+            amplitude.getInstance().logEvent("show_hint", {
+              level_name: this.level,
+              difficulty: this.difficulty,
+              repeatedGame: this.repeatedGame,
+              guess: this.currentGuessIndex + 1,
+              message: this.hint.message,
+              letter: this.hint.letter,
+            });
+            this.hint.shown = true;
+          }
           this.showNotice(this.hint.message, "hint");
           const newKnowledge = {
             presents: this.hint.letter ? [this.hint.letter] : [],
