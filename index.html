@@ -652,6 +652,7 @@
             }
             this.updateControls();
             this.saveGameState();
+            this.cursorMode = false;
           } else if (letterState.type === "back") {
             const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
             if (
@@ -672,6 +673,7 @@
               this.currentGuess[this.cursor].letter =
                 letterState.label.toUpperCase();
               this.cursor += 1;
+              this.cursorMode = false;
               this.updateControls();
             }
           }
@@ -786,7 +788,6 @@
           if (e.key === "Enter" || e.key === " ") {
             e.target.blur();
             this.addLetter({ type: "enter" });
-            this.cursorMode = false;
           } else if (e.key === "Backspace") {
             e.target.blur();
             this.addLetter({ type: "back" });
@@ -808,7 +809,6 @@
           ) {
             e.target.blur(); // user is no longer navigating by tab
             this.addLetter({ type: "letter", label: e.key });
-            this.cursorMode = false;
           }
         },
         selectTile(guessIndex, letterIndex) {
