@@ -162,7 +162,7 @@ const wordHints = {
   //   hints: ["A pet", "🐈"],
   // },
   // CARS: {
-  //   hints: ["Has wheels", "🚗"],
+  //   hints: ["Have wheels", "🚗"],
   // },
   // COME: {
   //   hints: [`Move toward`, `____ on, you can do it!`],

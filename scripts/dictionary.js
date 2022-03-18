@@ -25,10 +25,8 @@ async function main(letter) {
 
   const wordHints = {};
   const start = 1 + words.easy.indexOf("BELT"); // focus on after Feb 27
-  console.log("@@@", start);
   const remaining = words.easy.slice(start, words.easy.length);
 
-  console.log("remain @@@", remaining);
   remaining
     .filter((word) => word.startsWith(letter.toUpperCase()))
     .forEach(async (word) => {

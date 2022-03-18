@@ -193,6 +193,16 @@ describe("hint", () => {
       expect(hint).toHaveProperty("message", "There could be more than one ⓔ");
       expect(hint).toHaveProperty("letter", "E");
     });
+    xit("multiples but found", () => {
+      const target = "FEET";
+      const knowledge = getKnowledge(["E"], [], []);
+
+      const hint = getHint(target, knowledge, settings, 3);
+      expect(hint).not.toHaveProperty(
+        "message",
+        "There could be more than one ⓔ"
+      );
+    });
     it("cluster - ch", () => {
       const target = "CHAT";
       const knowledge = getKnowledge([], ["A", "H"], []);

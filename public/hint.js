@@ -233,6 +233,8 @@ function getHint(target, knowledge, settings, guessIndex) {
   }
 
   // warn about multiples
+  // FIXME: this hint can show multiple times because it doesn't depend on their guess
+  // and if they already have both Es, we don't know (E just shows up as "match")
   const multiple = findMultiple(targetLetters);
   if (multiple) {
     return {

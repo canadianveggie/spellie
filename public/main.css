@@ -440,9 +440,11 @@ main {
   border-radius: 15px;
   border: 2px solid var(--color-border);
   box-shadow: rgb(0 0 0) 2px 2px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
+  padding: 2px 8px 2px 12px;
   font-size: 1rem;
 }
 
@@ -453,10 +455,6 @@ main {
 .masked-game-buttons button:hover,
 .hint-area button:hover {
   outline: 2px solid var(--color-neutral-100);
-}
-
-button span {
-  vertical-align: middle;
 }
 
 .unavailable {
