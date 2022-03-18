@@ -60,6 +60,31 @@ const wordHints = {
     emoji: "😠",
   },
 
+  HORN: { category: "", emoji: "" },
+  CHILD: { category: "", emoji: "" },
+  CLAM: { category: "", emoji: "" },
+  BLOW: { category: "", emoji: "" },
+  GROW: { category: "", emoji: "" },
+  FRESH: { category: "", emoji: "" },
+  GIVE: { category: "", emoji: "" },
+  THIRD: { category: "", emoji: "" },
+  NAIL: { category: "", emoji: "" },
+  MINUS: { category: "", emoji: "" },
+
+  // David up and chris below:
+  LENT: { category: "", emoji: "" },
+  BEANS: { category: "", emoji: "" },
+  HOLD: { category: "", emoji: "" },
+  SKUNK: { category: "", emoji: "" },
+  MICE: { category: "", emoji: "" },
+  FINCH: { category: "", emoji: "" },
+  FAKE: { category: "", emoji: "" },
+  TRUCK: { category: "", emoji: "" },
+  OWLS: { category: "", emoji: "" },
+  BLEND: { category: "", emoji: "" },
+  TAPS: { category: "", emoji: "" },
+  WHITE: { category: "", emoji: "" },
+
   // later:
   // COMET: { hints: [" ☄️"] },
   // KALE: { hints: ["🥬"] },
