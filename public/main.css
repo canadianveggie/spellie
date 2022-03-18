@@ -28,7 +28,8 @@
   --color-notice-text: var(--color-neutral-100);
 }
 
-@media screen and (min-width: 600px) and (min-height: 400px) {
+@media screen and (min-width: 600px) and (min-height: 400px),
+  screen and (min-height: 800px) {
   :root {
     --header-height: 100px;
   }
@@ -161,7 +162,8 @@ header nav {
   pointer-events: none;
 }
 
-@media screen and (min-width: 600px) and (min-height: 400px) {
+@media screen and (min-width: 600px) and (min-height: 400px),
+  screen and (min-height: 800px) {
   .title {
     font-size: 2rem;
   }
@@ -185,7 +187,8 @@ main {
   padding: 4px;
 }
 
-@media screen and (min-height: 400px) {
+@media screen and (min-width: 600px) and (min-height: 400px),
+  screen and (min-height: 800px) {
   main {
     padding: 1rem;
   }
@@ -323,7 +326,8 @@ main {
   text-transform: capitalize;
 }
 
-@media screen and (min-height: 400px) {
+@media screen and (min-width: 600px) and (min-height: 400px),
+  screen and (min-height: 800px) {
   .key {
     line-height: 42px;
   }
