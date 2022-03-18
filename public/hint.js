@@ -166,10 +166,6 @@ const finalGuessIndex = 6 - 1;
  * @returns {import("../types").Hint | null}
  */
 function getHint(target, knowledge, settings, guessIndex, lastGuess = "") {
-  if (knowledge.matches.length + knowledge.presents.length === target.length) {
-    return null;
-  }
-
   // last chance, so provide a strong hint
   const wordHint = window.wordHints[target];
   if (guessIndex === finalGuessIndex) {
@@ -186,6 +182,11 @@ function getHint(target, knowledge, settings, guessIndex, lastGuess = "") {
     if (wordHint && wordHint.category && wordHint.emoji) {
       return { message: wordHint.category };
     }
+  }
+
+  // You're so close
+  if (knowledge.matches.length + knowledge.presents.length === target.length) {
+    return null;
   }
 
   const prettyLetter = (/** @type {string} */ letter) =>

@@ -287,6 +287,15 @@ describe("hint", () => {
       const hint = getHint(target, knowledge, settings, 5);
       expect(hint).toHaveProperty("message", "🧂");
     });
+    it("word hints even all letters are known", () => {
+      const target = "SALT";
+      const knowledge = getKnowledge(["S", "A"], ["L", "T"], []);
+
+      const hint4 = getHint(target, knowledge, settings, 4);
+      expect(hint4).toHaveProperty("message", "Something you put on food");
+      const hint5 = getHint(target, knowledge, settings, 5);
+      expect(hint5).toHaveProperty("message", "🧂");
+    });
     it("subtle hint when only 1 remaining", () => {
       const target = "HUNT";
       const knowledge = getKnowledge(["H", "U"], ["N"], ["S"]);
