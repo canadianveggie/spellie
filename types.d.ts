@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    wordHints: WordHints;
+  }
+}
+
 export type GuessState = "pending" | "match" | "present" | "miss";
 
 export type LetterGuess = {
@@ -56,4 +62,12 @@ export type EmojiMatchThemeValue = {
 
 export type EmojiMatchThemes = {
   [key in EmojiMatchThemeKey]: EmojiMatchThemeValue;
+};
+
+export type WordHints = {
+  [key: string]: {
+    category?: string;
+    emoji?: string;
+    hints?: string[];
+  };
 };

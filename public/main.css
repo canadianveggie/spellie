@@ -169,6 +169,7 @@ header nav {
 
 i {
   padding: 4px;
+  vertical-align: middle;
 }
 
 a {
@@ -398,7 +399,7 @@ main {
   justify-content: center;
   align-items: center;
   margin-bottom: 8px;
-  min-height: 22px;
+  min-height: 30px;
 }
 .hint-button {
   font-family: inherit;
@@ -431,26 +432,28 @@ main {
   gap: 16px;
 }
 
-.masked-game-buttons button {
+.masked-game-buttons button,
+.hint-area button {
   cursor: pointer;
   background-color: var(--color-empty);
   color: var(--color-text);
   border-radius: 15px;
   border: 2px solid var(--color-border);
   box-shadow: rgb(0 0 0) 2px 2px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 4px;
+  gap: 2px;
+  padding: 2px 8px 2px 12px;
   font-size: 1rem;
-  width: 70px;
 }
 
 .masked-game-buttons .material-icons {
   font-size: inherit;
 }
 
-.masked-game-buttons button:hover {
+.masked-game-buttons button:hover,
+.hint-area button:hover {
   outline: 2px solid var(--color-neutral-100);
 }
 
@@ -526,9 +529,12 @@ main {
   position: fixed;
   top: 8%;
   bottom: auto;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 auto;
+  left: 0;
+  right: 0;
   min-width: 250px;
+  width: fit-content;
+  max-width: 500px;
   z-index: 1;
   text-align: center;
   align-items: center;

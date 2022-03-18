@@ -207,20 +207,12 @@
           <button
             class="hint-button"
             @click="showHint"
-            x-show="hint.available && !hint.visible"
+            x-show="hint.available"
             x-transition:enter.duration.500ms
             x-cloak
           >
-            Need a hint?
+            Need a hint? 🤔
           </button>
-          <div
-            class="hint"
-            x-show="hint.visible"
-            @click="resetHint"
-            x-transition:enter.duration.1000ms
-          >
-            <span x-text="hint.message"></span>
-          </div>
         </div>
         <div x-show="solved && endGame" x-cloak>
           <div
@@ -250,10 +242,12 @@
             ></i>
           </button>
           <button @click="resetLevel">
-            Reset <i class="material-icons" aria-hidden="true">replay</i>
+            <span>Reset</span>
+            <i class="material-icons" aria-hidden="true">replay</i>
           </button>
           <button @click="share" x-show="canShare">
-            Share <i class="material-icons" aria-hidden="true">share</i>
+            <span>Share</span>
+            <i class="material-icons" aria-hidden="true">share</i>
           </button>
         </div>
         <div class="keyboard">
@@ -269,7 +263,7 @@
                 >
                   <div
                     class="key"
-                    :class="[settings.case, 'key-' + letter.type, letter.state, hint.visible && letter.label === hint.letter ? 'pulse' : '']"
+                    :class="[settings.case, 'key-' + letter.type, letter.state, hint.shown && letter.label === hint.letter ? 'pulse' : '']"
                     @click="addLetter(letter)"
                     @keyup.enter.stop="addLetter(letter)"
                     role="button"
@@ -499,6 +493,7 @@
         x-cloak
         x-show="notice && notice.visible"
         @click="remove(notice && notice.id)"
+        @keyup.document.escape="remove(notice && notice.id)"
         x-html="message"
         x-transition:enter="fadein"
       ></div>
@@ -506,6 +501,7 @@
   </body>
 
   <script src="public/puzzles.js"></script>
+  <script src="public/wordHints.js"></script>
   <script src="public/hint.js"></script>
   <script src="public/emojis.js"></script>
   <script src="public/mobileCheck.js"></script>
@@ -588,12 +584,12 @@
       });
       const DEFAULT_HINT = {
         available: false,
-        visible: false,
+        shown: false,
         message: null,
         timer: null,
       };
 
-      const HINT_DELAY = 15 * 1000;
+      const HINT_DELAY = 10 * 1000;
 
       return {
         settings: {}, // placeholder until x-init
@@ -839,9 +835,9 @@
             .map((guess) => this.guessToWord(guess));
         },
         get guessWordDictionary() {
-          return this.guessWords.reduce((dict, guessWord, i) => {
-            dict[`guess${i + 1}`] = guessWord;
-            return dict;
+          return this.guessWords.reduce((acc, guessWord, i) => {
+            acc[`guess${i + 1}`] = guessWord;
+            return acc;
           }, {});
         },
         get guessEmojis() {
@@ -897,7 +893,8 @@
             const hint = getHint(
               this.target,
               combineKnowledge(keysToKnowledge(this.keys), this.hintKnowledge),
-              this.settings
+              this.settings,
+              this.currentGuessIndex
             );
             if (hint) {
               this.hint = hint;
@@ -916,15 +913,18 @@
           this.hint = { ...DEFAULT_HINT };
         },
         showHint() {
-          amplitude.getInstance().logEvent("show_hint", {
-            level_name: this.level,
-            difficulty: this.difficulty,
-            repeatedGame: this.repeatedGame,
-            guess: this.currentGuessIndex + 1,
-            message: this.hint.message,
-            letter: this.hint.letter,
-          });
-          this.hint.visible = true;
+          if (!this.hint.shown) {
+            amplitude.getInstance().logEvent("show_hint", {
+              level_name: this.level,
+              difficulty: this.difficulty,
+              repeatedGame: this.repeatedGame,
+              guess: this.currentGuessIndex + 1,
+              message: this.hint.message,
+              letter: this.hint.letter,
+            });
+            this.hint.shown = true;
+          }
+          this.showNotice(this.hint.message, "hint");
           const newKnowledge = {
             presents: this.hint.letter ? [this.hint.letter] : [],
             misses: this.hint.misses || [],
@@ -934,10 +934,10 @@
             newKnowledge
           );
         },
-        showNotice(text) {
+        showNotice(text, type) {
           window.dispatchEvent(
             new CustomEvent("notice", {
-              detail: { text },
+              detail: { text, type },
             })
           );
         },
@@ -1191,27 +1191,36 @@
       };
     }
 
+    // eslint-disable-next-line no-unused-vars
     function noticesHandler() {
       return {
         notice: null,
+        type: null,
         notify(notice) {
-          notice.id = Date.now();
-          notice.visible = true;
-          this.notice = notice;
-          const timeShown = 5 * 1000;
+          const visibleNotice = {
+            ...notice,
+            id: Date.now(),
+            visible: true,
+          };
+          this.notice = visibleNotice;
+          const timeShown = (notice.type === "hint" ? 10 : 5) * 1000;
           setTimeout(() => {
-            this.remove(notice.id);
+            this.remove(visibleNotice.id);
           }, timeShown);
         },
         remove(id) {
-          if (this.notice.id === id) {
+          if (this.notice && this.notice.id === id) {
             this.notice.visible = false;
           }
         },
         message() {
           if (!this.notice) return;
-          const stripped = this.notice.text.replace(/(<([^>]+)>)/gi, "");
 
+          if (this.notice.type === "hint") {
+            return `<strong>Hint 🤔</strong><br>${this.notice.text}`;
+          }
+
+          const stripped = this.notice.text.replace(/(<([^>]+)>)/gi, "");
           // extract emoji between # characters
           // (actually detecting with regex has too many edge cases)
           const emojiMatch = stripped.match(/#(?<emoji>\S+)#/i);
