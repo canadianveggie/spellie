@@ -80,7 +80,7 @@ const wordHints = {
   TRUCK: { category: "A pickup is one", emoji: "🚙" },
   OWLS: { category: "Late night birds", emoji: "🦉" },
   BLEND: { category: "Combine together" },
-  TAPS: { category: "Parts of a sink" },
+  TAPS: { category: "Parts of a sink", emoji: "🚰" },
   WHITE: { category: "Like some bread or rice", emoji: "⚪️" },
 
   // later:

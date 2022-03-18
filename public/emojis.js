@@ -581,6 +581,7 @@ const emojis = {
   TALK: "🎙",
   TALL: "🦒",
   TAMALE: "🫔",
+  TAPS: "🚰",
   TAXI: "🚖",
   TEACUP: "🍵",
   TEAPOT: "🫖",
