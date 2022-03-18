@@ -493,7 +493,6 @@
         x-cloak
         x-show="notice && notice.visible"
         @click="remove(notice && notice.id)"
-        @click.outside="remove(notice && notice.id)"
         @keyup.document.escape="remove(notice && notice.id)"
         x-html="message"
         x-transition:enter="fadein"
@@ -590,7 +589,7 @@
         timer: null,
       };
 
-      const HINT_DELAY = 1 * 1000; // @@@
+      const HINT_DELAY = 10 * 1000;
 
       return {
         settings: {}, // placeholder until x-init
