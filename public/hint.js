@@ -37,7 +37,7 @@ const LETTERS_BY_FREQUENCY = [
 
 /**
  * @param {string[]} letters
- * @returns {string | null}
+ * @returns {string | null} - the multiple letter
  */
 function findMultiple(letters) {
   const seen = {};
@@ -165,7 +165,7 @@ const finalGuessIndex = 6 - 1;
  * @param {number} guessIndex - 0-based guess number
  * @returns {import("../types").Hint | null}
  */
-function getHint(target, knowledge, settings, guessIndex) {
+function getHint(target, knowledge, settings, guessIndex, lastGuess = "") {
   if (knowledge.matches.length + knowledge.presents.length === target.length) {
     return null;
   }
@@ -234,13 +234,12 @@ function getHint(target, knowledge, settings, guessIndex) {
   }
 
   // warn about multiples
-  // FIXME: this hint can show multiple times because it doesn't depend on their guess
-  // and if they already have both Es, we don't know (E just shows up as "match")
-  const multiple = findMultiple(targetLetters);
-  if (multiple) {
+  const targetMultiple = findMultiple(targetLetters);
+  const guessMultiple = findMultiple(lastGuess.split(""));
+  if (targetMultiple && guessMultiple !== targetMultiple) {
     return {
-      message: `There could be more than one ${prettyLetter(multiple)}`,
-      letter: multiple,
+      message: `There could be more than one ${prettyLetter(targetMultiple)}`,
+      letter: targetMultiple,
     };
   }
 

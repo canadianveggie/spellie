@@ -1,18 +1,11 @@
 // @ts-check
 
-// TODO: just done a few for now
-// if we like this approach, can put in the time to define more
-
 /** @type {import("../types").WordHints} */
 const wordHints = {
-  // March 7 - 13
   SALT: {
     category: "Something you put on food",
     emoji: "🧂",
   },
-  // YOUR: {
-  //   hints: ["Not mine"]
-  // },
   LOOK: {
     category: "Something you do",
     emoji: "👁️",
@@ -24,13 +17,11 @@ const wordHints = {
   BAKE: {
     category: "Something you do",
     emoji: "🧑‍🍳",
-    // hints: ["How cookies are made"],
   },
   PARTY: {
     category: "A fun time",
     emoji: "🥳",
   },
-  // HAVE: { hints: [] },
   SPARK: {
     category: "Something you can see",
     emoji: "⚡",
@@ -71,7 +62,6 @@ const wordHints = {
   THIRD: { category: "Not first", emoji: "🥉" },
   NAIL: { category: "A part of your body", emoji: "💅" },
   MINUS: { category: "Something you do in math", emoji: "➖" },
-
   LENT: { category: "Like a library book" },
   BEANS: { category: "Something you eat" },
   HOLD: { category: "Squeeze tightly" },
