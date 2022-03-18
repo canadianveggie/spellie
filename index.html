@@ -742,11 +742,11 @@
           });
         },
         updateKeyboardForHints(hintKnowledge) {
-          (hintKnowledge.misses || {}).forEach((missLetter) => {
+          (hintKnowledge.misses || []).forEach((missLetter) => {
             const key = this.keys.find((letter) => letter.label === missLetter);
             key.state = "miss";
           });
-          (hintKnowledge.presents || {}).forEach((presentLetter) => {
+          (hintKnowledge.presents || []).forEach((presentLetter) => {
             const key = this.keys.find(
               (letter) => letter.label === presentLetter
             );
@@ -764,6 +764,7 @@
           this.guessWords.forEach((guessWord) => {
             this.updateKeyboardForGuess(guessWord);
           });
+          this.updateKeyboardForHints(this.hintKnowledge);
           this.updateControls();
         },
         get keyboard() {
