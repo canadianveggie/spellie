@@ -741,6 +741,20 @@
             key.state = letterResult;
           });
         },
+        updateKeyboardForHints(hintKnowledge) {
+          (hintKnowledge.misses || {}).forEach((missLetter) => {
+            const key = this.keys.find((letter) => letter.label === missLetter);
+            key.state = "miss";
+          });
+          (hintKnowledge.presents || {}).forEach((presentLetter) => {
+            const key = this.keys.find(
+              (letter) => letter.label === presentLetter
+            );
+            if (key.state === "available") {
+              key.state = "present";
+            }
+          });
+        },
         updateKeyboard() {
           this.keys.forEach((key) => {
             if (key.type === "letter") {
@@ -938,6 +952,7 @@
             this.hintKnowledge,
             newKnowledge
           );
+          this.updateKeyboardForHints(this.hintKnowledge);
         },
         showNotice(text, type) {
           window.dispatchEvent(
