@@ -826,6 +826,10 @@
             guess.map((letterGuess) => letterGuess.letter || " ").join("")
           );
         },
+        get lastWord() {
+          const guess = this.guesses[this.currentGuessIndex - 1];
+          return guess ? this.guessToWord(guess) : "";
+        },
         get currentWord() {
           return this.guessToWord(this.currentGuess);
         },
@@ -894,7 +898,8 @@
               this.target,
               combineKnowledge(keysToKnowledge(this.keys), this.hintKnowledge),
               this.settings,
-              this.currentGuessIndex
+              this.currentGuessIndex,
+              this.lastWord
             );
             if (hint) {
               this.hint = hint;
