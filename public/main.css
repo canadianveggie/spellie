@@ -169,6 +169,7 @@ header nav {
 
 i {
   padding: 4px;
+  vertical-align: middle;
 }
 
 a {
@@ -398,7 +399,7 @@ main {
   justify-content: center;
   align-items: center;
   margin-bottom: 8px;
-  min-height: 22px;
+  min-height: 30px;
 }
 .hint-button {
   font-family: inherit;
@@ -431,7 +432,8 @@ main {
   gap: 16px;
 }
 
-.masked-game-buttons button {
+.masked-game-buttons button,
+.hint-area button {
   cursor: pointer;
   background-color: var(--color-empty);
   color: var(--color-text);
@@ -441,17 +443,20 @@ main {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  padding: 4px;
   font-size: 1rem;
-  width: 70px;
 }
 
 .masked-game-buttons .material-icons {
   font-size: inherit;
 }
 
-.masked-game-buttons button:hover {
+.masked-game-buttons button:hover,
+.hint-area button:hover {
   outline: 2px solid var(--color-neutral-100);
+}
+
+button span {
+  vertical-align: middle;
 }
 
 .unavailable {
