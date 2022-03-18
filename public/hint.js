@@ -182,7 +182,8 @@ function getHint(target, knowledge, settings, guessIndex) {
   }
 
   if (guessIndex === finalGuessIndex - 1) {
-    if (wordHint && wordHint.category) {
+    // Save the category for the last hint if there is no emoji
+    if (wordHint && wordHint.category && wordHint.emoji) {
       return { message: wordHint.category };
     }
   }
