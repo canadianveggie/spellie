@@ -28,7 +28,7 @@
   --color-notice-text: var(--color-neutral-100);
 }
 
-@media screen and (min-height: 400px) {
+@media screen and (min-width: 600px) and (min-height: 400px) {
   :root {
     --header-height: 100px;
   }
