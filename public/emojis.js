@@ -352,6 +352,7 @@ const emojis = {
   MERMAN: "🧜‍♂️",
   MERRY: "🎄",
   METRO: "🚇",
+  MICE: "🐁",
   MILK: "🥛",
   MINUS: "➖",
   MIRROR: "🪞",
