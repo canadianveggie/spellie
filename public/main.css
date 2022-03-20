@@ -55,7 +55,6 @@ body {
   font-family: "Comic Neue", sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
-  transition: background 0.2s;
 }
 
 body.page-about,
@@ -206,6 +205,7 @@ main {
   justify-content: space-between;
 }
 
+.close-link,
 .close-link:active {
   color: inherit;
 }
