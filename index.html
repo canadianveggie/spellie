@@ -44,7 +44,7 @@
   <body
     x-data="gameState()"
     x-init="initialLoad()"
-    :class="`theme-${settings.theme}`"
+    :class="`theme-${settings.theme} page-${page.replace('#', '')}`"
     @keyup.document="keyPressed"
     @hashchange.window="updatePage(location.hash)"
   >
@@ -345,7 +345,7 @@
           <span
             x-text="Math.floor(Object.keys(emojis).length / 100)  * 100"
           ></span>
-          in total...
+          emojis in total...
         </p>
       </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>

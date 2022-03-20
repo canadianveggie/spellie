@@ -13,6 +13,7 @@
   --color-title: #fff;
   --color-nav: #004b84;
   --color-bg: var(--color-nav); /* match nav until theme loaded */
+  --color-page-bg: var(--color-nav); /* match nav until theme loaded */
   --color-border-header: #818384;
   --color-border: var(--color-neutral-10);
 
@@ -57,14 +58,22 @@ body {
   transition: background 0.2s;
 }
 
+body.page-about,
+body.page-collection,
+body.page-settings {
+  background: var(--color-page-bg);
+}
+
 .theme-blue {
   --color-bg: #30a3fc;
+  --color-page-bg: #f0f1f3;
   --color-miss: transparent;
   --color-present: #ffcb22;
   --color-match: #9fef00;
 }
 .theme-high {
   --color-bg: #f0f1f3;
+  --color-page-bg: var(--color-bg);
   --color-miss: #e3e4e8;
   --color-present: #86c0f9;
   --color-match: #f5793a;
