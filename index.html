@@ -51,17 +51,6 @@
     <header>
       <nav>
         <div>
-          <a
-            x-bind:href="`#${difficulty}`"
-            class="nav-link"
-            x-show="!isGamePage()"
-            x-cloak
-          >
-            <i class="material-icons">arrow_back</i>
-          </a>
-        </div>
-        <div class="title">Spellie</div>
-        <div>
           <a href="#about" class="nav-link">
             <i class="material-icons">info</i>
           </a>
@@ -74,6 +63,9 @@
           >
             <i class="material-icons">share</i>
           </a>
+        </div>
+        <div class="title">Spellie</div>
+        <div>
           <a href="#collection" class="nav-link">
             <span
               class="nav-notification"
@@ -111,7 +103,14 @@
     </header>
     <main :class="`target-${target.length}`">
       <div class="about-content" x-show="page === '#about'" x-cloak>
-        <h1>About</h1>
+        <div class="subhead">
+          <h1>About</h1>
+          <div>
+            <a x-bind:href="`#${difficulty}`">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
         <p>Spellie is a daily word puzzle game for young spellers.</p>
         <p>
           There are 3 daily puzzles of increasing difficulty. The easy puzzle
@@ -173,10 +172,10 @@
         </ul>
         <div class="social-links">
           <a href="https://twitter.com/SpellieGame" target="_blank"
-            ><img src="public/twitter.png"
+            ><img src="public/twitter.png" alt="Twitter"
           /></a>
           <a href="https://github.com/canadianveggie/spellie" target="_blank"
-            ><img src="public/github.png"
+            ><img src="public/github.png" alt="GitHub"
           /></a>
         </div>
       </div>
@@ -283,7 +282,15 @@
         </div>
       </div>
       <div class="collection-content" x-show="page === '#collection'" x-cloak>
-        <h1>Collection</h1>
+        <div class="subhead">
+          <h1>Collection</h1>
+          <div>
+            <a x-bind:href="`#${difficulty}`" class="close-link">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
+
         <p x-show="unlockedEmojis.length === 0">
           Your word guesses can unlock hidden emojis.<br />Maybe you'll find one
           next game.
@@ -349,7 +356,14 @@
         </p>
       </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
-        <h1>Settings</h1>
+        <div class="subhead">
+          <h1>Settings</h1>
+          <div>
+            <a x-bind:href="`#${difficulty}`" class="close-link">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
         <section>
           <h2>Keyboard layout</h2>
           <div>
