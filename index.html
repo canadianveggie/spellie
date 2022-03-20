@@ -203,7 +203,7 @@
             </div>
           </template>
         </div>
-        <div class="hint-area">
+        <div class="hint-area" x-show="hintsAvailable">
           <button
             class="hint-button"
             @click="showHint"
@@ -420,6 +420,29 @@
           </div>
         </section>
         <section>
+          <h2>Hints</h2>
+          <div>
+            <input
+              type="radio"
+              id="hints-off"
+              value="off"
+              x-model="settings.hints"
+              @change="updateSettings"
+            />
+            <label for="hints-off">Off</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="hints-on"
+              value="on"
+              x-model="settings.hints"
+              @change="updateSettings"
+            />
+            <label for="hints-on">On</label>
+          </div>
+        </section>
+        <section>
           <h2>Theme</h2>
           <div>
             <input
@@ -568,11 +591,12 @@
     // eslint-disable-next-line no-unused-vars
     function gameState() {
       const DEFAULT_SETTINGS = {
-        keyboardLayout: "atoz", // atoz, qwerty
-        theme: "blue", // blue, high
         case: "lowercase", // lowercase, uppercase
+        hints: "on", // on, off
+        keyboardLayout: "atoz", // atoz, qwerty
         sharingEmojis: "nature", // fruit, vegetable, nature, tree
         spellChecker: "on", // on, off
+        theme: "blue", // blue, high
       };
       const DEFAULT_STATISTICS = {};
       DIFFICULTIES.forEach((difficulty) => {
@@ -896,6 +920,9 @@
             this.addLetter({ type: "letter", label: this.target[0] });
             this.guesses[0][0].state = "match"; // set this already as signal to player
           }
+        },
+        get hintsAvailable() {
+          return this.settings.hints === "on" && this.difficulty !== "hard";
         },
         prepareHint() {
           if (
