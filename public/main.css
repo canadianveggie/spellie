@@ -14,7 +14,6 @@
   --color-nav: #004b84;
   --color-bg: var(--color-nav); /* match nav until theme loaded */
   --color-page-bg: var(--color-nav); /* match nav until theme loaded */
-  --color-border-header: #818384;
   --color-border: var(--color-neutral-10);
 
   --color-available: #fff;

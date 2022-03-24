@@ -877,7 +877,7 @@ const wordsHard = [
   "VEhST05F",
   "U1BFRURZ",
   "U0xJR0hU",
-  "VVNVQUw=",
+  "UE9SVEVS",
   "R1JBU1M=",
   "VFJJRUQ=",
   "Q0FOQUw=",
