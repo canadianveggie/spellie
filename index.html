@@ -231,10 +231,12 @@
           x-transition:enter.duration.1000ms
           class="defeat"
         >
-          Nice try! It was:
-          <p x-text="target"></p>
+          <span x-show="masked">Nice try!</span>
+          <span x-cloak x-show="!masked"
+            >It was: <span x-text="target"></span
+          ></span>
         </div>
-        <div x-cloak x-show="showResetButtons" class="masked-game-buttons">
+        <div x-cloak x-show="endGame" class="masked-game-buttons">
           <button @click="masked ? unmask : mask">
             <span x-text="masked ? 'Reveal' : 'Hide'"></span>
             <i
@@ -645,7 +647,6 @@
         endGame: false,
         repeatedGame: false,
         gameId: 0,
-        showResetButtons: false,
         hint: DEFAULT_HINT,
         currentGuessIndex: 0,
         cursor: 0,
@@ -1071,9 +1072,7 @@
             this.failed = initialState.failed || false;
             this.repeatedGame = initialState.repeatedGame || false;
             this.masked = this.solved || this.failed;
-            this.showResetButtons =
-              !this.endGame && (this.solved || this.failed);
-            this.endGame = false;
+            this.endGame = this.solved || this.failed;
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursorReverse = this.puzzleId === 50;
             this.cursor =
@@ -1158,10 +1157,12 @@
             ...this.guessWordDictionary,
           });
           this.endGame = true;
+          this.masked = true;
           const statistics = this.getFromLocalStorage(
             "statistics",
             DEFAULT_STATISTICS
           );
+
           if (this.solved) {
             statistics[this.difficulty].success += 1;
             statistics[this.difficulty].guesses[this.currentGuessIndex] += 1;
