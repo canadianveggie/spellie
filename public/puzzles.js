@@ -1349,6 +1349,11 @@ const emojiMatchThemes = {
     present: "🟠",
     miss: "⚫️",
   },
+  poop: {
+    match: "🤢",
+    present: "💩",
+    miss: "🧻",
+  },
 };
 
 /** @returns {import("../types").EmojiMatchThemeValue} */
