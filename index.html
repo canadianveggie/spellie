@@ -952,7 +952,10 @@
           }
         },
         get victoryEmoji() {
-          const victoryEmojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
+          const victoryEmojis =
+            this.puzzleId === 50
+              ? ["👽", "🦸‍♀️", "😻", "🥸", "🍪", "🥵"]
+              : ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return (
             victoryEmojis[this.currentGuessIndex - 1] ||
             victoryEmojis[victoryEmojis.length - 1]
