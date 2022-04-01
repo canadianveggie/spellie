@@ -166,7 +166,12 @@ header nav {
   position: absolute;
   left: 0;
   right: 0;
-  pointer-events: none;
+  z-index: -1;
+}
+
+.title a:link,
+.title a:visited {
+  color: inherit;
 }
 
 @media screen and (min-width: 600px) and (min-height: 400px) {
