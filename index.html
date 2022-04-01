@@ -65,8 +65,8 @@
           </a>
         </div>
         <div class="title">
-          Spellie
-          <span x-cloak x-show="puzzleId === 50">🙃</span>
+          <a x-bind:href="`#${difficulty}`">Spellie</a>
+          <span x-cloak x-show="puzzleId === 50" title="April Fools!">🙃</span>
         </div>
         <div>
           <a href="#collection" class="nav-link">
@@ -684,14 +684,16 @@
             this.resetHint();
             this.checkAnswer();
             if (!this.solved && !this.failed) {
-              this.cursor = 0;
+              this.cursor = this.cursorReverse ? this.target.length - 1 : 0;
               this.prepareHint();
             }
             this.updateControls();
             this.saveGameState();
             this.cursorMode = false;
           } else if (letterState.type === "back") {
-            const deleteIndex = this.cursorMode ? this.cursor : this.cursor - 1;
+            const deleteIndex = this.cursorMode
+              ? this.cursor
+              : this.cursorAdjust(-1);
             if (
               deleteIndex >= 0 &&
               deleteIndex < this.currentGuess.length &&
@@ -701,15 +703,26 @@
               if (this.cursorMode) {
                 this.cursorMode = false;
               } else {
-                this.cursor = Math.max(0, this.cursor - 1);
+                if (this.cursorReverse) {
+                  this.cursor = Math.min(
+                    this.target.length - 1,
+                    this.cursor + 1
+                  );
+                } else {
+                  this.cursor = Math.max(0, this.cursor - 1);
+                }
               }
               this.updateControls();
             }
           } else if (letterState.type === "letter") {
-            if (this.currentGuess && this.cursor < this.currentGuess.length) {
+            if (
+              this.currentGuess &&
+              this.cursor >= 0 &&
+              this.cursor < this.currentGuess.length
+            ) {
               this.currentGuess[this.cursor].letter =
                 letterState.label.toUpperCase();
-              this.cursor += 1;
+              this.cursor = this.cursorAdjust(1);
               this.cursorMode = false;
               this.updateControls();
             }
@@ -829,6 +842,12 @@
           const backKey = this.keys.find((letter) => letter.type === "back");
           const enterKey = this.keys.find((letter) => letter.type === "enter");
           backKey.state = this.cursor > 0 ? "available" : "unavailable";
+          if (this.cursorReverse) {
+            backKey.state =
+              this.cursor < this.target.length - 1
+                ? "available"
+                : "unavailable";
+          }
           enterKey.state =
             this.isCurrentWordComplete() && !this.isCurrentWordInvalid()
               ? "available pulse-small"
@@ -843,15 +862,16 @@
           } else if (e.key === "Backspace") {
             e.target.blur();
             this.addLetter({ type: "back" });
-          } else if (e.key === "ArrowLeft") {
-            const nextCursorIndex = Math.max(0, this.cursor - 1);
+          } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+            const delta = e.key === "ArrowLeft" ? -1 : 1;
+            const nextCursorIndex = Math.min(
+              this.target.length - 1,
+              Math.max(0, this.cursor + delta)
+            );
             if (this.currentGuess[nextCursorIndex].state === "match") {
               return; // don't allow reaching a freebie letter
             }
             this.cursor = nextCursorIndex;
-            this.cursorMode = true;
-          } else if (e.key === "ArrowRight") {
-            this.cursor = Math.min(this.target.length - 1, this.cursor + 1);
             this.cursorMode = true;
           } else if (
             /^[a-zA-Z]$/.test(e.key) &&
@@ -924,6 +944,13 @@
             guessIndex === this.currentGuessIndex && letterIndex === this.cursor
           );
         },
+        cursorAdjust(delta) {
+          if (this.cursorReverse) {
+            return this.cursor - delta;
+          } else {
+            return this.cursor + delta;
+          }
+        },
         get victoryEmoji() {
           const victoryEmojis = ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return (
@@ -933,9 +960,16 @@
         },
         /** First letter provided free for 4-letter words */
         prepareFreebie() {
-          if (this.target.length <= 4 && this.guesses[0][0].letter === "") {
-            this.addLetter({ type: "letter", label: this.target[0] });
-            this.guesses[0][0].state = "match"; // set this already as signal to player
+          const freebieIndex = this.cursorReverse ? this.target.length - 1 : 0;
+          if (
+            this.target.length <= 4 &&
+            this.guesses[0][freebieIndex].letter === ""
+          ) {
+            this.addLetter({
+              type: "letter",
+              label: this.target[freebieIndex],
+            });
+            this.guesses[0][freebieIndex].state = "match"; // set this already as signal to player
           }
         },
         get hintsAvailable() {
@@ -1038,7 +1072,10 @@
               !this.endGame && (this.solved || this.failed);
             this.endGame = false;
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
-            this.cursor = initialState.cursor || 0;
+            this.cursorReverse = this.puzzleId === 50;
+            this.cursor =
+              initialState.cursor ||
+              (this.cursorReverse ? this.target.length - 1 : 0);
             this.cursorMode = initialState.cursorMode || false;
             this.newEmojis = initialState.newEmojis || [];
             this.hintKnowledge = initialState.hintKnowledge || {};
