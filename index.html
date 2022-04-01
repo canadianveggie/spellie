@@ -842,6 +842,12 @@
           const backKey = this.keys.find((letter) => letter.type === "back");
           const enterKey = this.keys.find((letter) => letter.type === "enter");
           backKey.state = this.cursor > 0 ? "available" : "unavailable";
+          if (this.cursorReverse) {
+            backKey.state =
+              this.cursor < this.target.length - 1
+                ? "available"
+                : "unavailable";
+          }
           enterKey.state =
             this.isCurrentWordComplete() && !this.isCurrentWordInvalid()
               ? "available pulse-small"
