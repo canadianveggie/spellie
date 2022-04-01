@@ -1088,9 +1088,12 @@
           );
         },
         loadSettings() {
+          const dayOverwrites =
+            this.puzzleId === 50 ? { sharingEmojis: "poop" } : {};
           this.settings = {
             ...DEFAULT_SETTINGS,
             ...this.getFromLocalStorage("settings", {}),
+            ...dayOverwrites,
           };
           if (this.settings.sharingEmojis === "") {
             // Removing random default for now
