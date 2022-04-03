@@ -471,6 +471,10 @@ main {
   font-size: 1rem;
 }
 
+.masked-game-buttons button {
+  width: 33%;
+}
+
 .masked-game-buttons .material-icons {
   font-size: inherit;
 }
