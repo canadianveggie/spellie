@@ -623,6 +623,7 @@
           success: 0,
           fail: 0,
           guesses: [0, 0, 0, 0, 0, 0, 0],
+          solved: {},
         };
       });
       const DEFAULT_HINT = {
@@ -1166,6 +1167,10 @@
           if (this.solved) {
             statistics[this.difficulty].success += 1;
             statistics[this.difficulty].guesses[this.currentGuessIndex] += 1;
+            statistics.solved = statistics.solved || {};
+            statistics.solved[this.puzzleId] =
+              statistics.solved[this.puzzleId] || {};
+            statistics.solved[this.puzzleId][this.difficulty] = true;
           } else {
             statistics[this.difficulty].fail += 1;
           }
