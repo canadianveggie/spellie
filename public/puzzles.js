@@ -75,7 +75,7 @@ const wordsEasy = [
   "S0VFUA==",
   "Q0FSRQ==",
   "Q0FTVA==",
-  "SFVNUA==",
+  "UFVNUA==",
   "U0FJRA==",
   "TFVNUA==",
   "V0lORw==",
