@@ -109,7 +109,7 @@ const wordHints = {
   BERRY: { category: "A food", emoji: "🍓" },
   RING: { emoji: "💍" },
   GRIND: { category: "Crush it" },
-  SONG: { category: "Really hope", emoji: "🎶" },
+  SONG: { emoji: "🎶" },
 };
 
 window.wordHints = wordHints;
