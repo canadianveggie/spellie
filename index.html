@@ -255,7 +255,7 @@
           </button>
         </div>
         <div class="keyboard">
-          <template x-if="!solved && !failed">
+          <template x-if="!endGame">
             <template
               x-for="(keyboardRow, rowIndex) in keyboard"
               :key="`${gameId}-${rowIndex}`"
@@ -1084,6 +1084,7 @@
             this.hintKnowledge = initialState.hintKnowledge || {};
             this.updateKeyboard();
             this.resetHint();
+            clearTimeout(this.endGameTimer);
             this.prepareHint();
             this.prepareFreebie();
           } catch (err) {
@@ -1157,8 +1158,10 @@
             emojiCount: this.unlockedEmojis.length,
             ...this.guessWordDictionary,
           });
-          this.endGame = true;
-          this.masked = true;
+          this.endGameTimer = setTimeout(() => {
+            this.endGame = true;
+            this.masked = true;
+          }, this.target.length * 250 + 1000); // 1 second after last letter shows up
           const statistics = this.getFromLocalStorage(
             "statistics",
             DEFAULT_STATISTICS
