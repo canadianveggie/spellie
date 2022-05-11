@@ -1160,7 +1160,14 @@
           });
           this.endGameTimer = setTimeout(() => {
             this.endGame = true;
-            this.masked = true;
+            if (!this.solved) {
+              this.masked = true;
+            } else {
+              // Wait until after the victoryEmoji animation to mask
+              this.endGameTimer = setTimeout(() => {
+                this.masked = true;
+              }, 2500);
+            }
           }, this.target.length * 250 + 1000); // 1 second after last letter shows up
           const statistics = this.getFromLocalStorage(
             "statistics",
