@@ -2,56 +2,48 @@ const {
   daysBetween,
   compareTargetAndGuess,
   emojiMatchThemes,
+  futureWords,
+  getPuzzlesForDate,
   guessesAsEmojis,
   words,
 } = require("../public/puzzles");
 
 describe("puzzles", () => {
-  describe("words", () => {
+  describe("futureWords", () => {
     it("easy are length 4", () => {
-      expect(words.easy.length).toBeGreaterThan(300);
-      words.easy.forEach((word) => {
+      expect(futureWords.easy.length).toBeGreaterThanOrEqual(400); // 496
+      futureWords.easy.forEach((word) => {
         expect(word).toMatch(/^[A-Z]{4}$/);
       });
     });
-    it("medium are length 4-5", () => {
-      expect(words.medium.length).toBeGreaterThan(300);
-      words.medium.forEach((word) => {
-        expect(word).toMatch(/^[A-Z]{4,5}$/);
+    it("medium are length 5", () => {
+      expect(futureWords.medium.length).toBeGreaterThanOrEqual(400); // 512
+      futureWords.medium.forEach((word) => {
+        expect(word).toMatch(/^[A-Z]{5}$/);
       });
     });
-    it("hard are length 5-6", () => {
-      expect(words.hard.length).toBeGreaterThan(300);
-      words.hard.forEach((word) => {
-        expect(word).toMatch(/^[A-Z]{5,6}$/);
+    it("hard are length 6", () => {
+      expect(futureWords.hard.length).toBeGreaterThanOrEqual(400); // 400
+      futureWords.hard.forEach((word) => {
+        expect(word).toMatch(/^[A-Z]{6}$/);
       });
     });
     it("no duplicates", () => {
       const allWords = []
-        .concat(words.easy)
-        .concat(words.medium)
-        .concat(words.hard);
+        .concat(futureWords.easy)
+        .concat(futureWords.medium)
+        .concat(futureWords.hard);
       expect(allWords.length).toEqual([...new Set(allWords)].length);
     });
   });
 
-  describe("daysBetween", () => {
-    it("same day", () => {
-      const start = new Date(2022, 1 - 1, 18);
-      const end = new Date(2022, 1 - 1, 18);
-      expect(daysBetween(start, end)).toBe(0);
-    });
-
-    it("exactly one day", () => {
-      const start = new Date("2022-01-23T00:00Z");
-      const end = new Date("2022-01-24T00:00Z");
-      expect(daysBetween(start, end)).toBe(1);
-    });
-
-    it("month later", () => {
-      const start = new Date(2022, 1 - 1, 18);
-      const end = new Date(2022, 2 - 1, 18);
-      expect(daysBetween(start, end)).toBe(31);
+  describe("historical puzzles", () => {
+    it("do not change", () => {
+      expect(getPuzzlesForDate(new Date(2023, 1 - 1, 10))).toEqual({
+        easy: "CANS",
+        medium: "FRONT",
+        hard: "SLEEK",
+      });
     });
   });
 
