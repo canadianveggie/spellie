@@ -1932,7 +1932,6 @@ const futureWordsMedium = [
   "VE9VQ0g=",
   "R1JPVVA=",
   "QVBBUlQ=",
-  "U0FVQ1k=",
   "RlJPV04=",
   "V1JJU1Q=",
   "VU5DTEU=",
