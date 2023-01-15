@@ -1,10 +1,10 @@
 {
-  "name": "wordle-junior",
-  "version": "0.0.1",
+  "name": "spellie",
+  "version": "1.0.0",
   "description": "Wordle for kids!",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/canadianveggie/wordle-junior.git"
+    "url": "git+https://github.com/canadianveggie/spellie.git"
   },
   "keywords": [
     "wordle",
@@ -12,7 +12,7 @@
     "puzzle",
     "kids"
   ],
-  "homepage": "https://github.com/canadianveggie/wordle-junior#readme",
+  "homepage": "https://github.com/canadianveggie/spellie#readme",
   "scripts": {
     "start": "python -m SimpleHTTPServer",
     "test": "jest --verbose --watch",
