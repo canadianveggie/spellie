@@ -1,5 +1,7 @@
 // @ts-check
 
+// NOTE: this file should require('./holidays.js') instead of using global
+
 // spoiler alert
 const historicalWordsEasy = [
   "VE9MRA==",
@@ -2459,14 +2461,27 @@ const start = new Date(2022, 2 - 1, 10);
 
 const MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
 
+/**
+ * @param {Date} first
+ * @param {Date} second
+ * @returns int
+ */
 function daysBetween(first, second) {
   return Math.floor((second - first) / MILLIS_PER_DAY);
 }
 
+/**
+ * @param {Date} date
+ * @returns int
+ */
 function getPuzzleIdForDate(date) {
   return daysBetween(start, date);
 }
 
+/**
+ * @param {Date} date
+ * @returns {import("../types").DailyPuzzles}
+ */
 function getPuzzlesForDate(date) {
   const index = getPuzzleIdForDate(date);
   const targets = {};
@@ -2480,15 +2495,38 @@ function getPuzzlesForDate(date) {
         (index - historicalWordList.length) % futureWordList.length
       );
       targets[difficulty] = futureWordList[futureIndex];
+      addHolidayOverwrites(date, targets);
     }
   }
   return targets;
 }
 
+/**
+ * @param {Date} date
+ * @param {import("../types").DailyPuzzles} targets
+ */
+function addHolidayOverwrites(date, targets) {
+  const holidayOverwrites = window.holidayPuzzle(date);
+  if (holidayOverwrites) {
+    for (const difficulty of Object.keys(targets)) {
+      if (holidayOverwrites[difficulty].length > 0) {
+        const index = date.getFullYear() % holidayOverwrites[difficulty].length;
+        targets[difficulty] = holidayOverwrites[difficulty][index];
+      }
+    }
+  }
+}
+
+/**
+ * @returns int
+ */
 function getTodayPuzzleId() {
   return getPuzzleIdForDate(new Date());
 }
 
+/**
+ * @returns {import("../types").DailyPuzzles}
+ */
 function getTodayPuzzles() {
   return getPuzzlesForDate(new Date());
 }

@@ -65,6 +65,19 @@ export type EmojiMatchThemes = {
   [key in EmojiMatchThemeKey]: EmojiMatchThemeValue;
 };
 
+export type DailyPuzzles = {
+  easy: [string];
+  medium: [string];
+  hard: [string];
+};
+
+export type HolidayPuzzles = {
+  name: string;
+  easy: [string];
+  medium: [string];
+  hard: [string];
+};
+
 export type WordHints = {
   [key: string]: {
     category?: string;

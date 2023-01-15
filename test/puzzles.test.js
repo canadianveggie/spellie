@@ -5,7 +5,6 @@ const {
   futureWords,
   getPuzzlesForDate,
   guessesAsEmojis,
-  words,
 } = require("../public/puzzles");
 
 describe("puzzles", () => {
