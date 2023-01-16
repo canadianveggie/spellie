@@ -93,17 +93,11 @@ describe("hint", () => {
         misses: [],
         availables: [],
       };
-      const partial1b = {
-        presents: ["A"],
-      };
       const partial2 = {
         matches: [],
         presents: [],
         misses: ["R", "S", "T"],
         availables: [],
-      };
-      const partial2b = {
-        misses: ["R", "S", "T"],
       };
       const expected1 = {
         matches: [],
@@ -122,10 +116,6 @@ describe("hint", () => {
       expect(combineKnowledge(partial1, noKnowledge)).toEqual(expected1);
       expect(combineKnowledge(noKnowledge, partial2)).toEqual(expected2);
       expect(combineKnowledge(partial2, noKnowledge)).toEqual(expected2);
-      expect(combineKnowledge(noKnowledge, partial1b)).toEqual(expected1);
-      expect(combineKnowledge(partial1b, noKnowledge)).toEqual(expected1);
-      expect(combineKnowledge(noKnowledge, partial2b)).toEqual(expected2);
-      expect(combineKnowledge(partial2b, noKnowledge)).toEqual(expected2);
 
       expect(
         combineKnowledge(combineKnowledge(noKnowledge, partial1), partial2)
@@ -151,9 +141,15 @@ describe("hint", () => {
         label: "guess",
         state: "unavailable",
       });
-      keys.find((key) => key.label === "T").state = "present";
-      keys.find((key) => key.label === "E").state = "miss";
-      keys.find((key) => key.label === "R").state = "match";
+      const tKey = keys.find((key) => key.label === "T");
+      const eKey = keys.find((key) => key.label === "E");
+      const rKey = keys.find((key) => key.label === "R");
+      if (!tKey || !eKey || !rKey) {
+        throw Error("Unable to find key");
+      }
+      tKey.state = "present";
+      eKey.state = "miss";
+      rKey.state = "match";
 
       const knowledge = keysToKnowledge(keys);
 
@@ -323,7 +319,12 @@ describe("hint", () => {
         const hint = getHint(target, knowledge, settings, 4);
         expect(hint).toHaveProperty("misses", expectedMisses);
 
-        knowledge = combineKnowledge(knowledge, { misses: hint.misses });
+        knowledge = combineKnowledge(knowledge, {
+          misses: (hint && hint.misses) || [],
+          matches: [],
+          presents: [],
+          availables: [],
+        });
       }
 
       const lastHint = getHint(target, knowledge, settings, 5);

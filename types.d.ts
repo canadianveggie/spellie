@@ -32,10 +32,10 @@ export type KeyState = {
 };
 
 export type Knowledge = {
-  matches?: string[];
-  presents?: string[];
-  misses?: string[];
-  availables?: string[];
+  matches: string[];
+  presents: string[];
+  misses: string[];
+  availables: string[];
 };
 
 export type Settings = {
