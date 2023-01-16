@@ -1074,7 +1074,6 @@ const futureWordsEasy = [
   "UklERQ==",
   "Qk9XTA==",
   "R0xBRA==",
-  "Uk9TRQ==",
   "TkVBVA==",
   "U1VSRg==",
   "QkFDSw==",
@@ -1085,12 +1084,9 @@ const futureWordsEasy = [
   "VFVCRQ==",
   "RElTSw==",
   "RElORQ==",
-  "S0lORA==",
   "V0VBSw==",
   "U0VMRg==",
   "V0lTSA==",
-  "Q0FUUw==",
-  "U05PVw==",
   "TUVTUw==",
   "TEFNUA==",
   "U1RJUg==",
@@ -1103,7 +1099,6 @@ const futureWordsEasy = [
   "Q0FSUw==",
   "TElNRQ==",
   "UFVTSA==",
-  "UElOSw==",
   "VEFMRQ==",
   "QkVTVA==",
   "TElTVA==",
@@ -1121,7 +1116,6 @@ const futureWordsEasy = [
   "REVOVA==",
   "VFVORQ==",
   "QkVBRA==",
-  "S0lTUw==",
   "TUlDRQ==",
   "SEFURQ==",
   "SE9NRQ==",
@@ -1173,15 +1167,12 @@ const futureWordsEasy = [
   "UkFHRQ==",
   "RkFORw==",
   "U05BUA==",
-  "TkVTVA==",
   "SE9STg==",
   "Q1JBTQ==",
   "TElORQ==",
   "R1JFVw==",
   "QkFSTg==",
   "TUFOWQ==",
-  "SFVOVA==",
-  "R0lGVA==",
   "TEFTVA==",
   "TUVBTA==",
   "Q1JBQg==",
@@ -1252,7 +1243,6 @@ const futureWordsEasy = [
   "Q0FSVA==",
   "V0lOUw==",
   "QUdFUw==",
-  "Sk9LRQ==",
   "U1VSRQ==",
   "RVlFUw==",
   "UEFHRQ==",
@@ -1261,7 +1251,6 @@ const futureWordsEasy = [
   "UkFNUw==",
   "VEFTSw==",
   "RlJPRw==",
-  "V0FSTQ==",
   "U0xFRA==",
   "VEFQUw==",
   "UEFTVA==",
@@ -1294,7 +1283,6 @@ const futureWordsEasy = [
   "U0hVVA==",
   "WkVSTw==",
   "Q0xBUA==",
-  "U1RBUg==",
   "S05PVw==",
   "TE9VRA==",
   "V0hFTg==",
@@ -1303,10 +1291,8 @@ const futureWordsEasy = [
   "QkFUSA==",
   "U09DSw==",
   "UFVSRQ==",
-  "Q0FSRA==",
   "VkVSWQ==",
   "QkVBUg==",
-  "RkFMTA==",
   "RUFTWQ==",
   "QkVEUw==",
   "U09BUA==",
@@ -1332,18 +1318,15 @@ const futureWordsEasy = [
   "TFVDSw==",
   "Uk9ERQ==",
   "R09BVA==",
-  "RUdHUw==",
   "RkFDRQ==",
   "R0xVRQ==",
   "SFVSVA==",
-  "REFSSw==",
   "V0lERQ==",
   "Q09ORQ==",
   "REVTSw==",
   "UEFJTg==",
   "Uk9DSw==",
   "TUlOVA==",
-  "TE9WRQ==",
   "RFJJUA==",
   "QkFORw==",
   "VEhFTQ==",
@@ -1362,12 +1345,9 @@ const futureWordsEasy = [
   "UElOVA==",
   "U1RPVw==",
   "U0laRQ==",
-  "TU9PTg==",
   "Q09PTA==",
   "TUlORA==",
-  "VElNRQ==",
   "R0lSTA==",
-  "QkFUUw==",
   "TUlMSw==",
   "QkFSRQ==",
   "VE9FUw==",
@@ -1413,8 +1393,6 @@ const futureWordsEasy = [
   "RkxBVA==",
   "SEVBRA==",
   "UkVTVA==",
-  "R1JPVw==",
-  "U1dJTQ==",
   "VEFOSw==",
   "QkVBVA==",
   "VEFJTA==",
@@ -1457,7 +1435,6 @@ const futureWordsEasy = [
   "Q09BVA==",
   "UEFDSw==",
   "S0FMRQ==",
-  "TUFTSw==",
   "QVdBWQ==",
   "RElTSA==",
   "TElLRQ==",
@@ -1472,7 +1449,6 @@ const futureWordsEasy = [
   "RklTSA==",
   "R09MRA==",
   "UFJBWQ==",
-  "TEFORA==",
   "VEVBUg==",
   "RUFSUw==",
   "UElHUw==",
@@ -1501,11 +1477,9 @@ const futureWordsEasy = [
   "U0FDSw==",
   "Wk9ORQ==",
   "UkVOVA==",
-  "VFJFRQ==",
   "VFJJUA==",
   "RE9DSw==",
   "U0lDSw==",
-  "UkFLRQ==",
   "RE9HUw==",
   "Q0FWRQ==",
   "UlVTVA==",
@@ -1534,9 +1508,6 @@ const futureWordsMedium = [
   "QkVHSU4=",
   "Q0hJQ0s=",
   "U0hPUlQ=",
-  "VFJFQVQ=",
-  "QVBQTEU=",
-  "QU5OT1k=",
   "TU9VU0U=",
   "Q1VSTFM=",
   "RlJJRUQ=",
@@ -1559,11 +1530,9 @@ const futureWordsMedium = [
   "QUxPTkc=",
   "SkVBTlM=",
   "QlJFQUQ=",
-  "Sk9LRVI=",
   "Q1JJRUQ=",
   "U0NFTkU=",
   "Q1JVU0g=",
-  "U1dFRVQ=",
   "VEhFUkU=",
   "TUVUQUw=",
   "QUxPVUQ=",
@@ -1576,7 +1545,6 @@ const futureWordsMedium = [
   "V0VJUkQ=",
   "UElMT1Q=",
   "U1RVTVA=",
-  "TklHSFQ=",
   "Rk9SVEg=",
   "Q0FNRUw=",
   "UExBTkU=",
@@ -1591,11 +1559,9 @@ const futureWordsMedium = [
   "Q09VTlQ=",
   "U1RVTkc=",
   "Q1JBV0w=",
-  "TFVOQVI=",
   "TUVEQUw=",
   "U0VSVkU=",
   "V09SUlk=",
-  "SEVBUlQ=",
   "TEVNT04=",
   "UEhPTkU=",
   "SE9CQlk=",
@@ -1605,14 +1571,12 @@ const futureWordsMedium = [
   "UkFJU0U=",
   "UEFJTlQ=",
   "VElHRVI=",
-  "U1BBQ0U=",
   "UExBVEU=",
   "SU1BR0U=",
   "V0hJTEU=",
   "R1VJREU=",
   "U0hPT0s=",
   "QlVJTEQ=",
-  "R0hPU1Q=",
   "Q1JBU0g=",
   "Vk9DQUw=",
   "Q0hVVEU=",
@@ -1623,12 +1587,10 @@ const futureWordsMedium = [
   "QkxPQ0s=",
   "TUlOVVM=",
   "TU9ORVk=",
-  "U0lMTFk=",
   "Q0hJTEk=",
   "QU5HUlk=",
   "Q1JFQU0=",
   "TVVTSUM=",
-  "UVVJRVQ=",
   "U1BFQUs=",
   "U0NSQVA=",
   "Q0hPUkU=",
@@ -1663,7 +1625,6 @@ const futureWordsMedium = [
   "TU9VVEg=",
   "QkFOSk8=",
   "U0NSRVc=",
-  "RlJFU0g=",
   "VEhVTUI=",
   "VklERU8=",
   "QkFER0U=",
@@ -1707,7 +1668,6 @@ const futureWordsMedium = [
   "SFVSUlk=",
   "QlJJQ0s=",
   "TElPTlM=",
-  "SEFQUFk=",
   "V1JPTkc=",
   "SE9JU1Q=",
   "RklFTEQ=",
@@ -1750,7 +1710,6 @@ const futureWordsMedium = [
   "VFJJRUQ=",
   "QVdGVUw=",
   "Q1JBTkU=",
-  "RUFSVEg=",
   "RkFDRVM=",
   "U1BBUks=",
   "Uk9ZQUw=",
@@ -1771,7 +1730,6 @@ const futureWordsMedium = [
   "U1RPTEU=",
   "VEhFSVI=",
   "RlJPTlQ=",
-  "Rk9SQ0U=",
   "REFOQ0U=",
   "T0ZGRVI=",
   "TU9OVEg=",
@@ -1788,8 +1746,6 @@ const futureWordsMedium = [
   "Qk9BU1Q=",
   "QkFTSUM=",
   "QkFLRVI=",
-  "U05BS0U=",
-  "U0NBUkY=",
   "V09NQU4=",
   "U0xFRUs=",
   "R0xPVkU=",
@@ -1799,7 +1755,6 @@ const futureWordsMedium = [
   "R0xPUlk=",
   "R1JFRU4=",
   "U0VWRU4=",
-  "TElHSFQ=",
   "TEVER0U=",
   "TEVBU1Q=",
   "RkFJUlk=",
@@ -1815,18 +1770,15 @@ const futureWordsMedium = [
   "VE9PVEg=",
   "R1JBTkQ=",
   "UklHSFQ=",
-  "SE9SU0U=",
   "RUxCT1c=",
   "TUFUQ0g=",
   "R1JJTkQ=",
   "R1JBREU=",
   "VFJBSUw=",
-  "Q0FORFk=",
   "QlJBSU4=",
   "QlJJREU=",
   "V09SRFM=",
   "RFJFQU0=",
-  "Q0xFQU4=",
   "Q0FCTEU=",
   "TEFVR0g=",
   "Q1JPV0Q=",
@@ -1865,9 +1817,7 @@ const futureWordsMedium = [
   "T0xJVkU=",
   "SVNTVUU=",
   "U0tJTEw=",
-  "SEFUQ0g=",
   "VEhJTks=",
-  "T0NFQU4=",
   "VFJVVEg=",
   "V0hPTEU=",
   "QUJPVVQ=",
@@ -1890,7 +1840,6 @@ const futureWordsMedium = [
   "SlVER0U=",
   "TE9ZQUw=",
   "U0xFUFQ=",
-  "U0hBUEU=",
   "Q0hBTEs=",
   "VEVBUlM=",
   "U0xJREU=",
@@ -1909,7 +1858,6 @@ const futureWordsMedium = [
   "QlJJTkc=",
   "QU1PTkc=",
   "Q09BQ0g=",
-  "Uk9CSU4=",
   "VFdJU1Q=",
   "SEFORFM=",
   "U01PS0U=",
@@ -1959,7 +1907,6 @@ const futureWordsMedium = [
   "VkVOT00=",
   "UVVJTFQ=",
   "RkxVVEU=",
-  "QlVOTlk=",
   "UklWRVI=",
   "Qk9BUkQ=",
   "VEhJTkc=",
@@ -1977,7 +1924,6 @@ const futureWordsMedium = [
   "V0FURVI=",
   "TUFZT1I=",
   "QkVSUlk=",
-  "Q0xPQ0s=",
   "UFJJREU=",
   "TUFOR08=",
   "QlVOQ0g=",
@@ -1991,7 +1937,6 @@ const futureWordsMedium = [
   "Q0xPVUQ=",
   "VE9EQVk=",
   "QkVJTkc=",
-  "VEhSRUU=",
   "UEVBQ0g=",
   "T1JERVI=",
   "R1JBU1M=",
@@ -2017,7 +1962,6 @@ const futureWordsMedium = [
   "VEhPU0U=",
   "R1VFU1M=",
   "U0hFRVQ=",
-  "U1VOTlk=",
   "VEhJQ0s=",
   "RkxFRVQ=",
   "RVhDRUw=",
@@ -2056,8 +2000,6 @@ const futureWordsHard = [
   "Q0xPU0VE",
   "U1BPS0VO",
   "T1lTVEVS",
-  "U1BST1VU",
-  "QkFTS0VU",
   "Q0hVUkNI",
   "UEVSU09O",
   "TVVTRVVN",
@@ -2076,7 +2018,6 @@ const futureWordsHard = [
   "S0lUVEVO",
   "RkFNT1VT",
   "U1BSRUFE",
-  "Rk9SRVNU",
   "QU5TV0VS",
   "VU5JVEVE",
   "U1FVQVJF",
@@ -2129,7 +2070,6 @@ const futureWordsHard = [
   "VU5MT0FE",
   "U0FZSU5H",
   "QUxNT1NU",
-  "TEVBVkVT",
   "TUVNT1JZ",
   "RVhURU5E",
   "UkVXQVJE",
@@ -2165,7 +2105,6 @@ const futureWordsHard = [
   "UE9MSUNF",
   "Q1VTVE9N",
   "Q09STkVS",
-  "WUVMTE9X",
   "R09MREVO",
   "QlVSR0VS",
   "RU5USVJF",
@@ -2185,7 +2124,6 @@ const futureWordsHard = [
   "Vk9ZQUdF",
   "Q0FSUk9U",
   "TEVUVEVS",
-  "UkFCQklU",
   "REVUQUlM",
   "REVURUNU",
   "T1BUSU9O",
@@ -2213,7 +2151,6 @@ const futureWordsHard = [
   "Rk9SR0VU",
   "UEFMQUNF",
   "QlJBTkNI",
-  "Rk9VUlRI",
   "REFOR0VS",
   "TUFUVEVS",
   "UExFTlRZ",
@@ -2242,7 +2179,6 @@ const futureWordsHard = [
   "UEVCQkxF",
   "Q0FORExF",
   "UkVTT1JU",
-  "RU1QSVJF",
   "UFVCTElD",
   "REVGRU5E",
   "TUlSUk9S",
@@ -2268,7 +2204,6 @@ const futureWordsHard = [
   "R1VJVEFS",
   "VEFVR0hU",
   "R0VOVExF",
-  "RkxPV0VS",
   "U0hJRUxE",
   "QVJUSVNU",
   "RkFSTUVS",
@@ -2285,7 +2220,6 @@ const futureWordsHard = [
   "UkVDT1JE",
   "QkFOS0VS",
   "QkVGT1JF",
-  "UkVEVUNF",
   "SE9QSU5H",
   "UE9SVEVS",
   "SU5DT01F",
@@ -2293,7 +2227,6 @@ const futureWordsHard = [
   "VFJJUExF",
   "QlVDS0VU",
   "SEVJR0hU",
-  "UExBTkVU",
   "TU9USEVS",
   "TUFHTkVU",
   "QlVTSEVT",
@@ -2307,8 +2240,6 @@ const futureWordsHard = [
   "QlVCQkxF",
   "QlJJR0hU",
   "VEhST05F",
-  "U1BJREVS",
-  "RFJBR09O",
   "SU5TSVNU",
   "Q0FDVFVT",
   "SVRTRUxG",
@@ -2346,7 +2277,6 @@ const futureWordsHard = [
   "U0lTVEVS",
   "UFVaWkxF",
   "U0lNUExF",
-  "Q0lSQ0xF",
   "UkVQT1JU",
   "U0xJR0hU",
   "QlJJREdF",
@@ -2382,16 +2312,13 @@ const futureWordsHard = [
   "TFVNQkVS",
   "RkFNSUxZ",
   "Q09MTEFS",
-  "U1VNTUVS",
   "U1RPTEVO",
-  "T1JBTkdF",
   "UkVQQUlS",
   "SVNMQU5E",
   "V09SS0VS",
   "VU5LSU5E",
   "RU1QTE9Z",
   "UFJFVFRZ",
-  "V0lOVEVS",
   "UExJR0hU",
   "VFVSVExF",
   "Q1JBWU9O",
@@ -2413,7 +2340,6 @@ const futureWordsHard = [
   "VU5MT0NL",
   "U0VDT05E",
   "RE9VQkxF",
-  "U1BSSU5H",
   "U0FOREFM",
   "TU9QUEVE",
   "V0lORE9X",
@@ -2459,44 +2385,276 @@ const start = new Date(2022, 2 - 1, 10);
 
 const MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
 
+/**
+ * @param {Date} first
+ * @param {Date} second
+ * @returns {number}
+ */
 function daysBetween(first, second) {
-  return Math.floor((second - first) / MILLIS_PER_DAY);
+  return Math.floor((second.getTime() - first.getTime()) / MILLIS_PER_DAY);
 }
 
+/**
+ * @param {Date} date
+ * @returns {number}
+ */
 function getPuzzleIdForDate(date) {
   return daysBetween(start, date);
 }
 
+/**
+ * @param {Date} date
+ * @returns {import("../types").DailyPuzzles}
+ */
 function getPuzzlesForDate(date) {
-  const index = getPuzzleIdForDate(date);
-  const targets = {};
-  for (const difficulty of Object.keys(words)) {
-    const historicalWordList = historicalWords[difficulty];
-    const futureWordList = futureWords[difficulty];
-    if (index >= 0 && index < historicalWordList.length) {
-      targets[difficulty] = historicalWordList[index];
-    } else {
-      const futureIndex = Math.abs(
-        (index - historicalWordList.length) % futureWordList.length
-      );
-      targets[difficulty] = futureWordList[futureIndex];
-    }
-  }
-  return targets;
+  return {
+    easy: getPuzzleForDateAndDifficulty(date, "easy"),
+    medium: getPuzzleForDateAndDifficulty(date, "medium"),
+    hard: getPuzzleForDateAndDifficulty(date, "hard"),
+  };
 }
 
+/**
+ * @param {Date} date
+ * @param {string} difficulty
+ * @returns {string}
+ */
+function getPuzzleForDateAndDifficulty(date, difficulty) {
+  const index = getPuzzleIdForDate(date);
+  const historicalWordList = historicalWords[difficulty];
+  const futureWordList = futureWords[difficulty];
+
+  if (index >= 0 && index < historicalWordList.length) {
+    return historicalWordList[index];
+  }
+
+  const holidayPuzzle = getHolidayPuzzle(date, difficulty);
+  if (holidayPuzzle) {
+    return holidayPuzzle;
+  }
+
+  const futureIndex = Math.abs(
+    (index - historicalWordList.length) % futureWordList.length
+  );
+  return futureWordList[futureIndex];
+}
+
+/**
+ * @param {Date} date
+ * @returns {import("../types").HolidayPuzzles | undefined}
+ */
+function getHolidayPuzzlePossibilities(date) {
+  if (date.getMonth() === 1 - 1 && date.getDate() === 1) {
+    return {
+      name: "New Year's",
+      easy: ["WUVBUg==", "VElNRQ=="].map(atob),
+      medium: ["Q0xPQ0s=", "SEFQUFk="].map(atob),
+      hard: ["QU5OVUFM", "Q0hFRVJT"].map(atob),
+    };
+  }
+  if (date.getMonth() === 2 - 1 && date.getDate() === 14) {
+    return {
+      name: "Valentine's",
+      easy: ["S0lTUw==", "Uk9TRQ==", "TE9WRQ==", "UElOSw=="].map(atob),
+      medium: ["QVJST1c=", "SEVBUlQ=", "Q0FORFk=", "U1dFRVQ="].map(atob),
+      hard: ["UE9FVFJZ", "RkxPV0VS"].map(atob),
+    };
+  }
+  if (date.getMonth() === 3 - 1 && date.getDate() === 14) {
+    return {
+      name: "Pi Day",
+      easy: ["TUFUSA==", "QVJFQQ=="].map(atob),
+      medium: ["U0hBUEU=", "VEhSRUU="].map(atob),
+      hard: ["Q0lSQ0xF", "UkFESVVT"].map(atob),
+    };
+  }
+  if (date.getMonth() === 3 - 1 && date.getDate() === 20) {
+    return {
+      name: "Spring Equinox",
+      easy: ["TkVTVA==", "R1JPVw=="].map(atob),
+      medium: ["SEFUQ0g=", "RlJFU0g=", "Uk9CSU4="].map(atob),
+      hard: ["U1BSSU5H", "U1BST1VU"].map(atob),
+    };
+  }
+  if (date.getMonth() === 4 - 1 && date.getDate() === 1) {
+    return {
+      name: "April Fool's",
+      easy: ["Sk9LRQ==", "Rk9PTA=="].map(atob),
+      medium: ["QVBSSUw=", "U0lMTFk=", "QU5OT1k=", "Sk9LRVI="].map(atob),
+      hard: ["QkFOQU5B", "TUFNTUFM", "Q09DT09O", "VFJJQ0tZ"].map(atob),
+    };
+  }
+  if (date.getMonth() === 4 - 1 && date.getDate() === 22) {
+    return {
+      name: "Earth",
+      easy: ["VFJFRQ==", "TEFORA=="].map(atob),
+      medium: ["RUFSVEg=", "UkVVU0U=", "Q0xFQU4=", "T0NFQU4="].map(atob),
+      hard: ["UExBTkVU", "UkVEVUNF", "Rk9SRVNU"].map(atob),
+    };
+  }
+  if (date.getMonth() === 5 - 1 && date.getDate() === 4) {
+    return {
+      name: "May the Fourth",
+      easy: ["U1RBUg==", "U09MTw=="].map(atob),
+      medium: ["Rk9SQ0U=", "UkVCRUw=", "U1BBQ0U="].map(atob),
+      hard: ["Rk9VUlRI", "RU1QSVJF"].map(atob),
+    };
+  }
+  // Sometime June 20
+  if (date.getMonth() === 6 - 1 && date.getDate() === 21) {
+    return {
+      name: "Summer Solstice",
+      easy: ["V0FSTQ==", "U1dJTQ=="].map(atob),
+      medium: ["TElHSFQ=", "U1VOTlk="].map(atob),
+      hard: ["U1VNTUVS", "WUVMTE9X"].map(atob),
+    };
+  }
+  // Sometimes September 22
+  if (date.getMonth() === 9 - 1 && date.getDate() === 23) {
+    return {
+      name: "Autumn Equinox",
+      easy: ["UkFLRQ==", "RkFMTA=="].map(atob),
+      medium: ["QVBQTEU=", "QUNPUk4="].map(atob),
+      hard: ["QVVUVU1O", "TEVBVkVT", "T1JBTkdF"].map(atob),
+    };
+  }
+  if (date.getMonth() === 10 - 1 && date.getDate() === 31) {
+    return {
+      name: "Halloween",
+      easy: ["QkFUUw==", "TUFTSw==", "Q0FUUw=="].map(atob),
+      medium: ["R0hPU1Q=", "VFJFQVQ=", "U0NBUlk=", "V0lUQ0g="].map(atob),
+      hard: ["R09CTElO", "U1BPT0tZ", "U1BJREVS"].map(atob),
+    };
+  }
+  // Sometimes December 22
+  if (date.getMonth() === 12 - 1 && date.getDate() === 21) {
+    return {
+      name: "Winter Solstice",
+      easy: ["REFSSw==", "U05PVw=="].map(atob),
+      medium: ["TklHSFQ=", "U0NBUkY="].map(atob),
+      hard: ["V0lOVEVS", "RlJPWkVO"].map(atob),
+    };
+  }
+  if (date.getMonth() === 12 - 1 && date.getDate() === 25) {
+    return {
+      name: "Christmas",
+      easy: ["R0lGVA==", "Q0FSRA=="].map(atob),
+      medium: ["QkVMTFM=", "RUxWRVM="].map(atob),
+      hard: ["RlJPU1RZ", "U0xFSUdI"].map(atob),
+    };
+  }
+
+  if (
+    date.getFullYear() === 2023 &&
+    date.getMonth() === 1 - 1 &&
+    date.getDate() === 22
+  ) {
+    return {
+      name: "Lunar New Year",
+      easy: ["S0lORA=="].map(atob),
+      medium: ["UVVJRVQ="].map(atob),
+      hard: ["UkFCQklU"].map(atob),
+    };
+  }
+  if (
+    date.getFullYear() === 2024 &&
+    date.getMonth() === 2 - 1 &&
+    date.getDate() === 10
+  ) {
+    return {
+      name: "Lunar New Year",
+      easy: ["TU9PTg=="].map(atob),
+      medium: ["TFVOQVI="].map(atob),
+      hard: ["RFJBR09O"].map(atob),
+    };
+  }
+  if (
+    date.getFullYear() === 2025 &&
+    date.getMonth() === 1 - 1 &&
+    date.getDate() === 29
+  ) {
+    return {
+      name: "Lunar New Year",
+      easy: ["V0lTRQ=="].map(atob),
+      medium: ["U05BS0U="].map(atob),
+      hard: ["Wk9ESUFD"].map(atob),
+    };
+  }
+  if (
+    date.getFullYear() === 2026 &&
+    date.getMonth() === 2 - 1 &&
+    date.getDate() === 17
+  ) {
+    return {
+      name: "Lunar New Year",
+      easy: ["TU9PTg=="].map(atob),
+      medium: ["SE9SU0U="].map(atob),
+      hard: ["QUNUSVZF"].map(atob),
+    };
+  }
+  if (
+    (date.getFullYear() === 2023 &&
+      date.getMonth() === 4 - 1 &&
+      date.getDate() === 9) ||
+    (date.getFullYear() === 2024 &&
+      date.getMonth() === 4 - 1 &&
+      date.getDate() === 9) ||
+    (date.getFullYear() === 2025 &&
+      date.getMonth() === 4 - 1 &&
+      date.getDate() === 9) ||
+    (date.getFullYear() === 2026 &&
+      date.getMonth() === 4 - 1 &&
+      date.getDate() === 9)
+  ) {
+    return {
+      name: "Easter",
+      easy: ["RUdHUw==", "SFVOVA=="].map(atob),
+      medium: ["VFVMSVA=", "QlVOTlk="].map(atob),
+      hard: ["QkFTS0VU", "UEFTVEVM"].map(atob),
+    };
+  }
+
+  return undefined;
+}
+
+/**
+ * @param {Date} date
+ * @param {string} difficulty
+ * @return {string | undefined}
+ */
+function getHolidayPuzzle(date, difficulty) {
+  const holidayPossibilities = getHolidayPuzzlePossibilities(date);
+  if (holidayPossibilities && holidayPossibilities[difficulty].length > 0) {
+    const index = date.getFullYear() % holidayPossibilities[difficulty].length;
+    return holidayPossibilities[difficulty][index];
+  }
+  return undefined;
+}
+
+/**
+ * @returns {number}
+ */
 function getTodayPuzzleId() {
   return getPuzzleIdForDate(new Date());
 }
 
+/**
+ * @returns {import("../types").DailyPuzzles}
+ */
 function getTodayPuzzles() {
   return getPuzzlesForDate(new Date());
 }
 
+/**
+ * @param {string} target
+ * @param {string} guess
+ * @returns {import("../types").GuessState[]}
+ */
 function compareTargetAndGuess(target, guess) {
   const targetUpper = target.toUpperCase();
   const guessUpper = guess.toUpperCase();
   const { length } = targetUpper;
+  /** @type {import("../types").GuessState[]} */
   const result = Array(length);
   const letterUsed = Array(length).fill(false);
 
@@ -2589,6 +2747,8 @@ if (typeof module !== "undefined") {
     daysBetween,
     emojiMatchThemes,
     futureWords,
+    getHolidayPuzzle,
+    getHolidayPuzzlePossibilities,
     getPuzzlesForDate,
     getTodayPuzzleId,
     getTodayPuzzles,

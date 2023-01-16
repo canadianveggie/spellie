@@ -3,31 +3,31 @@ const {
   compareTargetAndGuess,
   emojiMatchThemes,
   futureWords,
+  getHolidayPuzzle,
   getPuzzlesForDate,
   guessesAsEmojis,
-  words,
 } = require("../public/puzzles");
 
 describe("puzzles", () => {
   describe("futureWords", () => {
-    it("easy are length 4", () => {
-      expect(futureWords.easy.length).toBeGreaterThanOrEqual(400); // 496
-      futureWords.easy.forEach((word) => {
-        expect(word).toMatch(/^[A-Z]{4}$/);
+    test.each([
+      ["easy", 4],
+      ["medium", 5],
+      ["hard", 6],
+    ])("%s are length %i", (difficulty, length) => {
+      futureWords[difficulty].forEach((word) => {
+        expect(word).toHaveLength(length);
       });
     });
-    it("medium are length 5", () => {
-      expect(futureWords.medium.length).toBeGreaterThanOrEqual(400); // 512
-      futureWords.medium.forEach((word) => {
-        expect(word).toMatch(/^[A-Z]{5}$/);
-      });
+
+    test.each([
+      ["easy", 450], // 471
+      ["medium", 450], // 482
+      ["hard", 365], // 383
+    ])("%s has at least %i puzzles", (difficulty, minPuzzles) => {
+      expect(futureWords[difficulty].length).toBeGreaterThanOrEqual(minPuzzles);
     });
-    it("hard are length 6", () => {
-      expect(futureWords.hard.length).toBeGreaterThanOrEqual(400); // 400
-      futureWords.hard.forEach((word) => {
-        expect(word).toMatch(/^[A-Z]{6}$/);
-      });
-    });
+
     it("no duplicates", () => {
       const allWords = []
         .concat(futureWords.easy)
@@ -45,6 +45,47 @@ describe("puzzles", () => {
         hard: "SLEEK",
       });
     });
+  });
+
+  describe("holiday puzzles", () => {
+    const holidayWords = {
+      easy: [],
+      medium: [],
+      hard: [],
+    };
+    const date = new Date(2023, 1 - 1, 15);
+    const endDate = new Date(2027, 1 - 1, 1);
+
+    while (date <= endDate) {
+      for (const difficulty of Object.keys(holidayWords)) {
+        const puzzle = getHolidayPuzzle(date, difficulty);
+        if (puzzle) {
+          holidayWords[difficulty].push(puzzle);
+        }
+      }
+      date.setDate(date.getDate() + 1);
+    }
+
+    test.each([
+      ["easy", 4],
+      ["medium", 5],
+      ["hard", 6],
+    ])("%s words are %i characters", (difficulty, length) => {
+      holidayWords[difficulty].forEach((word) => {
+        expect(word).toHaveLength(length);
+      });
+    });
+
+    test.each([["easy"], ["medium"], ["hard"]])(
+      "unique %s words",
+      (difficulty) => {
+        const repeats = holidayWords[difficulty].filter(
+          (i) => futureWords[difficulty].indexOf(i) >= 0
+        );
+        // console.log(repeats.map((word) => btoa(word)));
+        expect(repeats).toHaveLength(0);
+      }
+    );
   });
 
   describe("daysBetween", () => {
