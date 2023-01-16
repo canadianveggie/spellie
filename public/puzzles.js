@@ -2476,7 +2476,7 @@ function getPuzzlesForDate(date) {
     if (index >= 0 && index < historicalWordList.length) {
       targets[difficulty] = historicalWordList[index];
     } else {
-      futureIndex = Math.abs(
+      const futureIndex = Math.abs(
         (index - historicalWordList.length) % futureWordList.length
       );
       targets[difficulty] = futureWordList[futureIndex];

@@ -688,7 +688,10 @@ function getUnicodeCodePoint(emoji) {
 
   const result = [];
   for (const codePoint of normalized) {
-    result.push(codePoint.codePointAt(0).toString(16));
+    const point = codePoint.codePointAt(0);
+    if (point !== undefined) {
+      result.push(point.toString(16));
+    }
   }
   return result.join("-");
 }
