@@ -16,7 +16,7 @@
 const { emojis } = require("../public/emojis");
 // get from https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json
 // @ts-ignore
-const json = require("./emoji.json");
+const emojiJson = require("./emoji.json");
 
 const takenEmojis = Object.values(emojis);
 const takenKeys = Object.keys(emojis).map((key) => key.toLowerCase());
@@ -38,7 +38,7 @@ const categoryBlockList = [
   "Symbols",
 ];
 
-const remaining = json
+const remaining = emojiJson
   .filter((item) => !versionBlockList.includes(item.ios_version))
   .filter((item) => !categoryBlockList.includes(item.category))
   .filter((item) => !takenEmojis.includes(item.emoji))
