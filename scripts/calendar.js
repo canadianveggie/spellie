@@ -1,8 +1,11 @@
 // @ts-check
 
 const { emojis } = require("../public/emojis");
-const { getPuzzlesForDate, words } = require("../public/puzzles");
-const { holidayPuzzle } = require("../public/holidays");
+const {
+  getPuzzlesForDate,
+  holidayPuzzle,
+  words,
+} = require("../public/puzzles");
 
 const date = new Date(2022, 2 - 1, 10, 12);
 const calendar = [];
