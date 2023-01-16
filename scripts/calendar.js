@@ -3,7 +3,7 @@
 const { emojis } = require("../public/emojis");
 const {
   getPuzzlesForDate,
-  holidayPuzzle,
+  getHolidayPuzzlePossibilities,
   words,
 } = require("../public/puzzles");
 
@@ -12,7 +12,8 @@ const calendar = [];
 const days = Math.max(
   words.easy.length,
   words.medium.length,
-  words.hard.length
+  words.hard.length,
+  4 * 365
 );
 for (let i = 0; i < days; i++) {
   const puzzles = getPuzzlesForDate(date);
@@ -21,7 +22,7 @@ for (let i = 0; i < days; i++) {
       return emojis[word] || "  ";
     })
     .join("");
-  const holiday = holidayPuzzle(date);
+  const holiday = getHolidayPuzzlePossibilities(date);
   calendar.push({
     date: date.toISOString().split("T")[0],
     ...puzzles,

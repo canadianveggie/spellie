@@ -2489,11 +2489,15 @@ function getPuzzlesForDate(date) {
     if (index >= 0 && index < historicalWordList.length) {
       targets[difficulty] = historicalWordList[index];
     } else {
-      const futureIndex = Math.abs(
-        (index - historicalWordList.length) % futureWordList.length
-      );
-      targets[difficulty] = futureWordList[futureIndex];
-      addHolidayOverwrites(date, targets);
+      const holidayPuzzle = getHolidayPuzzle(date, difficulty);
+      if (holidayPuzzle) {
+        targets[difficulty] = holidayPuzzle;
+      } else {
+        const futureIndex = Math.abs(
+          (index - historicalWordList.length) % futureWordList.length
+        );
+        targets[difficulty] = futureWordList[futureIndex];
+      }
     }
   }
   return targets;
@@ -2503,19 +2507,19 @@ function getPuzzlesForDate(date) {
  * @param {Date} date
  * @returns {import("../types").HolidayPuzzles || undefined}
  */
-function holidayPuzzle(date) {
+function getHolidayPuzzlePossibilities(date) {
   if (date.getMonth() === 1 - 1 && date.getDate() === 1) {
     return {
       name: "New Year's",
-      easy: ["TIME", "YEAR"],
-      medium: ["HAPPY", "CLOCK"],
-      hard: [],
+      easy: ["YEAR", "TIME"],
+      medium: ["CLOCK", "HAPPY"],
+      hard: ["ANNUAL", "CHEERS"],
     };
   }
   if (date.getMonth() === 2 - 1 && date.getDate() === 14) {
     return {
       name: "Valentine's",
-      easy: ["PINK", "KISS", "ROSE", "LOVE"],
+      easy: ["KISS", "ROSE", "LOVE", "PINK"],
       medium: ["HEART", "CANDY", "SWEET"],
       hard: ["ARROW", "POETRY", "FLOWER"],
     };
@@ -2674,23 +2678,21 @@ function holidayPuzzle(date) {
     };
   }
 
-  return null;
+  return undefined;
 }
 
 /**
  * @param {Date} date
- * @param {import("../types").DailyPuzzles} targets
+ * @param {difficulty} string
+ * @return {string || undefined}
  */
-function addHolidayOverwrites(date, targets) {
-  const holidayOverwrites = holidayPuzzle(date);
-  if (holidayOverwrites) {
-    for (const difficulty of Object.keys(targets)) {
-      if (holidayOverwrites[difficulty].length > 0) {
-        const index = date.getFullYear() % holidayOverwrites[difficulty].length;
-        targets[difficulty] = holidayOverwrites[difficulty][index];
-      }
-    }
+function getHolidayPuzzle(date, difficulty) {
+  const holidayPossibilities = getHolidayPuzzlePossibilities(date);
+  if (holidayPossibilities && holidayPossibilities[difficulty].length > 0) {
+    const index = date.getFullYear() % holidayPossibilities[difficulty].length;
+    return holidayPossibilities[difficulty][index];
   }
+  return undefined;
 }
 
 /**
@@ -2803,11 +2805,12 @@ if (typeof module !== "undefined") {
     daysBetween,
     emojiMatchThemes,
     futureWords,
+    getHolidayPuzzle,
+    getHolidayPuzzlePossibilities,
     getPuzzlesForDate,
     getTodayPuzzleId,
     getTodayPuzzles,
     guessesAsEmojis,
-    holidayPuzzle,
     words,
   };
 }
