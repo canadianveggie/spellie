@@ -2447,100 +2447,100 @@ function getHolidayPuzzlePossibilities(date) {
   if (date.getMonth() === 1 - 1 && date.getDate() === 1) {
     return {
       name: "New Year's",
-      easy: ["YEAR", "TIME"],
-      medium: ["CLOCK", "HAPPY"],
-      hard: ["ANNUAL", "CHEERS"],
+      easy: ["WUVBUg==", "VElNRQ=="].map(atob),
+      medium: ["Q0xPQ0s=", "SEFQUFk="].map(atob),
+      hard: ["QU5OVUFM", "Q0hFRVJT"].map(atob),
     };
   }
   if (date.getMonth() === 2 - 1 && date.getDate() === 14) {
     return {
       name: "Valentine's",
-      easy: ["KISS", "ROSE", "LOVE", "PINK"],
-      medium: ["ARROW", "HEART", "CANDY", "SWEET"],
-      hard: ["POETRY", "FLOWER"],
+      easy: ["S0lTUw==", "Uk9TRQ==", "TE9WRQ==", "UElOSw=="].map(atob),
+      medium: ["QVJST1c=", "SEVBUlQ=", "Q0FORFk=", "U1dFRVQ="].map(atob),
+      hard: ["UE9FVFJZ", "RkxPV0VS"].map(atob),
     };
   }
   if (date.getMonth() === 3 - 1 && date.getDate() === 14) {
     return {
       name: "Pi Day",
-      easy: ["MATH", "AREA"],
-      medium: ["SHAPE", "THREE"],
-      hard: ["CIRCLE", "RADIUS"],
+      easy: ["TUFUSA==", "QVJFQQ=="].map(atob),
+      medium: ["U0hBUEU=", "VEhSRUU="].map(atob),
+      hard: ["Q0lSQ0xF", "UkFESVVT"].map(atob),
     };
   }
   if (date.getMonth() === 3 - 1 && date.getDate() === 20) {
     return {
       name: "Spring Equinox",
-      easy: ["NEST", "GROW"],
-      medium: ["HATCH", "FRESH", "ROBIN"],
-      hard: ["SPRING", "SPROUT"],
+      easy: ["TkVTVA==", "R1JPVw=="].map(atob),
+      medium: ["SEFUQ0g=", "RlJFU0g=", "Uk9CSU4="].map(atob),
+      hard: ["U1BSSU5H", "U1BST1VU"].map(atob),
     };
   }
   if (date.getMonth() === 4 - 1 && date.getDate() === 1) {
     return {
       name: "April Fool's",
-      easy: ["JOKE", "FOOL"],
-      medium: ["APRIL", "SILLY", "ANNOY", "JOKER"],
-      hard: ["BANANA", "MAMMAL", "COCOON", "TRICKY"],
+      easy: ["Sk9LRQ==", "Rk9PTA=="].map(atob),
+      medium: ["QVBSSUw=", "U0lMTFk=", "QU5OT1k=", "Sk9LRVI="].map(atob),
+      hard: ["QkFOQU5B", "TUFNTUFM", "Q09DT09O", "VFJJQ0tZ"].map(atob),
     };
   }
   if (date.getMonth() === 4 - 1 && date.getDate() === 22) {
     return {
       name: "Earth",
-      easy: ["TREE", "LAND"],
-      medium: ["EARTH", "REUSE", "CLEAN", "OCEAN"],
-      hard: ["PLANET", "REDUCE", "FOREST"],
+      easy: ["VFJFRQ==", "TEFORA=="].map(atob),
+      medium: ["RUFSVEg=", "UkVVU0U=", "Q0xFQU4=", "T0NFQU4="].map(atob),
+      hard: ["UExBTkVU", "UkVEVUNF", "Rk9SRVNU"].map(atob),
     };
   }
   if (date.getMonth() === 5 - 1 && date.getDate() === 4) {
     return {
       name: "May the Fourth",
-      easy: ["STAR", "SOLO"],
-      medium: ["FORCE", "REBEL", "SPACE"],
-      hard: ["FOURTH", "EMPIRE"],
+      easy: ["U1RBUg==", "U09MTw=="].map(atob),
+      medium: ["Rk9SQ0U=", "UkVCRUw=", "U1BBQ0U="].map(atob),
+      hard: ["Rk9VUlRI", "RU1QSVJF"].map(atob),
     };
   }
   // Sometime June 20
   if (date.getMonth() === 6 - 1 && date.getDate() === 21) {
     return {
       name: "Summer Solstice",
-      easy: ["WARM", "SWIM"],
-      medium: ["LIGHT", "SUNNY"],
-      hard: ["SUMMER", "YELLOW"],
+      easy: ["V0FSTQ==", "U1dJTQ=="].map(atob),
+      medium: ["TElHSFQ=", "U1VOTlk="].map(atob),
+      hard: ["U1VNTUVS", "WUVMTE9X"].map(atob),
     };
   }
   // Sometimes September 22
   if (date.getMonth() === 9 - 1 && date.getDate() === 23) {
     return {
       name: "Autumn Equinox",
-      easy: ["RAKE", "FALL"],
-      medium: ["APPLE", "ACORN"],
-      hard: ["AUTUMN", "LEAVES", "ORANGE"],
+      easy: ["UkFLRQ==", "RkFMTA=="].map(atob),
+      medium: ["QVBQTEU=", "QUNPUk4="].map(atob),
+      hard: ["QVVUVU1O", "TEVBVkVT", "T1JBTkdF"].map(atob),
     };
   }
   if (date.getMonth() === 10 - 1 && date.getDate() === 31) {
     return {
       name: "Halloween",
-      easy: ["BATS", "MASK", "CATS"],
-      medium: ["GHOST", "TREAT", "SCARY", "WITCH"],
-      hard: ["GOBLIN", "SPOOKY", "SPIDER"],
+      easy: ["QkFUUw==", "TUFTSw==", "Q0FUUw=="].map(atob),
+      medium: ["R0hPU1Q=", "VFJFQVQ=", "U0NBUlk=", "V0lUQ0g="].map(atob),
+      hard: ["R09CTElO", "U1BPT0tZ", "U1BJREVS"].map(atob),
     };
   }
   // Sometimes December 22
   if (date.getMonth() === 12 - 1 && date.getDate() === 21) {
     return {
       name: "Winter Solstice",
-      easy: ["DARK", "SNOW"],
-      medium: ["NIGHT", "SCARF"],
-      hard: ["WINTER", "FROZEN"],
+      easy: ["REFSSw==", "U05PVw=="].map(atob),
+      medium: ["TklHSFQ=", "U0NBUkY="].map(atob),
+      hard: ["V0lOVEVS", "RlJPWkVO"].map(atob),
     };
   }
   if (date.getMonth() === 12 - 1 && date.getDate() === 25) {
     return {
       name: "Christmas",
-      easy: ["GIFT", "CARD"],
-      medium: ["BELLS", "ELVES"],
-      hard: ["FROSTY", "SLEIGH"],
+      easy: ["R0lGVA==", "Q0FSRA=="].map(atob),
+      medium: ["QkVMTFM=", "RUxWRVM="].map(atob),
+      hard: ["RlJPU1RZ", "U0xFSUdI"].map(atob),
     };
   }
 
@@ -2551,9 +2551,9 @@ function getHolidayPuzzlePossibilities(date) {
   ) {
     return {
       name: "Lunar New Year",
-      easy: ["KIND"],
-      medium: ["QUIET"],
-      hard: ["RABBIT"],
+      easy: ["S0lORA=="].map(atob),
+      medium: ["UVVJRVQ="].map(atob),
+      hard: ["UkFCQklU"].map(atob),
     };
   }
   if (
@@ -2563,9 +2563,9 @@ function getHolidayPuzzlePossibilities(date) {
   ) {
     return {
       name: "Lunar New Year",
-      easy: ["MOON"],
-      medium: ["LUNAR"],
-      hard: ["DRAGON"],
+      easy: ["TU9PTg=="].map(atob),
+      medium: ["TFVOQVI="].map(atob),
+      hard: ["RFJBR09O"].map(atob),
     };
   }
   if (
@@ -2575,9 +2575,9 @@ function getHolidayPuzzlePossibilities(date) {
   ) {
     return {
       name: "Lunar New Year",
-      easy: ["WISE"],
-      medium: ["SNAKE"],
-      hard: ["ZODIAC"],
+      easy: ["V0lTRQ=="].map(atob),
+      medium: ["U05BS0U="].map(atob),
+      hard: ["Wk9ESUFD"].map(atob),
     };
   }
   if (
@@ -2587,9 +2587,9 @@ function getHolidayPuzzlePossibilities(date) {
   ) {
     return {
       name: "Lunar New Year",
-      easy: ["MOON"],
-      medium: ["HORSE"],
-      hard: ["ACTIVE"],
+      easy: ["TU9PTg=="].map(atob),
+      medium: ["SE9SU0U="].map(atob),
+      hard: ["QUNUSVZF"].map(atob),
     };
   }
   if (
@@ -2608,9 +2608,9 @@ function getHolidayPuzzlePossibilities(date) {
   ) {
     return {
       name: "Easter",
-      easy: ["EGGS", "HUNT"],
-      medium: ["TULIP", "BUNNY"],
-      hard: ["BASKET", "PASTEL"],
+      easy: ["RUdHUw==", "SFVOVA=="].map(atob),
+      medium: ["VFVMSVA=", "QlVOTlk="].map(atob),
+      hard: ["QkFTS0VU", "UEFTVEVM"].map(atob),
     };
   }
 
