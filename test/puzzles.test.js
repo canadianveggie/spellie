@@ -20,13 +20,10 @@ describe("puzzles", () => {
       });
     });
 
-    // easy - 471
-    // medium - 482
-    // hard - 383
     test.each([
-      ["easy", 450],
-      ["medium", 450],
-      ["hard", 365],
+      ["easy", 450], // 471
+      ["medium", 450], // 482
+      ["hard", 365], // 383
     ])("%s has at least %i puzzles", (difficulty, minPuzzles) => {
       expect(futureWords[difficulty].length).toBeGreaterThanOrEqual(minPuzzles);
     });
