@@ -2388,7 +2388,7 @@ const MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
 /**
  * @param {Date} first
  * @param {Date} second
- * @returns number
+ * @returns {number}
  */
 function daysBetween(first, second) {
   return Math.floor((second.getTime() - first.getTime()) / MILLIS_PER_DAY);
@@ -2396,7 +2396,7 @@ function daysBetween(first, second) {
 
 /**
  * @param {Date} date
- * @returns number
+ * @returns {number}
  */
 function getPuzzleIdForDate(date) {
   return daysBetween(start, date);
@@ -2417,7 +2417,7 @@ function getPuzzlesForDate(date) {
 /**
  * @param {Date} date
  * @param {string} difficulty
- * @returns string
+ * @returns {string}
  */
 function getPuzzleForDateAndDifficulty(date, difficulty) {
   const index = getPuzzleIdForDate(date);
@@ -2632,7 +2632,7 @@ function getHolidayPuzzle(date, difficulty) {
 }
 
 /**
- * @returns number
+ * @returns {number}
  */
 function getTodayPuzzleId() {
   return getPuzzleIdForDate(new Date());
