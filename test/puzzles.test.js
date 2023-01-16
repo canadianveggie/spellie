@@ -56,7 +56,7 @@ describe("puzzles", () => {
       medium: [],
       hard: [],
     };
-    const date = new Date(2023, 2 - 1, 1);
+    const date = new Date(2023, 1 - 1, 15);
     const endDate = new Date(2027, 1 - 1, 1);
 
     while (date <= endDate) {
@@ -85,6 +85,7 @@ describe("puzzles", () => {
         const repeats = holidayWords[difficulty].filter(
           (i) => futureWords[difficulty].indexOf(i) >= 0
         );
+        // console.log(repeats.map((word) => btoa(word)));
         expect(repeats).toHaveLength(0);
       }
     );
