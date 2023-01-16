@@ -50,10 +50,8 @@
     "not dead"
   ],
   "lint-staged": {
-    "**/*": [
-      "prettier --write --ignore-unknown",
-      "npm run typecheck"
-    ]
+    "**/*.js": "npm run typecheck",
+    "**/*": "prettier --write --ignore-unknown"
   },
   "jest": {
     "verbose": true,
