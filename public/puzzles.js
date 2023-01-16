@@ -2520,8 +2520,8 @@ function getHolidayPuzzlePossibilities(date) {
     return {
       name: "Valentine's",
       easy: ["KISS", "ROSE", "LOVE", "PINK"],
-      medium: ["HEART", "CANDY", "SWEET"],
-      hard: ["ARROW", "POETRY", "FLOWER"],
+      medium: ["ARROW", "HEART", "CANDY", "SWEET"],
+      hard: ["POETRY", "FLOWER"],
     };
   }
   if (date.getMonth() === 3 - 1 && date.getDate() === 14) {
@@ -2543,8 +2543,8 @@ function getHolidayPuzzlePossibilities(date) {
   if (date.getMonth() === 4 - 1 && date.getDate() === 1) {
     return {
       name: "April Fool's",
-      easy: ["FOOL", "JOKE"],
-      medium: ["SILLY", "TRICK", "APRIL"],
+      easy: ["JOKE", "FOOL"],
+      medium: ["SILLY", "JOKER", "TRICK", "APRIL"],
       hard: ["BANANA", "MAMMAL", "COCOON"],
     };
   }
@@ -2560,15 +2560,15 @@ function getHolidayPuzzlePossibilities(date) {
     return {
       name: "May the Fourth",
       easy: ["STAR", "SOLO"],
-      medium: ["FORCE", "SPACE", "REBEL"],
-      hard: ["EMPIRE", "FOURTH"],
+      medium: ["FORCE", "REBEL", "SPACE"],
+      hard: ["FOURTH", "EMPIRE"],
     };
   }
   // Sometime June 20
   if (date.getMonth() === 6 - 1 && date.getDate() === 21) {
     return {
       name: "Summer Solstice",
-      easy: ["SWIM", "WARM"],
+      easy: ["WARM", "SWIM"],
       medium: ["LIGHT", "SUNNY"],
       hard: ["SUMMER", "YELLOW"],
     };
@@ -2579,7 +2579,7 @@ function getHolidayPuzzlePossibilities(date) {
       name: "Autumn Equinox",
       easy: ["RAKE", "FALL"],
       medium: ["APPLE", "ACORN"],
-      hard: ["LEAVES", "AUTUMN", "ORANGE"],
+      hard: ["AUTUMN", "LEAVES", "ORANGE"],
     };
   }
   if (date.getMonth() === 10 - 1 && date.getDate() === 31) {
@@ -2615,8 +2615,8 @@ function getHolidayPuzzlePossibilities(date) {
   ) {
     return {
       name: "Lunar New Year",
-      easy: ["MOON"],
-      medium: ["LUNAR"],
+      easy: ["KIND"],
+      medium: ["QUIET"],
       hard: ["RABBIT"],
     };
   }
@@ -2639,7 +2639,7 @@ function getHolidayPuzzlePossibilities(date) {
   ) {
     return {
       name: "Lunar New Year",
-      easy: ["MOON"],
+      easy: ["WISE"],
       medium: ["SNAKE"],
       hard: ["ZODIAC"],
     };
@@ -2653,7 +2653,7 @@ function getHolidayPuzzlePossibilities(date) {
       name: "Lunar New Year",
       easy: ["MOON"],
       medium: ["HORSE"],
-      hard: [""],
+      hard: ["ACTIVE"],
     };
   }
   if (

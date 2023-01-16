@@ -12,8 +12,7 @@ const calendar = [];
 const days = Math.max(
   words.easy.length,
   words.medium.length,
-  words.hard.length,
-  4 * 365
+  words.hard.length
 );
 for (let i = 0; i < days; i++) {
   const puzzles = getPuzzlesForDate(date);

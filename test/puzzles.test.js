@@ -80,6 +80,7 @@ describe("puzzles", () => {
         const repeats = holidayWords[difficulty].filter(
           (i) => futureWords[difficulty].indexOf(i) >= 0
         );
+        console.log(repeats.map((w) => btoa(w)));
         expect(repeats).toHaveLength(0);
       }
     );
