@@ -52,7 +52,8 @@ export type EmojiMatchThemeKey =
   | "fruit"
   | "vegetable"
   | "tree"
-  | "circle";
+  | "circle"
+  | "poop";
 
 export type EmojiMatchThemeValue = {
   match: string;
