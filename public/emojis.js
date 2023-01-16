@@ -1,5 +1,6 @@
 // @ts-check
 
+/** @type {{[name: string]: string}} */
 const emojis = {
   ABACUS: "🧮",
   ABCD: "🔠",

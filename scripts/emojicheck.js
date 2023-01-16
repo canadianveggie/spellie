@@ -47,14 +47,21 @@ const remaining = json
     return !takenKeys.find((taken) => keywords.includes(taken));
   });
 console.log(JSON.stringify(remaining, null, 2));
-const suggestions = remaining.reduce((mapping, item) => {
-  item.aliases
-    .concat(item.tags)
-    .filter((word) => word.length >= 4 && word.length <= 6)
-    .forEach((word) => {
-      mapping[word] = item.emoji;
-    });
-  return mapping;
-}, {});
+
+const suggestions = remaining.reduce(
+  /**
+   * @param {{[word: string]: string}} mapping
+   */
+  (mapping, item) => {
+    item.aliases
+      .concat(item.tags)
+      .filter((word) => word.length >= 4 && word.length <= 6)
+      .forEach((word) => {
+        mapping[word] = item.emoji;
+      });
+    return mapping;
+  },
+  {}
+);
 console.log(suggestions);
 console.log(remaining.length);

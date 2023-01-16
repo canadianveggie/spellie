@@ -4,6 +4,8 @@ declare global {
   }
 }
 
+export type Difficulty = "easy" | "medium" | "hard";
+
 export type GuessState = "pending" | "match" | "present" | "miss";
 
 export type LetterGuess = {

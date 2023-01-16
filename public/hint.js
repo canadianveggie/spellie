@@ -40,6 +40,7 @@ const LETTERS_BY_FREQUENCY = [
  * @returns {string | null} - the multiple letter
  */
 function findMultiple(letters) {
+  /** @type {{ [letter: string]: boolean; }} */
   const seen = {};
   for (let i = 0; i < letters.length; i++) {
     const letter = letters[i];
@@ -52,6 +53,7 @@ function findMultiple(letters) {
   return null;
 }
 
+/** @type {{ [letter: string]: string; }} */
 const hintLetterMap = {
   a: "ⓐ",
   b: "ⓑ",
