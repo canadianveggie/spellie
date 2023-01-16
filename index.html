@@ -707,15 +707,10 @@
               this.currentGuess[deleteIndex].letter = "";
               if (this.cursorMode) {
                 this.cursorMode = false;
+              } else if (this.cursorReverse) {
+                this.cursor = Math.min(this.target.length - 1, this.cursor + 1);
               } else {
-                if (this.cursorReverse) {
-                  this.cursor = Math.min(
-                    this.target.length - 1,
-                    this.cursor + 1
-                  );
-                } else {
-                  this.cursor = Math.max(0, this.cursor - 1);
-                }
+                this.cursor = Math.max(0, this.cursor - 1);
               }
               this.updateControls();
             }
@@ -1142,11 +1137,11 @@
               emoji,
               unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
             }));
-          const identify = new amplitude.Identify().set(
+          const identifyEmojis = new amplitude.Identify().set(
             "emojiCount",
             this.unlockedEmojis.length
           );
-          amplitude.getInstance().identify(identify);
+          amplitude.getInstance().identify(identifyEmojis);
         },
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {

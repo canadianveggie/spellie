@@ -2391,7 +2391,7 @@ const MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
  * @returns int
  */
 function daysBetween(first, second) {
-  return Math.floor((second - first) / MILLIS_PER_DAY);
+  return Math.floor((second.getTime() - first.getTime()) / MILLIS_PER_DAY);
 }
 
 /**
@@ -2407,31 +2407,41 @@ function getPuzzleIdForDate(date) {
  * @returns {import("../types").DailyPuzzles}
  */
 function getPuzzlesForDate(date) {
-  const index = getPuzzleIdForDate(date);
-  const targets = {};
-  for (const difficulty of Object.keys(words)) {
-    const historicalWordList = historicalWords[difficulty];
-    const futureWordList = futureWords[difficulty];
-    if (index >= 0 && index < historicalWordList.length) {
-      targets[difficulty] = historicalWordList[index];
-    } else {
-      const holidayPuzzle = getHolidayPuzzle(date, difficulty);
-      if (holidayPuzzle) {
-        targets[difficulty] = holidayPuzzle;
-      } else {
-        const futureIndex = Math.abs(
-          (index - historicalWordList.length) % futureWordList.length
-        );
-        targets[difficulty] = futureWordList[futureIndex];
-      }
-    }
-  }
-  return targets;
+  return {
+    easy: getPuzzleForDateAndDifficulty(date, "easy"),
+    medium: getPuzzleForDateAndDifficulty(date, "medium"),
+    hard: getPuzzleForDateAndDifficulty(date, "hard"),
+  };
 }
 
 /**
  * @param {Date} date
- * @returns {import("../types").HolidayPuzzles || undefined}
+ * @param {string} difficulty
+ * @returns string
+ */
+function getPuzzleForDateAndDifficulty(date, difficulty) {
+  const index = getPuzzleIdForDate(date);
+  const historicalWordList = historicalWords[difficulty];
+  const futureWordList = futureWords[difficulty];
+
+  if (index >= 0 && index < historicalWordList.length) {
+    return historicalWordList[index];
+  }
+
+  const holidayPuzzle = getHolidayPuzzle(date, difficulty);
+  if (holidayPuzzle) {
+    return holidayPuzzle;
+  }
+
+  const futureIndex = Math.abs(
+    (index - historicalWordList.length) % futureWordList.length
+  );
+  return futureWordList[futureIndex];
+}
+
+/**
+ * @param {Date} date
+ * @returns {import("../types").HolidayPuzzles | undefined}
  */
 function getHolidayPuzzlePossibilities(date) {
   if (date.getMonth() === 1 - 1 && date.getDate() === 1) {
@@ -2609,8 +2619,8 @@ function getHolidayPuzzlePossibilities(date) {
 
 /**
  * @param {Date} date
- * @param {difficulty} string
- * @return {string || undefined}
+ * @param {string} difficulty
+ * @return {string | undefined}
  */
 function getHolidayPuzzle(date, difficulty) {
   const holidayPossibilities = getHolidayPuzzlePossibilities(date);
@@ -2635,10 +2645,16 @@ function getTodayPuzzles() {
   return getPuzzlesForDate(new Date());
 }
 
+/**
+ * @param {string} target
+ * @param {string} guess
+ * @returns {import("../types").GuessState[]}
+ */
 function compareTargetAndGuess(target, guess) {
   const targetUpper = target.toUpperCase();
   const guessUpper = guess.toUpperCase();
   const { length } = targetUpper;
+  /** @type {import("../types").GuessState[]} */
   const result = Array(length);
   const letterUsed = Array(length).fill(false);
 

@@ -28,7 +28,7 @@ export type KeyState = {
   /** shown on the keyboard */
   label: string;
   /** keys start as "available" and update as user guesses (based on presence in the target word) */
-  state: "available" | "match" | "present" | "miss";
+  state: "available" | "match" | "present" | "miss" | "unavailable";
 };
 
 export type Knowledge = {
@@ -66,16 +66,16 @@ export type EmojiMatchThemes = {
 };
 
 export type DailyPuzzles = {
-  easy: [string];
-  medium: [string];
-  hard: [string];
+  easy: string;
+  medium: string;
+  hard: string;
 };
 
 export type HolidayPuzzles = {
   name: string;
-  easy: [string];
-  medium: [string];
-  hard: [string];
+  easy: string[];
+  medium: string[];
+  hard: string[];
 };
 
 export type WordHints = {
