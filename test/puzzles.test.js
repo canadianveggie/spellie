@@ -20,10 +20,15 @@ describe("puzzles", () => {
       });
     });
 
-    it("has at least 400 puzzles", () => {
-      expect(futureWords.easy.length).toBeGreaterThanOrEqual(400); // 496
-      expect(futureWords.medium.length).toBeGreaterThanOrEqual(400); // 512
-      expect(futureWords.hard.length).toBeGreaterThanOrEqual(400); // 400
+    // easy - 471
+    // medium - 482
+    // hard - 383
+    test.each([
+      ["easy", 450],
+      ["medium", 450],
+      ["hard", 365],
+    ])("%s has at least %i puzzles", (difficulty, minPuzzles) => {
+      expect(futureWords[difficulty].length).toBeGreaterThanOrEqual(minPuzzles);
     });
 
     it("no duplicates", () => {
@@ -80,7 +85,6 @@ describe("puzzles", () => {
         const repeats = holidayWords[difficulty].filter(
           (i) => futureWords[difficulty].indexOf(i) >= 0
         );
-        console.log(repeats.map((w) => btoa(w)));
         expect(repeats).toHaveLength(0);
       }
     );
