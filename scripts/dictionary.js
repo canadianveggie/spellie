@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // @ts-check
 
 const axios = require("axios");
@@ -5,15 +6,15 @@ const { emojis } = require("../public/emojis");
 const { words } = require("../public/puzzles");
 
 async function getDefinitions(letter) {
+  // @ts-ignore
   const result = await axios.get(
     `https://github.com/wordset/wordset-dictionary/blob/master/data/${letter}.json?raw=true`
   );
   if (result.data) {
     console.log(`loaded ${Object.keys(result.data).length} definitions`);
     return result.data;
-  } else {
-    console.warn(`failed to load ${letter}`);
   }
+  console.warn(`failed to load ${letter}`);
 }
 
 // conclusion:

@@ -15,6 +15,7 @@
 
 const { emojis } = require("../public/emojis");
 // get from https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json
+// @ts-ignore
 const json = require("./emoji.json");
 
 const takenEmojis = Object.values(emojis);
