@@ -21,13 +21,10 @@
     "declaration": false,                             /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
     "outDir": "./dist",                               /* Specify an output folder for all emitted files. */
     "forceConsistentCasingInFileNames": true,         /* Ensure that casing is correct in imports. */
-
     
     "strict": true,                                   
     // TODO: enable below
-    "noImplicitAny": true,                           
+    "noImplicitAny": false,                           
     "strictNullChecks": false,
-
-    "skipLibCheck": true                              /* Skip type checking all .d.ts files. */
   }
 }
