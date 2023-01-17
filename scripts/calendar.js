@@ -26,7 +26,7 @@ for (let i = 0; i < days; i++) {
     date: date.toISOString().split("T")[0],
     ...puzzles,
     emojis: puzzleEmojis,
-    holiday: holiday?.name,
+    holiday: holiday && holiday.name,
   });
   date.setDate(date.getDate() + 1);
 }

@@ -658,7 +658,12 @@
         keys: initialKeys(),
         emojiCollection: [],
         newEmojis: [],
-        hintKnowledge: {},
+        hintKnowledge: {
+          matches: [],
+          presents: [],
+          misses: [],
+          availables: [],
+        },
         updatePage(page) {
           this.page = page;
           const titles = {
@@ -796,11 +801,11 @@
           });
         },
         updateKeyboardForHints(hintKnowledge) {
-          (hintKnowledge.misses || []).forEach((missLetter) => {
+          hintKnowledge.misses.forEach((missLetter) => {
             const key = this.keys.find((letter) => letter.label === missLetter);
             key.state = "miss";
           });
-          (hintKnowledge.presents || []).forEach((presentLetter) => {
+          hintKnowledge.presents.forEach((presentLetter) => {
             const key = this.keys.find(
               (letter) => letter.label === presentLetter
             );
@@ -1080,6 +1085,11 @@
             this.cursorMode = initialState.cursorMode || false;
             this.newEmojis = initialState.newEmojis || [];
             this.hintKnowledge = initialState.hintKnowledge || {};
+            // Ensure all the knowledge is present. We used to save it as an empty object
+            this.hintKnowledge.matches = this.hintKnowledge.matches || [];
+            this.hintKnowledge.presents = this.hintKnowledge.presents || [];
+            this.hintKnowledge.misses = this.hintKnowledge.misses || [];
+            this.hintKnowledge.availables = this.hintKnowledge.availables || [];
             this.updateKeyboard();
             this.resetHint();
             clearTimeout(this.endGameTimer);

@@ -40,6 +40,7 @@ const LETTERS_BY_FREQUENCY = [
  * @returns {string | null} - the multiple letter
  */
 function findMultiple(letters) {
+  /** @type {{ [letter: string]: boolean; }} */
   const seen = {};
   for (let i = 0; i < letters.length; i++) {
     const letter = letters[i];
@@ -52,6 +53,7 @@ function findMultiple(letters) {
   return null;
 }
 
+/** @type {{ [letter: string]: string; }} */
 const hintLetterMap = {
   a: "ⓐ",
   b: "ⓑ",
@@ -127,14 +129,10 @@ function keysToKnowledge(keys) {
  */
 function combineKnowledge(k1, k2) {
   const newKnowledge = {
-    matches: [...new Set((k1.matches || []).concat(k2.matches || []))].sort(),
-    presents: [
-      ...new Set((k1.presents || []).concat(k2.presents || [])),
-    ].sort(),
-    misses: [...new Set((k1.misses || []).concat(k2.misses || []))].sort(),
-    availables: [
-      ...new Set((k1.availables || []).concat(k2.availables || [])),
-    ].sort(),
+    matches: [...new Set(k1.matches.concat(k2.matches))].sort(),
+    presents: [...new Set(k1.presents.concat(k2.presents))].sort(),
+    misses: [...new Set(k1.misses.concat(k2.misses))].sort(),
+    availables: [...new Set(k1.availables.concat(k2.availables))].sort(),
   };
 
   // If a letter is a match it can't also be present

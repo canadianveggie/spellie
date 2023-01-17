@@ -5,6 +5,9 @@ const axios = require("axios");
 const { emojis } = require("../public/emojis");
 const { words } = require("../public/puzzles");
 
+/**
+ * @param {string} letter
+ */
 async function getDefinitions(letter) {
   // @ts-ignore
   const result = await axios.get(
@@ -20,10 +23,13 @@ async function getDefinitions(letter) {
 // conclusion:
 // the definitions are too complicated, and synonyms too
 // need to write our own hints
-
+/**
+ * @param {string} letter
+ */
 async function main(letter) {
   const dictionary = await getDefinitions(letter);
 
+  /** @type {{[word: string]: {emoji: string, meaning?: string, hints: string[]}}} */
   const wordHints = {};
   const start = 1 + words.easy.indexOf("BELT"); // focus on after Feb 27
   const remaining = words.easy.slice(start, words.easy.length);

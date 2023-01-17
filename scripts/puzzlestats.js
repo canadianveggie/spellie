@@ -4,11 +4,17 @@ const { words } = require("../public/puzzles");
 
 const allWords = words.easy.concat(words.medium).concat(words.hard);
 
-const frequency = allWords.reduce((memo, word) => {
-  const letters = word.split("");
-  letters.forEach((letter) => (memo[letter] = 1 + (memo[letter] || 0)));
-  return memo;
-}, {});
+const frequency = allWords.reduce(
+  /**
+   * @param {{[word: string]: number}} memo
+   */
+  (memo, word) => {
+    const letters = word.split("");
+    letters.forEach((letter) => (memo[letter] = 1 + (memo[letter] || 0)));
+    return memo;
+  },
+  {}
+);
 
 const sorted = Object.keys(frequency)
   .map((key) => ({ letter: key, count: frequency[key] }))

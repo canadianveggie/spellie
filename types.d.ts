@@ -4,6 +4,8 @@ declare global {
   }
 }
 
+export type Difficulty = "easy" | "medium" | "hard";
+
 export type GuessState = "pending" | "match" | "present" | "miss";
 
 export type LetterGuess = {
@@ -32,10 +34,10 @@ export type KeyState = {
 };
 
 export type Knowledge = {
-  matches?: string[];
-  presents?: string[];
-  misses?: string[];
-  availables?: string[];
+  matches: string[];
+  presents: string[];
+  misses: string[];
+  availables: string[];
 };
 
 export type Settings = {

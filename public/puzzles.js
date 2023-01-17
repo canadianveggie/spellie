@@ -2416,7 +2416,7 @@ function getPuzzlesForDate(date) {
 
 /**
  * @param {Date} date
- * @param {string} difficulty
+ * @param {import("../types").Difficulty} difficulty
  * @returns {string}
  */
 function getPuzzleForDateAndDifficulty(date, difficulty) {
@@ -2619,7 +2619,7 @@ function getHolidayPuzzlePossibilities(date) {
 
 /**
  * @param {Date} date
- * @param {string} difficulty
+ * @param {import("../types").Difficulty} difficulty
  * @return {string | undefined}
  */
 function getHolidayPuzzle(date, difficulty) {
@@ -2735,7 +2735,11 @@ function guessesAsEmojis(guesses, theme) {
   const emojiTheme = emojiMatchThemes[theme] || randomEmojiMatchTheme();
   return guesses
     .map((guess) =>
-      guess.map((letter) => emojiTheme[letter.state] || "").join("")
+      guess
+        .map((letter) =>
+          letter.state == "pending" ? "" : emojiTheme[letter.state]
+        )
+        .join("")
     )
     .join("\n")
     .trim();
