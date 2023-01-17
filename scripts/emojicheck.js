@@ -1,6 +1,6 @@
 // @ts-check
 
-const https = require("https");
+const axios = require("axios");
 const { emojis } = require("../public/emojis");
 
 // constraints:
@@ -18,77 +18,57 @@ const { emojis } = require("../public/emojis");
 const url =
   "https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json";
 
-https
-  .get(url, (res) => {
-    let jsonString = "";
-    res.on("data", (data) => {
-      jsonString += data;
+/**
+ * @returns {Promise<{emoji: string, description: string, category: string, aliases: string[],
+ *            tags: string[], unicode_version: string, ios_version: string}[]>}
+ */
+async function getEmojis() {
+  // @ts-ignore
+  const result = await axios.get(url);
+  if (result.data) {
+    console.log(`loaded ${Object.keys(result.data).length} definitions`);
+    return result.data;
+  }
+  throw new Error(`Failed to load emojis from ${url}`);
+}
+
+async function main() {
+  const emojiJson = await getEmojis();
+  const takenEmojis = Object.values(emojis);
+  const takenKeys = Object.keys(emojis).map((key) => key.toLowerCase());
+
+  const versionBlockList = ["14.0"];
+
+  const categoryBlockList = ["Flags", "Symbols"];
+
+  const remaining = emojiJson
+    .filter((item) => !versionBlockList.includes(item.unicode_version))
+    .filter((item) => !categoryBlockList.includes(item.category))
+    .filter((item) => !categoryBlockList.includes(item.category))
+    .filter((item) => !takenEmojis.includes(item.emoji))
+    .filter((item) => {
+      const keywords = item.aliases.concat(item.tags);
+      return !takenKeys.find((taken) => keywords.includes(taken));
     });
+  console.log(JSON.stringify(remaining, null, 2));
 
-    res.on("end", function () {
-      if (res.statusCode === 200) {
-        try {
-          /**
-           * @type {{emoji: string, description: string, category: string, aliases: string[],
-           *         tags: string[], unicode_version: string, ios_version: string}[]}
-           */
-          const emojiJson = JSON.parse(jsonString);
+  const suggestions = remaining.reduce(
+    /**
+     * @param {{[word: string]: string}} mapping
+     */
+    (mapping, item) => {
+      item.aliases
+        .concat(item.tags)
+        .filter((word) => word.match(/^[A-Za-z]{3,6}$/))
+        .forEach((word) => {
+          mapping[word] = item.emoji;
+        });
+      return mapping;
+    },
+    {}
+  );
+  console.log(suggestions);
+  console.log(remaining.length);
+}
 
-          const takenEmojis = Object.values(emojis);
-          const takenKeys = Object.keys(emojis).map((key) => key.toLowerCase());
-
-          // too new
-          // TODO: allow 13 now that we're using twemojis
-          const versionBlockList = ["13.0", "13.1", "13.2", "14.0"];
-
-          const categoryBlockList = [
-            "Smileys & Emotion",
-            "Animals & Nature",
-            "Travel & Places",
-            // below have been thoroughly reviewed for version < 13:
-            "Activities",
-            "Flags",
-            "Food & Drink",
-            "Objects",
-            "People & Body",
-            "Symbols",
-          ];
-
-          const remaining = emojiJson
-            .filter((item) => !versionBlockList.includes(item.ios_version))
-            .filter((item) => !categoryBlockList.includes(item.category))
-            .filter((item) => !takenEmojis.includes(item.emoji))
-            .filter((item) => {
-              const keywords = item.aliases.concat(item.tags);
-              return !takenKeys.find((taken) => keywords.includes(taken));
-            });
-          console.log(JSON.stringify(remaining, null, 2));
-
-          const suggestions = remaining.reduce(
-            /**
-             * @param {{[word: string]: string}} mapping
-             */
-            (mapping, item) => {
-              item.aliases
-                .concat(item.tags)
-                .filter((word) => word.length >= 4 && word.length <= 6)
-                .forEach((word) => {
-                  mapping[word] = item.emoji;
-                });
-              return mapping;
-            },
-            {}
-          );
-          console.log(suggestions);
-          console.log(remaining.length);
-        } catch (e) {
-          console.error(`Error parsing emoji JSON {e}`);
-        }
-      } else {
-        console.error(`Error downloding emojis from {url} - {res.statusCode}`);
-      }
-    });
-  })
-  .on("error", (e) => {
-    console.error(e);
-  });
+main();
