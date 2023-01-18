@@ -2708,7 +2708,7 @@ function randomEmojiMatchTheme() {
 function guessesAsEmojis(guesses, theme) {
   const emojiTheme = emojiMatchThemes[theme] || randomEmojiMatchTheme();
   return guesses
-    .map((guess) => guess.map((letter) => (letter.state == "pending" ? "" : emojiTheme[letter.state])).join(""))
+    .map((guess) => guess.map((letter) => (letter.state === "pending" ? "" : emojiTheme[letter.state])).join(""))
     .join("\n")
     .trim();
 }
