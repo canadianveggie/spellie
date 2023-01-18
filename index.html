@@ -36,19 +36,19 @@
     <header>
       <nav>
         <div>
-          <a href="#about" class="nav-link">
+          <a href="#about" class="nav-link" title="About">
             <i class="material-icons">info</i>
           </a>
-          <a @click="share" @keyup.enter="share" tabindex="0" x-show="canShare" class="nav-link">
-            <i class="material-icons">share</i>
+          <a href="#archive" class="nav-link" title="Archive">
+            <i class="material-icons">calendar_month</i>
           </a>
         </div>
         <div class="title">
-          <a x-bind:href="`#${difficulty}`">Spellie</a>
+          <a x-bind:href="gameUrl">Spellie<span x-cloak x-show="isArchiveGame"> Archive</span></a>
           <span x-cloak x-show="puzzleId === 50" title="April Fools!">🙃</span>
         </div>
         <div>
-          <a href="#collection" class="nav-link">
+          <a href="#collection" class="nav-link" title="Collection">
             <span
               class="nav-notification"
               x-cloak
@@ -57,7 +57,7 @@
             ></span>
             <i class="material-icons">collections</i>
           </a>
-          <a href="#settings" class="nav-link">
+          <a href="#settings" class="nav-link" title="Settings">
             <i class="material-icons">settings</i>
           </a>
         </div>
@@ -73,7 +73,7 @@
         <div class="subhead">
           <h1>About</h1>
           <div>
-            <a x-bind:href="`#${difficulty}`">
+            <a x-bind:href="gameUrl">
               <i class="material-icons">close</i>
             </a>
           </div>
@@ -218,7 +218,7 @@
         <div class="subhead">
           <h1>Collection</h1>
           <div>
-            <a x-bind:href="`#${difficulty}`" class="close-link">
+            <a x-bind:href="gameUrl" class="close-link">
               <i class="material-icons">close</i>
             </a>
           </div>
@@ -272,11 +272,34 @@
           emojis in total...
         </p>
       </div>
+      <div class="archive-content" x-show="page === '#archive'" x-cloak>
+        <div class="subhead">
+          <h1>Archive</h1>
+          <div>
+            <a x-bind:href="gameUrl" class="close-link">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
+
+        <div class="archive-list">
+          <template x-for="(archivePuzzle) in archivePuzzles">
+            <div class="archive-item">
+              <div class="archive-date">
+                <span x-text="archivePuzzle.date.toLocaleDateString(undefined, {dateStyle:'medium'})"></span>
+                <button @click="updateDifficulty('easy', archivePuzzle.puzzleId)">Easy</button>
+                <button @click="updateDifficulty('medium', archivePuzzle.puzzleId)">Medium</button>
+                <button @click="updateDifficulty('hard', archivePuzzle.puzzleId)">Hard</button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <div class="subhead">
           <h1>Settings</h1>
           <div>
-            <a x-bind:href="`#${difficulty}`" class="close-link">
+            <a x-bind:href="gameUrl" class="close-link">
               <i class="material-icons">close</i>
             </a>
           </div>
@@ -437,12 +460,12 @@
   <script src="public/mobileCheck.js"></script>
   <script src="public/dictionary.js"></script>
   <script>
-    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getTodayPuzzles, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
+    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, oldestPuzzleDate, onMobile, validWords */
 
     const identify = new amplitude.Identify().set("host", window.location.hostname);
     amplitude.getInstance().identify(identify);
 
-    const puzzleId = getTodayPuzzleId();
+    const todaysPuzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
     initScalingFontSize();
 
@@ -486,10 +509,23 @@
 
     function getInitialDifficulty() {
       const page = window.location.hash.replace("#", "");
-      if (DIFFICULTIES.includes(page)) {
-        return page;
+      const [page1] = page.split("-", 2);
+
+      if (DIFFICULTIES.includes(page1)) {
+        return page1;
       }
       return "easy";
+    }
+
+    function getInitialPuzzleId() {
+      const page = window.location.hash.replace("#", "");
+      const [, page2] = page.split("-", 2);
+
+      const pagePuzzleId = parseInt(page2, 10);
+      if (!Number.isNaN(pagePuzzleId)) {
+        return pagePuzzleId;
+      }
+      return todaysPuzzleId;
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -524,7 +560,7 @@
         settings: {}, // placeholder until x-init
         page: window.location.hash,
         difficulty: getInitialDifficulty(),
-        puzzleId,
+        puzzleId: getInitialPuzzleId(),
         target: "",
         guesses: [],
         solved: false,
@@ -538,6 +574,7 @@
         cursor: 0,
         cursorMode: false,
         keys: initialKeys(),
+        archivePuzzles: [],
         emojiCollection: [],
         newEmojis: [],
         hintKnowledge: {
@@ -556,6 +593,7 @@
             "#settings": "Spellie | Settings",
             "#about": "Spellie | About",
           };
+          // TODO - archive pages
           document.title = titles[page] || "Spellie | Wordle for Kids";
         },
         addLetter(letterState) {
@@ -611,6 +649,7 @@
             amplitude.getInstance().logEvent("level_start", {
               level_name: this.level,
               difficulty: this.difficulty,
+              archiveGame: this.isArchiveGame(),
               repeatedGame: this.repeatedGame,
             });
           }
@@ -843,6 +882,7 @@
             amplitude.getInstance().logEvent("show_hint", {
               level_name: this.level,
               difficulty: this.difficulty,
+              archiveGame: this.isArchiveGame(),
               repeatedGame: this.repeatedGame,
               guess: this.currentGuessIndex + 1,
               message: this.hint.message,
@@ -868,6 +908,7 @@
         initialLoad() {
           this.loadSettings();
           this.loadGameState();
+          this.loadArchive();
           this.loadCollection();
         },
         loadGameState() {
@@ -879,7 +920,7 @@
             // Create a unique id for each game state so that we redraw the grid and keyboard properly
             this.gameId += 1;
             this.level = initialState.level || `${this.difficulty}-${this.puzzleId}`;
-            this.target = initialState.target || getTodayPuzzles()[this.difficulty];
+            this.target = initialState.target || getPuzzlesForId(this.puzzleId)[this.difficulty];
 
             this.guesses = initialState.guesses || emptyGuesses(this.target.length, maxGuesses);
             this.solved = initialState.solved || false;
@@ -930,13 +971,58 @@
           this.saveSettings();
           this.showNotice("Settings updated");
         },
-        isGamePage() {
-          return ["", ...DIFFICULTIES.map((d) => `#${d}`)].includes(this.page);
+        isArchiveGame() {
+          return this.puzzleId !== todaysPuzzleId;
         },
-        updateDifficulty(difficulty) {
+        get gameUrl() {
+          let hash = `#${this.difficulty}`;
+          if (this.isArchiveGame()) {
+            hash += `-${this.puzzleId}`;
+          }
+          return hash;
+        },
+        isGamePage() {
+          if (this.page === "") {
+            return true;
+          }
+          const [pageDifficulty] = this.page.split("-");
+          return DIFFICULTIES.map((d) => `#${d}`).includes(pageDifficulty);
+        },
+        updateDifficulty(difficulty, puzzleId) {
           this.difficulty = difficulty;
-          window.location.hash = `#${difficulty}`;
+          if (puzzleId !== undefined) {
+            this.puzzleId = puzzleId;
+          }
+
+          window.location.hash = this.gameUrl;
           this.loadGameState();
+        },
+        loadArchive() {
+          const statistics = this.getFromLocalStorage("statistics", DEFAULT_STATISTICS);
+          this.archivePuzzles = [];
+          const date = new Date(oldestPuzzleDate);
+          for (let i = this.puzzleId; i >= 0; i--) {
+            this.archivePuzzles.push({
+              puzzleId: i,
+              date: new Date(date.getTime()),
+              easy:
+                statistics &&
+                statistics.solved &&
+                statistics.solved[this.puzzleId] &&
+                statistics.solved[this.puzzleId].easy,
+              medium:
+                statistics &&
+                statistics.solved &&
+                statistics.solved[this.puzzleId] &&
+                statistics.solved[this.puzzleId].medium,
+              hard:
+                statistics &&
+                statistics.solved &&
+                statistics.solved[this.puzzleId] &&
+                statistics.solved[this.puzzleId].hard,
+            });
+            date.setDate(date.getDate() - 1);
+          }
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
@@ -960,6 +1046,7 @@
             difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
             success: this.solved,
+            archiveGame: this.isArchiveGame(),
             repeatedGame: this.repeatedGame,
             guessWords: this.guessWords,
             newEmojis: this.newEmojis,
@@ -1007,6 +1094,7 @@
             difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
             success: this.solved,
+            archiveGame: this.isArchiveGame(),
           });
           this.loadGameState();
         },
@@ -1087,6 +1175,7 @@
             page: this.page,
             text,
             share_type: shareType,
+            archiveGame: this.isArchiveGame(),
           });
         },
         getFromLocalStorage(key, defaultValue) {

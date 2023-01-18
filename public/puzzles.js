@@ -2381,7 +2381,7 @@ const words = {
   hard: historicalWordsHard.concat(futureWordsHard).map(atob),
 };
 
-const start = new Date(2022, 2 - 1, 10);
+const oldestPuzzleDate = new Date(2022, 2 - 1, 10);
 
 const MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -2399,7 +2399,7 @@ function daysBetween(first, second) {
  * @returns {number}
  */
 function getPuzzleIdForDate(date) {
-  return daysBetween(start, date);
+  return daysBetween(oldestPuzzleDate, date);
 }
 
 /**
@@ -2412,6 +2412,16 @@ function getPuzzlesForDate(date) {
     medium: getPuzzleForDateAndDifficulty(date, "medium"),
     hard: getPuzzleForDateAndDifficulty(date, "hard"),
   };
+}
+
+/**
+ * @param {number} id
+ * @returns {import("../types").DailyPuzzles}
+ */
+function getPuzzlesForId(id) {
+  const date = new Date(oldestPuzzleDate.getTime());
+  date.setDate(date.getDate() + id);
+  return getPuzzlesForDate(date);
 }
 
 /**
@@ -2719,12 +2729,15 @@ if (typeof module !== "undefined") {
     daysBetween,
     emojiMatchThemes,
     futureWords,
+    getPuzzleIdForDate,
     getHolidayPuzzle,
     getHolidayPuzzlePossibilities,
     getPuzzlesForDate,
+    getPuzzlesForId,
     getTodayPuzzleId,
     getTodayPuzzles,
     guessesAsEmojis,
+    oldestPuzzleDate,
     words,
   };
 }
