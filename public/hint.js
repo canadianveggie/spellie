@@ -136,9 +136,7 @@ function combineKnowledge(k1, k2) {
   };
 
   // If a letter is a match it can't also be present
-  newKnowledge.presents = newKnowledge.presents.filter(
-    (letter) => !newKnowledge.matches.includes(letter)
-  );
+  newKnowledge.presents = newKnowledge.presents.filter((letter) => !newKnowledge.matches.includes(letter));
   // Only letters not in any other state are available
   newKnowledge.availables = newKnowledge.availables.filter(
     (letter) =>
@@ -187,13 +185,9 @@ function getHint(target, knowledge, settings, guessIndex, lastGuess = "") {
     return null;
   }
 
-  const prettyLetter = (/** @type {string} */ letter) =>
-    hintLetter(letter, settings.case);
+  const prettyLetter = (/** @type {string} */ letter) => hintLetter(letter, settings.case);
 
-  if (
-    knowledge.matches.length + knowledge.presents.length ===
-    target.length - 1
-  ) {
+  if (knowledge.matches.length + knowledge.presents.length === target.length - 1) {
     // they're almost there, so don't just give the answer
     // instead, tell them a few things NOT in the answer
     const hinted = [];
@@ -217,9 +211,7 @@ function getHint(target, knowledge, settings, guessIndex, lastGuess = "") {
 
   const targetLetters = target.split("");
   const isVowelMatched = knowledge.matches.some((letter) => VOWELS.has(letter));
-  const isVowelPresent = knowledge.presents.some((letter) =>
-    VOWELS.has(letter)
-  );
+  const isVowelPresent = knowledge.presents.some((letter) => VOWELS.has(letter));
 
   // first priority: find a vowel
   if (!isVowelMatched && !isVowelPresent) {
@@ -244,26 +236,16 @@ function getHint(target, knowledge, settings, guessIndex, lastGuess = "") {
 
   // common clusters:
   // if you have one of these matched/present, suggest the other
-  const combinedMatchPresent = new Set(
-    knowledge.matches.concat(knowledge.presents)
-  );
-  const clustersInTarget = CLUSTERS.filter((cluster) =>
-    target.includes(cluster)
-  );
+  const combinedMatchPresent = new Set(knowledge.matches.concat(knowledge.presents));
+  const clustersInTarget = CLUSTERS.filter((cluster) => target.includes(cluster));
   if (clustersInTarget.length > 0) {
     for (const cluster of clustersInTarget) {
       const clusterLetters = new Set(cluster.split(""));
-      const [firstFound] = Array.from(clusterLetters).filter((letter) =>
-        combinedMatchPresent.has(letter)
-      );
-      const firstNotFound = Array.from(clusterLetters).find(
-        (letter) => !combinedMatchPresent.has(letter)
-      );
+      const [firstFound] = Array.from(clusterLetters).filter((letter) => combinedMatchPresent.has(letter));
+      const firstNotFound = Array.from(clusterLetters).find((letter) => !combinedMatchPresent.has(letter));
       if (firstFound && firstNotFound) {
         return {
-          message: `Did you know ${prettyLetter(firstFound)} and ${prettyLetter(
-            firstNotFound
-          )} often go together?`,
+          message: `Did you know ${prettyLetter(firstFound)} and ${prettyLetter(firstNotFound)} often go together?`,
           letter: firstNotFound,
         };
       }
@@ -280,10 +262,7 @@ function getHint(target, knowledge, settings, guessIndex, lastGuess = "") {
 
   // fallback: next unfound letter of the target
   for (const letter of targetLetters) {
-    if (
-      !knowledge.matches.includes(letter) &&
-      !knowledge.presents.includes(letter)
-    ) {
+    if (!knowledge.matches.includes(letter) && !knowledge.presents.includes(letter)) {
       return {
         message: `I just love the letter ${prettyLetter(letter)}, don't you?`,
         letter,

@@ -11,9 +11,7 @@ function isMobileBrowser(agentString) {
 }
 
 function onMobile() {
-  return isMobileBrowser(
-    navigator.userAgent || navigator.vendor || window.opera
-  );
+  return isMobileBrowser(navigator.userAgent || navigator.vendor || window.opera);
 }
 
 if (typeof module !== "undefined") {

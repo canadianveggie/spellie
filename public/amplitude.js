@@ -2,8 +2,7 @@
   var n = e.amplitude || { _q: [], _iq: {} };
   var r = t.createElement("script");
   r.type = "text/javascript";
-  r.integrity =
-    "sha384-tzcaaCH5+KXD4sGaDozev6oElQhsVfbJvdi3//c2YvbY02LrNlbpGdt3Wq4rWonS";
+  r.integrity = "sha384-tzcaaCH5+KXD4sGaDozev6oElQhsVfbJvdi3//c2YvbY02LrNlbpGdt3Wq4rWonS";
   r.crossOrigin = "anonymous";
   r.async = true;
   r.src = "https://cdn.amplitude.com/libs/amplitude-8.5.0-min.gz.js";
@@ -24,18 +23,7 @@
     this._q = [];
     return this;
   };
-  var a = [
-    "add",
-    "append",
-    "clearAll",
-    "prepend",
-    "set",
-    "setOnce",
-    "unset",
-    "preInsert",
-    "postInsert",
-    "remove",
-  ];
+  var a = ["add", "append", "clearAll", "prepend", "set", "setOnce", "unset", "preInsert", "postInsert", "remove"];
   for (var c = 0; c < a.length; c++) {
     s(o, a[c]);
   }
@@ -44,13 +32,7 @@
     this._q = [];
     return this;
   };
-  var l = [
-    "setProductId",
-    "setQuantity",
-    "setPrice",
-    "setRevenueType",
-    "setEventProperties",
-  ];
+  var l = ["setProductId", "setQuantity", "setPrice", "setRevenueType", "setEventProperties"];
   for (var p = 0; p < l.length; p++) {
     s(u, l[p]);
   }

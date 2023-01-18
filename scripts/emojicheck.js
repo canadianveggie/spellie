@@ -15,8 +15,7 @@ const { emojis } = require("../public/emojis");
 // TODO: should we allow multiple ways to unlock emoji?
 // eg "⚾️" could be PITCH, BUNT, CATCH, etc
 // also DOLL, DOLLS
-const url =
-  "https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json";
+const url = "https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json";
 
 /**
  * @returns {Promise<{emoji: string, description: string, category: string, aliases: string[],

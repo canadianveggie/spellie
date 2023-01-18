@@ -682,10 +682,7 @@ const zeroWidthJoiner = "\u200D";
  * @param {string} emoji
  */
 function getUnicodeCodePoint(emoji) {
-  const normalized =
-    emoji.indexOf(zeroWidthJoiner) < 0
-      ? emoji.replace(variantCharacter, "")
-      : emoji;
+  const normalized = emoji.indexOf(zeroWidthJoiner) < 0 ? emoji.replace(variantCharacter, "") : emoji;
 
   const result = [];
   for (const codePoint of normalized) {

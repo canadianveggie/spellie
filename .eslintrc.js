@@ -9,12 +9,7 @@ module.exports = {
     "html", // lint index.html too
     "only-warn", // downgrade all to warnings for now
   ],
-  extends: [
-    "eslint:recommended",
-    "airbnb-base",
-    "plugin:compat/recommended",
-    "prettier",
-  ],
+  extends: ["eslint:recommended", "airbnb-base", "plugin:compat/recommended", "prettier"],
   parserOptions: {
     ecmaVersion: "2019", // no optional chaining / nullish coalescing
   },
@@ -45,20 +40,15 @@ module.exports = {
       // },
       {
         selector: "LabeledStatement",
-        message:
-          "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand.",
+        message: "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand.",
       },
       {
         selector: "WithStatement",
-        message:
-          "`with` is disallowed in strict mode because it makes code impossible to predict and optimize.",
+        message: "`with` is disallowed in strict mode because it makes code impossible to predict and optimize.",
       },
     ],
 
     // function declarations are hoisted and it leads to more readable code
-    "no-use-before-define": [
-      "error",
-      { functions: false, classes: true, variables: true },
-    ],
+    "no-use-before-define": ["error", { functions: false, classes: true, variables: true }],
   },
 };

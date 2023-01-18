@@ -1,9 +1,6 @@
 // @ts-check
 
-const {
-  getPuzzlesForDate,
-  getHolidayPuzzlePossibilities,
-} = require("../public/puzzles");
+const { getPuzzlesForDate, getHolidayPuzzlePossibilities } = require("../public/puzzles");
 
 const date = new Date(2022, 2 - 1, 10, 12);
 const holidays = [];
