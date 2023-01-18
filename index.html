@@ -283,13 +283,30 @@
         </div>
 
         <div class="archive-list">
-          <template x-for="(archivePuzzle) in archivePuzzles">
+          <template x-for="(archivePuzzle) in archivePuzzles" :key="archivePuzzle.puzzleId">
             <div class="archive-item">
               <div class="archive-date">
-                <span x-text="archivePuzzle.date.toLocaleDateString(undefined, {dateStyle:'medium'})"></span>
-                <button @click="updateDifficulty('easy', archivePuzzle.puzzleId)">Easy</button>
-                <button @click="updateDifficulty('medium', archivePuzzle.puzzleId)">Medium</button>
-                <button @click="updateDifficulty('hard', archivePuzzle.puzzleId)">Hard</button>
+                <span
+                  x-text="getDateForPuzzleId(archivePuzzle.puzzleId).toLocaleDateString(undefined, {dateStyle:'medium'})"
+                ></span>
+                <button
+                  :class="{ 'match': archivePuzzle.easy }"
+                  @click="updateDifficulty('easy', archivePuzzle.puzzleId)"
+                >
+                  Easy
+                </button>
+                <button
+                  :class="{ 'match': archivePuzzle.medium }"
+                  @click="updateDifficulty('medium', archivePuzzle.puzzleId)"
+                >
+                  Medium
+                </button>
+                <button
+                  :class="{ 'match': archivePuzzle.hard }"
+                  @click="updateDifficulty('hard', archivePuzzle.puzzleId)"
+                >
+                  Hard
+                </button>
               </div>
             </div>
           </template>
@@ -460,7 +477,7 @@
   <script src="public/mobileCheck.js"></script>
   <script src="public/dictionary.js"></script>
   <script>
-    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
+    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getDateForPuzzleId, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
 
     const identify = new amplitude.Identify().set("host", window.location.hostname);
     amplitude.getInstance().identify(identify);
@@ -1000,29 +1017,15 @@
         loadArchive() {
           const statistics = this.getFromLocalStorage("statistics", DEFAULT_STATISTICS);
           this.archivePuzzles = [];
-          const date = new Date();
-          for (let i = this.puzzleId; i >= 0; i--) {
-            this.archivePuzzles.push({
+          for (let i = 0; i <= this.puzzleId; i++) {
+            this.archivePuzzles[i] = {
               puzzleId: i,
-              date: new Date(date.getTime()),
-              easy:
-                statistics &&
-                statistics.solved &&
-                statistics.solved[this.puzzleId] &&
-                statistics.solved[this.puzzleId].easy,
-              medium:
-                statistics &&
-                statistics.solved &&
-                statistics.solved[this.puzzleId] &&
-                statistics.solved[this.puzzleId].medium,
-              hard:
-                statistics &&
-                statistics.solved &&
-                statistics.solved[this.puzzleId] &&
-                statistics.solved[this.puzzleId].hard,
-            });
-            date.setDate(date.getDate() - 1);
+              easy: statistics && statistics.solved && statistics.solved[i] && statistics.solved[i].easy,
+              medium: statistics && statistics.solved && statistics.solved[i] && statistics.solved[i].medium,
+              hard: statistics && statistics.solved && statistics.solved[i] && statistics.solved[i].hard,
+            };
           }
+          this.archivePuzzles.reverse();
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
@@ -1077,6 +1080,7 @@
             statistics[this.difficulty].fail += 1;
           }
           localStorage.setItem("statistics", JSON.stringify(statistics));
+          this.loadArchive();
         },
         get unlockedEmojis() {
           return this.emojiCollection.filter((e) => e.unlocked);

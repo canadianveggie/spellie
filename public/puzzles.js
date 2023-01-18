@@ -2416,11 +2416,20 @@ function getPuzzlesForDate(date) {
 
 /**
  * @param {number} id
+ * @returns {Date}
+ */
+function getDateForPuzzleId(id) {
+  const date = new Date(oldestPuzzleDate.getTime());
+  date.setDate(date.getDate() + id);
+  return date;
+}
+
+/**
+ * @param {number} id
  * @returns {import("../types").DailyPuzzles}
  */
 function getPuzzlesForId(id) {
-  const date = new Date(oldestPuzzleDate.getTime());
-  date.setDate(date.getDate() + id);
+  const date = getDateForPuzzleId(id);
   return getPuzzlesForDate(date);
 }
 
@@ -2729,9 +2738,10 @@ if (typeof module !== "undefined") {
     daysBetween,
     emojiMatchThemes,
     futureWords,
-    getPuzzleIdForDate,
+    getDateForPuzzleId,
     getHolidayPuzzle,
     getHolidayPuzzlePossibilities,
+    getPuzzleIdForDate,
     getPuzzlesForDate,
     getPuzzlesForId,
     getTodayPuzzleId,
