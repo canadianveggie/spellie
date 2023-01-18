@@ -460,7 +460,7 @@
   <script src="public/mobileCheck.js"></script>
   <script src="public/dictionary.js"></script>
   <script>
-    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, oldestPuzzleDate, onMobile, validWords */
+    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
 
     const identify = new amplitude.Identify().set("host", window.location.hostname);
     amplitude.getInstance().identify(identify);
@@ -1000,7 +1000,7 @@
         loadArchive() {
           const statistics = this.getFromLocalStorage("statistics", DEFAULT_STATISTICS);
           this.archivePuzzles = [];
-          const date = new Date(oldestPuzzleDate);
+          const date = new Date();
           for (let i = this.puzzleId; i >= 0; i--) {
             this.archivePuzzles.push({
               puzzleId: i,

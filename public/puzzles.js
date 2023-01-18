@@ -2737,7 +2737,6 @@ if (typeof module !== "undefined") {
     getTodayPuzzleId,
     getTodayPuzzles,
     guessesAsEmojis,
-    oldestPuzzleDate,
     words,
   };
 }
