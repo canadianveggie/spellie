@@ -606,6 +606,7 @@
             "#easy": "Spellie | Easy",
             "#medium": "Spellie | Medium",
             "#hard": "Spellie | Hard",
+            "#archive": "Spellie | Archive",
             "#collection": "Spellie | Emoji Collection",
             "#settings": "Spellie | Settings",
             "#about": "Spellie | About",
@@ -928,9 +929,12 @@
           this.loadArchive();
           this.loadCollection();
         },
+        get gameStateVariable() {
+          return `game-state-${this.difficulty}${this.isArchiveGame() ? "-archive" : ""}`;
+        },
         loadGameState() {
           try {
-            let initialState = this.getFromLocalStorage(`game-state-${this.difficulty}`, {});
+            let initialState = this.getFromLocalStorage(this.gameStateVariable, {});
             if (initialState.puzzleId !== this.puzzleId) {
               initialState = {};
             }
@@ -966,7 +970,7 @@
           }
         },
         saveGameState() {
-          localStorage.setItem(`game-state-${this.difficulty}`, JSON.stringify(this.toJson()));
+          localStorage.setItem(this.gameStateVariable, JSON.stringify(this.toJson()));
         },
         loadSettings() {
           const dayOverwrites = this.puzzleId === 50 ? { sharingEmojis: "poop" } : {};
@@ -1017,7 +1021,7 @@
         loadArchive() {
           const statistics = this.getFromLocalStorage("statistics", DEFAULT_STATISTICS);
           this.archivePuzzles = [];
-          for (let i = 0; i <= this.puzzleId; i++) {
+          for (let i = 0; i <= todaysPuzzleId; i++) {
             this.archivePuzzles[i] = {
               puzzleId: i,
               easy: statistics && statistics.solved && statistics.solved[i] && statistics.solved[i].easy,
@@ -1089,10 +1093,7 @@
           return this.unlockedEmojis.filter((e) => e.new);
         },
         resetLevel() {
-          localStorage.setItem(
-            `game-state-${this.difficulty}`,
-            JSON.stringify({ repeatedGame: true, puzzleId: this.puzzleId })
-          );
+          localStorage.setItem(this.gameStateVariable, JSON.stringify({ repeatedGame: true, puzzleId: this.puzzleId }));
           amplitude.getInstance().logEvent("level_reset", {
             level_name: this.level,
             difficulty: this.difficulty,
