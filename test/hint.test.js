@@ -1,11 +1,7 @@
 // @ts-check
 
 require("../public/wordHints");
-const {
-  combineKnowledge,
-  getHint,
-  keysToKnowledge,
-} = require("../public/hint");
+const { combineKnowledge, getHint, keysToKnowledge } = require("../public/hint");
 
 /**
  * @param {string[]} matches
@@ -18,11 +14,7 @@ function getKnowledge(matches, presents, misses) {
     presents,
     misses,
     availables: "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").filter((letter) => {
-      return (
-        !matches.includes(letter) &&
-        !presents.includes(letter) &&
-        !misses.includes(letter)
-      );
+      return !matches.includes(letter) && !presents.includes(letter) && !misses.includes(letter);
     }),
   };
 }
@@ -51,24 +43,14 @@ describe("hint", () => {
         misses: "XYZ".split(""),
         availables: "BCEFGHIJKLNOPQRSUVW".split(""),
       };
-      expect(
-        k1.matches.length +
-          k1.presents.length +
-          k1.misses.length +
-          k1.availables.length
-      ).toEqual(26);
+      expect(k1.matches.length + k1.presents.length + k1.misses.length + k1.availables.length).toEqual(26);
       const k2 = {
         matches: "AG".split(""),
         presents: "DT".split(""),
         misses: "OPXY".split(""),
         availables: "BCEFHIJKLMNQRSUVWZ".split(""),
       };
-      expect(
-        k2.matches.length +
-          k2.presents.length +
-          k2.misses.length +
-          k2.availables.length
-      ).toEqual(26);
+      expect(k2.matches.length + k2.presents.length + k2.misses.length + k2.availables.length).toEqual(26);
       const expected = {
         matches: "AGT".split(""),
         presents: "DM".split(""),
@@ -76,10 +58,7 @@ describe("hint", () => {
         availables: "BCEFHIJKLNQRSUVW".split(""),
       };
       expect(
-        expected.matches.length +
-          expected.presents.length +
-          expected.misses.length +
-          expected.availables.length
+        expected.matches.length + expected.presents.length + expected.misses.length + expected.availables.length
       ).toEqual(26);
 
       expect(combineKnowledge(k1, k2)).toEqual(expected);
@@ -117,9 +96,9 @@ describe("hint", () => {
       expect(combineKnowledge(noKnowledge, partial2)).toEqual(expected2);
       expect(combineKnowledge(partial2, noKnowledge)).toEqual(expected2);
 
-      expect(
-        combineKnowledge(combineKnowledge(noKnowledge, partial1), partial2)
-      ).toEqual(combineKnowledge(expected1, expected2));
+      expect(combineKnowledge(combineKnowledge(noKnowledge, partial1), partial2)).toEqual(
+        combineKnowledge(expected1, expected2)
+      );
     });
   });
 
@@ -194,10 +173,7 @@ describe("hint", () => {
       const knowledge = getKnowledge(["E"], ["R"], []);
 
       const hint = getHint(target, knowledge, settings, 3, "SPREE");
-      expect(hint).not.toHaveProperty(
-        "message",
-        "There could be more than one ⓔ"
-      );
+      expect(hint).not.toHaveProperty("message", "There could be more than one ⓔ");
     });
 
     it("cluster - ch", () => {
@@ -205,10 +181,7 @@ describe("hint", () => {
       const knowledge = getKnowledge([], ["A", "H"], []);
 
       const hint = getHint(target, knowledge, settings, 3);
-      expect(hint).toHaveProperty(
-        "message",
-        "Did you know ⓗ and ⓒ often go together?"
-      );
+      expect(hint).toHaveProperty("message", "Did you know ⓗ and ⓒ often go together?");
       expect(hint).toHaveProperty("letter", "C");
     });
     it("cluster - th", () => {
@@ -216,10 +189,7 @@ describe("hint", () => {
       const knowledge = getKnowledge(["N"], ["E"], []);
 
       const hint = getHint(target, knowledge, settings, 3);
-      expect(hint).toHaveProperty(
-        "message",
-        "Did you know ⓝ and ⓣ often go together?"
-      );
+      expect(hint).toHaveProperty("message", "Did you know ⓝ and ⓣ often go together?");
       expect(hint).toHaveProperty("letter", "T");
     });
     it("cluster - when cluster already found", () => {
@@ -227,10 +197,7 @@ describe("hint", () => {
       const knowledge = getKnowledge(["S", "T", "A"], [], []);
 
       const hint = getHint(target, knowledge, settings, 3);
-      expect(hint).toHaveProperty(
-        "message",
-        "I just love the letter ⓔ, don't you?"
-      );
+      expect(hint).toHaveProperty("message", "I just love the letter ⓔ, don't you?");
       expect(hint).toHaveProperty("letter", "E");
     });
     it("e at the end", () => {
@@ -246,10 +213,7 @@ describe("hint", () => {
       const knowledge = getKnowledge([], ["E"], []);
 
       const hint = getHint(target, knowledge, settings, 3);
-      expect(hint).toHaveProperty(
-        "message",
-        "I just love the letter ⓖ, don't you?"
-      );
+      expect(hint).toHaveProperty("message", "I just love the letter ⓖ, don't you?");
       expect(hint).toHaveProperty("letter", "G");
     });
     it("next letter", () => {
@@ -257,10 +221,7 @@ describe("hint", () => {
       const knowledge = getKnowledge(["H", "O"], [], []);
 
       const hint = getHint(target, knowledge, settings, 3);
-      expect(hint).toHaveProperty(
-        "message",
-        "I just love the letter ⓤ, don't you?"
-      );
+      expect(hint).toHaveProperty("message", "I just love the letter ⓤ, don't you?");
       expect(hint).toHaveProperty("letter", "U");
     });
     it("no hint when all present", () => {
@@ -297,10 +258,7 @@ describe("hint", () => {
       const knowledge = getKnowledge(["H", "U"], ["N"], ["S"]);
 
       const hint = getHint(target, knowledge, settings, 4);
-      expect(hint).toHaveProperty(
-        "message",
-        "It's definitely *not* these: ⓒ, ⓛ, ⓡ"
-      );
+      expect(hint).toHaveProperty("message", "It's definitely *not* these: ⓒ, ⓛ, ⓡ");
       expect(hint).toHaveProperty("letter", undefined);
       expect(hint).toHaveProperty("misses", ["R", "L", "C"]);
     });

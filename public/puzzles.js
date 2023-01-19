@@ -2433,9 +2433,7 @@ function getPuzzleForDateAndDifficulty(date, difficulty) {
     return holidayPuzzle;
   }
 
-  const futureIndex = Math.abs(
-    (index - historicalWordList.length) % futureWordList.length
-  );
+  const futureIndex = Math.abs((index - historicalWordList.length) % futureWordList.length);
   return futureWordList[futureIndex];
 }
 
@@ -2544,11 +2542,7 @@ function getHolidayPuzzlePossibilities(date) {
     };
   }
 
-  if (
-    date.getFullYear() === 2023 &&
-    date.getMonth() === 1 - 1 &&
-    date.getDate() === 22
-  ) {
+  if (date.getFullYear() === 2023 && date.getMonth() === 1 - 1 && date.getDate() === 22) {
     return {
       name: "Lunar New Year",
       easy: ["S0lORA=="].map(atob),
@@ -2556,11 +2550,7 @@ function getHolidayPuzzlePossibilities(date) {
       hard: ["UkFCQklU"].map(atob),
     };
   }
-  if (
-    date.getFullYear() === 2024 &&
-    date.getMonth() === 2 - 1 &&
-    date.getDate() === 10
-  ) {
+  if (date.getFullYear() === 2024 && date.getMonth() === 2 - 1 && date.getDate() === 10) {
     return {
       name: "Lunar New Year",
       easy: ["TU9PTg=="].map(atob),
@@ -2568,11 +2558,7 @@ function getHolidayPuzzlePossibilities(date) {
       hard: ["RFJBR09O"].map(atob),
     };
   }
-  if (
-    date.getFullYear() === 2025 &&
-    date.getMonth() === 1 - 1 &&
-    date.getDate() === 29
-  ) {
+  if (date.getFullYear() === 2025 && date.getMonth() === 1 - 1 && date.getDate() === 29) {
     return {
       name: "Lunar New Year",
       easy: ["V0lTRQ=="].map(atob),
@@ -2580,11 +2566,7 @@ function getHolidayPuzzlePossibilities(date) {
       hard: ["Wk9ESUFD"].map(atob),
     };
   }
-  if (
-    date.getFullYear() === 2026 &&
-    date.getMonth() === 2 - 1 &&
-    date.getDate() === 17
-  ) {
+  if (date.getFullYear() === 2026 && date.getMonth() === 2 - 1 && date.getDate() === 17) {
     return {
       name: "Lunar New Year",
       easy: ["TU9PTg=="].map(atob),
@@ -2593,18 +2575,10 @@ function getHolidayPuzzlePossibilities(date) {
     };
   }
   if (
-    (date.getFullYear() === 2023 &&
-      date.getMonth() === 4 - 1 &&
-      date.getDate() === 9) ||
-    (date.getFullYear() === 2024 &&
-      date.getMonth() === 4 - 1 &&
-      date.getDate() === 9) ||
-    (date.getFullYear() === 2025 &&
-      date.getMonth() === 4 - 1 &&
-      date.getDate() === 9) ||
-    (date.getFullYear() === 2026 &&
-      date.getMonth() === 4 - 1 &&
-      date.getDate() === 9)
+    (date.getFullYear() === 2023 && date.getMonth() === 4 - 1 && date.getDate() === 9) ||
+    (date.getFullYear() === 2024 && date.getMonth() === 4 - 1 && date.getDate() === 9) ||
+    (date.getFullYear() === 2025 && date.getMonth() === 4 - 1 && date.getDate() === 9) ||
+    (date.getFullYear() === 2026 && date.getMonth() === 4 - 1 && date.getDate() === 9)
   ) {
     return {
       name: "Easter",
@@ -2734,13 +2708,7 @@ function randomEmojiMatchTheme() {
 function guessesAsEmojis(guesses, theme) {
   const emojiTheme = emojiMatchThemes[theme] || randomEmojiMatchTheme();
   return guesses
-    .map((guess) =>
-      guess
-        .map((letter) =>
-          letter.state == "pending" ? "" : emojiTheme[letter.state]
-        )
-        .join("")
-    )
+    .map((guess) => guess.map((letter) => (letter.state === "pending" ? "" : emojiTheme[letter.state])).join(""))
     .join("\n")
     .trim();
 }

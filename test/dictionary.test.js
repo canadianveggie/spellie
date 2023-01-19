@@ -4,10 +4,7 @@ const { words } = require("../public/puzzles");
 
 describe("validWords", () => {
   it("puzzles are valid words", () => {
-    const allWords = []
-      .concat(words.easy)
-      .concat(words.medium)
-      .concat(words.hard);
+    const allWords = [].concat(words.easy).concat(words.medium).concat(words.hard);
     allWords.forEach((word) => {
       expect(validWords.has(word)).toBe(true);
     });

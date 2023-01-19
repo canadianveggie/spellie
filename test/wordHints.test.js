@@ -10,9 +10,7 @@ describe("wordHints", () => {
 
       const codepoint = getUnicodeCodePoint(hint.emoji);
       if (!twemoji.has(codepoint) && !twemoji.has(`${codepoint}-fe0f`)) {
-        throw new Error(
-          `No twemoji image found for emoji hint ${key} as ${codepoint}`
-        );
+        throw new Error(`No twemoji image found for emoji hint ${key} as ${codepoint}`);
       }
     });
   });

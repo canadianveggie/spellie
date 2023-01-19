@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "npm run typecheck && npm run lint:js && npm run lint:css && npm run lint:prettier",
     "lint:js": "eslint index.html public test",
-    "lint:prettier": "prettier --check '**/*.{css,js,html}'",
+    "lint:prettier": "prettier --print-width=120 --check '**/*.{css,js,html}'",
     "lint:css": "stylelint '**/*.css'",
     "prepare": "husky install"
   },
@@ -50,7 +50,7 @@
     "not dead"
   ],
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "**/*": "prettier --print-width=120 --write --ignore-unknown"
   },
   "jest": {
     "verbose": true,

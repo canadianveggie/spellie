@@ -29,10 +29,7 @@ describe("puzzles", () => {
     });
 
     it("no duplicates", () => {
-      const allWords = []
-        .concat(futureWords.easy)
-        .concat(futureWords.medium)
-        .concat(futureWords.hard);
+      const allWords = [].concat(futureWords.easy).concat(futureWords.medium).concat(futureWords.hard);
       expect(allWords.length).toEqual([...new Set(allWords)].length);
     });
   });
@@ -76,16 +73,11 @@ describe("puzzles", () => {
       });
     });
 
-    test.each([["easy"], ["medium"], ["hard"]])(
-      "unique %s words",
-      (difficulty) => {
-        const repeats = holidayWords[difficulty].filter(
-          (i) => futureWords[difficulty].indexOf(i) >= 0
-        );
-        // console.log(repeats.map((word) => btoa(word)));
-        expect(repeats).toHaveLength(0);
-      }
-    );
+    test.each([["easy"], ["medium"], ["hard"]])("unique %s words", (difficulty) => {
+      const repeats = holidayWords[difficulty].filter((i) => futureWords[difficulty].indexOf(i) >= 0);
+      // console.log(repeats.map((word) => btoa(word)));
+      expect(repeats).toHaveLength(0);
+    });
   });
 
   describe("daysBetween", () => {
@@ -110,77 +102,32 @@ describe("puzzles", () => {
 
   describe("compareTargetAndGuess", () => {
     it("full match", () => {
-      expect(compareTargetAndGuess("feet", "feet")).toEqual([
-        "match",
-        "match",
-        "match",
-        "match",
-      ]);
+      expect(compareTargetAndGuess("feet", "feet")).toEqual(["match", "match", "match", "match"]);
     });
 
     it("miss", () => {
-      expect(compareTargetAndGuess("feet", "pqrs")).toEqual([
-        "miss",
-        "miss",
-        "miss",
-        "miss",
-      ]);
+      expect(compareTargetAndGuess("feet", "pqrs")).toEqual(["miss", "miss", "miss", "miss"]);
     });
 
     it("double letter, no matches", () => {
-      expect(compareTargetAndGuess("feet", "fame")).toEqual([
-        "match",
-        "miss",
-        "miss",
-        "present",
-      ]);
+      expect(compareTargetAndGuess("feet", "fame")).toEqual(["match", "miss", "miss", "present"]);
     });
 
     it("double letter, one match", () => {
-      expect(compareTargetAndGuess("feet", "mere")).toEqual([
-        "miss",
-        "match",
-        "miss",
-        "present",
-      ]);
+      expect(compareTargetAndGuess("feet", "mere")).toEqual(["miss", "match", "miss", "present"]);
     });
 
     it("single letter, two guesses", () => {
-      expect(compareTargetAndGuess("fate", "feel")).toEqual([
-        "match",
-        "present",
-        "miss",
-        "miss",
-      ]);
+      expect(compareTargetAndGuess("fate", "feel")).toEqual(["match", "present", "miss", "miss"]);
     });
   });
 
   describe("guessesAsEmojis", () => {
     const guesses = [
-      [
-        { state: "miss" },
-        { state: "present" },
-        { state: "miss" },
-        { state: "miss" },
-      ],
-      [
-        { state: "present" },
-        { state: "miss" },
-        { state: "match" },
-        { state: "miss" },
-      ],
-      [
-        { state: "match" },
-        { state: "match" },
-        { state: "match" },
-        { state: "match" },
-      ],
-      [
-        { state: "pending" },
-        { state: "pending" },
-        { state: "pending" },
-        { state: "pending" },
-      ],
+      [{ state: "miss" }, { state: "present" }, { state: "miss" }, { state: "miss" }],
+      [{ state: "present" }, { state: "miss" }, { state: "match" }, { state: "miss" }],
+      [{ state: "match" }, { state: "match" }, { state: "match" }, { state: "match" }],
+      [{ state: "pending" }, { state: "pending" }, { state: "pending" }, { state: "pending" }],
     ];
 
     const expectedResults = {

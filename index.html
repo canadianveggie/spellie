@@ -4,21 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Spellie | Wordle for Kids</title>
-    <meta
-      name="description"
-      content="A kid-friendly version of the popular Wordle game"
-    />
+    <meta name="description" content="A kid-friendly version of the popular Wordle game" />
 
     <meta property="og:url" content="https://spelliegame.com" />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:title"
-      content="Spellie - A daily word game for young spellers"
-    />
-    <meta
-      property="og:description"
-      content="Wordle for kids. 3 daily puzzles for children of all ages."
-    />
+    <meta property="og:title" content="Spellie - A daily word game for young spellers" />
+    <meta property="og:description" content="Wordle for kids. 3 daily puzzles for children of all ages." />
     <meta property="og:image" content="https://spelliegame.com/preview.png" />
     <meta name="twitter:image" content="https://spelliegame.com/preview.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
@@ -26,20 +17,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="manifest" href="site.webmanifest" />
 
-    <script
-      src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js"
-      defer
-    ></script>
+    <script src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link href="./public/main.css" rel="stylesheet" />
     <script src="public/amplitude.js"></script>
   </head>
@@ -57,13 +39,7 @@
           <a href="#about" class="nav-link">
             <i class="material-icons">info</i>
           </a>
-          <a
-            @click="share"
-            @keyup.enter="share"
-            tabindex="0"
-            x-show="canShare"
-            class="nav-link"
-          >
+          <a @click="share" @keyup.enter="share" tabindex="0" x-show="canShare" class="nav-link">
             <i class="material-icons">share</i>
           </a>
         </div>
@@ -87,24 +63,9 @@
         </div>
       </nav>
       <div class="nav-tabs" x-cloak x-show="isGamePage">
-        <button
-          :class="{ 'active': difficulty === 'easy' }"
-          @click="updateDifficulty('easy')"
-        >
-          Easy
-        </button>
-        <button
-          :class="{ 'active': difficulty === 'medium' }"
-          @click="updateDifficulty('medium')"
-        >
-          Medium
-        </button>
-        <button
-          :class="{ 'active': difficulty === 'hard' }"
-          @click="updateDifficulty('hard')"
-        >
-          Hard
-        </button>
+        <button :class="{ 'active': difficulty === 'easy' }" @click="updateDifficulty('easy')">Easy</button>
+        <button :class="{ 'active': difficulty === 'medium' }" @click="updateDifficulty('medium')">Medium</button>
+        <button :class="{ 'active': difficulty === 'hard' }" @click="updateDifficulty('hard')">Hard</button>
       </div>
     </header>
     <main :class="`target-${target.length}`">
@@ -119,16 +80,12 @@
         </div>
         <p>Spellie is a daily word puzzle game for young spellers.</p>
         <p>
-          There are 3 daily puzzles of increasing difficulty. The easy puzzle
-          uses short words within the Grade 2 vocabulary. The hard mode is
-          challenging, but uses words within the Grade 5 vocabulary.
+          There are 3 daily puzzles of increasing difficulty. The easy puzzle uses short words within the Grade 2
+          vocabulary. The hard mode is challenging, but uses words within the Grade 5 vocabulary.
         </p>
 
         <h2>How to play</h2>
-        <p>
-          You have six (6) tries to guess the daily word, using the feedback to
-          narrow down the options.
-        </p>
+        <p>You have six (6) tries to guess the daily word, using the feedback to narrow down the options.</p>
         <div class="example-word">
           <div class="guesses-word" :class="settings.case">
             <div class="guesses-tile match">
@@ -171,15 +128,11 @@
           <li>James Dodds</li>
           <li>
             Many other
-            <a href="https://github.com/canadianveggie/spellie" target="_blank"
-              >contributors</a
-            >
+            <a href="https://github.com/canadianveggie/spellie" target="_blank">contributors</a>
           </li>
         </ul>
         <div class="social-links">
-          <a href="https://twitter.com/SpellieGame" target="_blank"
-            ><img src="public/twitter.png" alt="Twitter"
-          /></a>
+          <a href="https://twitter.com/SpellieGame" target="_blank"><img src="public/twitter.png" alt="Twitter" /></a>
           <a href="https://github.com/canadianveggie/spellie" target="_blank"
             ><img src="public/github.png" alt="GitHub"
           /></a>
@@ -187,10 +140,7 @@
       </div>
       <div class="game-content" x-show="isGamePage">
         <div class="guesses-grid">
-          <template
-            x-for="(guess, guessIndex) in guesses"
-            :key="`${gameId}-${guessIndex}`"
-          >
+          <template x-for="(guess, guessIndex) in guesses" :key="`${gameId}-${guessIndex}`">
             <div class="guesses-row" :class="settings.case">
               <template x-for="(letter, letterIndex) in guess">
                 <div
@@ -198,11 +148,7 @@
                   :class="[letter.state, isCursor(guessIndex, letterIndex) ? 'cursor' : '']"
                   @click="selectTile(guessIndex, letterIndex)"
                 >
-                  <span
-                    x-show="letter.letter"
-                    x-text="masked ? '' : letter.letter"
-                    x-transition:enter="pop"
-                  ></span>
+                  <span x-show="letter.letter" x-text="masked ? '' : letter.letter" x-transition:enter="pop"></span>
                 </div>
               </template>
             </div>
@@ -220,33 +166,18 @@
           </button>
         </div>
         <div x-show="solved && endGame" x-cloak>
-          <div
-            x-transition.enter.duration.1000ms
-            x-transition.leave.duration.0ms
-            class="victory"
-          >
+          <div x-transition.enter.duration.1000ms x-transition.leave.duration.0ms class="victory">
             <span class="emoji" x-text="victoryEmoji"></span> You win!
           </div>
         </div>
-        <div
-          x-cloak
-          x-show="failed && endGame"
-          x-transition:enter.duration.1000ms
-          class="defeat"
-        >
+        <div x-cloak x-show="failed && endGame" x-transition:enter.duration.1000ms class="defeat">
           <span x-show="masked">Nice try!</span>
-          <span x-cloak x-show="!masked"
-            >It was: <span x-text="target"></span
-          ></span>
+          <span x-cloak x-show="!masked">It was: <span x-text="target"></span></span>
         </div>
         <div x-cloak x-show="endGame" class="masked-game-buttons">
           <button @click="masked ? unmask : mask">
             <span x-text="masked ? 'Reveal' : 'Hide'"></span>
-            <i
-              class="material-icons"
-              aria-hidden="true"
-              x-text="masked ? 'visibility' : 'visibility_off'"
-            ></i>
+            <i class="material-icons" aria-hidden="true" x-text="masked ? 'visibility' : 'visibility_off'"></i>
           </button>
           <button @click="resetLevel">
             <span>Reset</span>
@@ -259,15 +190,9 @@
         </div>
         <div class="keyboard">
           <template x-if="!endGame">
-            <template
-              x-for="(keyboardRow, rowIndex) in keyboard"
-              :key="`${gameId}-${rowIndex}`"
-            >
+            <template x-for="(keyboardRow, rowIndex) in keyboard" :key="`${gameId}-${rowIndex}`">
               <div class="keyboard-row">
-                <template
-                  x-for="letter in keyboardRow"
-                  :key="`${gameId}-${letter.label}`"
-                >
+                <template x-for="letter in keyboardRow" :key="`${gameId}-${letter.label}`">
                   <div
                     class="key"
                     :class="[settings.case, 'key-' + letter.type, letter.state, hint.shown && letter.label === hint.letter ? 'pulse' : '']"
@@ -300,24 +225,17 @@
         </div>
 
         <p x-show="unlockedEmojis.length === 0">
-          Your word guesses can unlock hidden emojis.<br />Maybe you'll find one
-          next game.
+          Your word guesses can unlock hidden emojis.<br />Maybe you'll find one next game.
         </p>
         <p x-show="unlockedEmojis.length === 1">
-          You found your first emoji! Great job.<br />How many more can you
-          find?
+          You found your first emoji! Great job.<br />How many more can you find?
         </p>
         <p x-show="unlockedEmojis.length > 1">
           You've already found
-          <strong x-text="unlockedEmojis.length"></strong> emojis. That's
-          amazing!<br />Can you find any more?
+          <strong x-text="unlockedEmojis.length"></strong> emojis. That's amazing!<br />Can you find any more?
         </p>
         <div class="collection-tiles">
-          <div
-            class="guesses-word"
-            x-show="unlockedEmojis.length === 0"
-            :class="settings.case"
-          >
+          <div class="guesses-word" x-show="unlockedEmojis.length === 0" :class="settings.case">
             <div class="guesses-tile emoji-tile">
               <span>❓</span>
             </div>
@@ -328,11 +246,7 @@
             </template>
           </div>
           <template x-for="(collectable, i) in unlockedEmojis">
-            <div
-              class="guesses-word"
-              x-show="collectable.unlocked"
-              :class="[settings.case]"
-            >
+            <div class="guesses-word" x-show="collectable.unlocked" :class="[settings.case]">
               <div class="guesses-tile emoji-tile">
                 <img
                   :src="getEmojiImage(collectable.emoji)"
@@ -345,10 +259,7 @@
                 />
               </div>
               <template x-for="letter in collectable.word">
-                <div
-                  class="guesses-tile"
-                  :class="collectable.new ? 'present' : 'match'"
-                >
+                <div class="guesses-tile" :class="collectable.new ? 'present' : 'match'">
                   <span x-text="letter"></span>
                 </div>
               </template>
@@ -357,9 +268,7 @@
         </div>
         <p x-show="unlockedEmojis.length > 1">
           Psst. There are over
-          <span
-            x-text="Math.floor(Object.keys(emojis).length / 100)  * 100"
-          ></span>
+          <span x-text="Math.floor(Object.keys(emojis).length / 100)  * 100"></span>
           emojis in total...
         </p>
       </div>
@@ -444,46 +353,22 @@
         <section>
           <h2>Hints</h2>
           <div>
-            <input
-              type="radio"
-              id="hints-off"
-              value="off"
-              x-model="settings.hints"
-              @change="updateSettings"
-            />
+            <input type="radio" id="hints-off" value="off" x-model="settings.hints" @change="updateSettings" />
             <label for="hints-off">Off</label>
           </div>
           <div>
-            <input
-              type="radio"
-              id="hints-on"
-              value="on"
-              x-model="settings.hints"
-              @change="updateSettings"
-            />
+            <input type="radio" id="hints-on" value="on" x-model="settings.hints" @change="updateSettings" />
             <label for="hints-on">On</label>
           </div>
         </section>
         <section>
           <h2>Theme</h2>
           <div>
-            <input
-              type="radio"
-              id="theme-blue"
-              value="blue"
-              x-model="settings.theme"
-              @change="updateSettings"
-            />
+            <input type="radio" id="theme-blue" value="blue" x-model="settings.theme" @change="updateSettings" />
             <label for="theme-blue">Default</label>
           </div>
           <div>
-            <input
-              type="radio"
-              id="theme-high"
-              value="high"
-              x-model="settings.theme"
-              @change="updateSettings"
-            />
+            <input type="radio" id="theme-high" value="high" x-model="settings.theme" @change="updateSettings" />
             <label for="theme-high">High contrast</label>
           </div>
         </section>
@@ -554,10 +439,7 @@
   <script>
     /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getTodayPuzzles, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
 
-    const identify = new amplitude.Identify().set(
-      "host",
-      window.location.hostname
-    );
+    const identify = new amplitude.Identify().set("host", window.location.hostname);
     amplitude.getInstance().identify(identify);
 
     const puzzleId = getTodayPuzzleId();
@@ -688,9 +570,7 @@
               this.showNotice("Check your spelling... 🤔");
               return;
             }
-            this.currentGuess.forEach(
-              (letterGuess) => (letterGuess.state = "submitted")
-            );
+            this.currentGuess.forEach((letterGuess) => (letterGuess.state = "submitted"));
             this.resetHint();
             this.checkAnswer();
             if (!this.solved && !this.failed) {
@@ -701,9 +581,7 @@
             this.saveGameState();
             this.cursorMode = false;
           } else if (letterState.type === "back") {
-            const deleteIndex = this.cursorMode
-              ? this.cursor
-              : this.cursorAdjust(-1);
+            const deleteIndex = this.cursorMode ? this.cursor : this.cursorAdjust(-1);
             if (
               deleteIndex >= 0 &&
               deleteIndex < this.currentGuess.length &&
@@ -720,13 +598,8 @@
               this.updateControls();
             }
           } else if (letterState.type === "letter") {
-            if (
-              this.currentGuess &&
-              this.cursor >= 0 &&
-              this.cursor < this.currentGuess.length
-            ) {
-              this.currentGuess[this.cursor].letter =
-                letterState.label.toUpperCase();
+            if (this.currentGuess && this.cursor >= 0 && this.cursor < this.currentGuess.length) {
+              this.currentGuess[this.cursor].letter = letterState.label.toUpperCase();
               this.cursor = this.cursorAdjust(1);
               this.cursorMode = false;
               this.updateControls();
@@ -753,20 +626,14 @@
             this.levelEnd();
             return;
           }
-          if (
-            !this.solved &&
-            !this.failed &&
-            this.currentGuessIndex >= this.guesses.length
-          ) {
+          if (!this.solved && !this.failed && this.currentGuessIndex >= this.guesses.length) {
             this.failed = true;
             this.levelEnd();
           }
         },
         checkEmojiGuess() {
           const emoji = emojis[this.currentWord];
-          const alreadyFound = this.unlockedEmojis.some(
-            (entry) => entry.word === this.currentWord
-          );
+          const alreadyFound = this.unlockedEmojis.some((entry) => entry.word === this.currentWord);
           if (emoji && !alreadyFound) {
             this.showNotice(`You unlocked #${emoji}# !`);
             this.newEmojis.push(emoji);
@@ -777,9 +644,7 @@
               date: new Date().toISOString(),
             };
             localStorage.setItem("collection", JSON.stringify(collection));
-            const collectable = this.emojiCollection.find(
-              (c) => c.word === this.currentWord
-            );
+            const collectable = this.emojiCollection.find((c) => c.word === this.currentWord);
             collectable.unlocked = true;
             collectable.new = true;
           }
@@ -790,11 +655,7 @@
             const label = guess[i];
             const key = this.keys.find((letter) => letter.label === label);
             // Don't overwrite match or present with miss
-            if (
-              !key ||
-              key.state === "match" ||
-              (key.state === "present" && letterResult === "miss")
-            ) {
+            if (!key || key.state === "match" || (key.state === "present" && letterResult === "miss")) {
               return;
             }
             key.state = letterResult;
@@ -806,9 +667,7 @@
             key.state = "miss";
           });
           hintKnowledge.presents.forEach((presentLetter) => {
-            const key = this.keys.find(
-              (letter) => letter.label === presentLetter
-            );
+            const key = this.keys.find((letter) => letter.label === presentLetter);
             if (key.state === "available") {
               key.state = "present";
             }
@@ -830,8 +689,7 @@
           const aToZ = ["ABCDEFGHI", "JKLMNOPQR", "STUVWXYZ"];
           const qwerty = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
-          const layout =
-            this.settings.keyboardLayout === "qwerty" ? qwerty : aToZ;
+          const layout = this.settings.keyboardLayout === "qwerty" ? qwerty : aToZ;
           const keyboard = [];
           layout.forEach((row) => {
             const rowKeys = row.split("").map((letter) => {
@@ -848,15 +706,10 @@
           const enterKey = this.keys.find((letter) => letter.type === "enter");
           backKey.state = this.cursor > 0 ? "available" : "unavailable";
           if (this.cursorReverse) {
-            backKey.state =
-              this.cursor < this.target.length - 1
-                ? "available"
-                : "unavailable";
+            backKey.state = this.cursor < this.target.length - 1 ? "available" : "unavailable";
           }
           enterKey.state =
-            this.isCurrentWordComplete() && !this.isCurrentWordInvalid()
-              ? "available pulse-small"
-              : "unavailable";
+            this.isCurrentWordComplete() && !this.isCurrentWordInvalid() ? "available pulse-small" : "unavailable";
         },
         keyPressed(e) {
           if (e.key === "Tab") return;
@@ -869,21 +722,13 @@
             this.addLetter({ type: "back" });
           } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
             const delta = e.key === "ArrowLeft" ? -1 : 1;
-            const nextCursorIndex = Math.min(
-              this.target.length - 1,
-              Math.max(0, this.cursor + delta)
-            );
+            const nextCursorIndex = Math.min(this.target.length - 1, Math.max(0, this.cursor + delta));
             if (this.currentGuess[nextCursorIndex].state === "match") {
               return; // don't allow reaching a freebie letter
             }
             this.cursor = nextCursorIndex;
             this.cursorMode = true;
-          } else if (
-            /^[a-zA-Z]$/.test(e.key) &&
-            !e.altKey &&
-            !e.ctrlKey &&
-            !e.metaKey
-          ) {
+          } else if (/^[a-zA-Z]$/.test(e.key) && !e.altKey && !e.ctrlKey && !e.metaKey) {
             e.target.blur(); // user is no longer navigating by tab
             this.addLetter({ type: "letter", label: e.key });
           }
@@ -902,10 +747,7 @@
           return this.guesses[this.currentGuessIndex];
         },
         guessToWord(guess) {
-          return (
-            guess &&
-            guess.map((letterGuess) => letterGuess.letter || " ").join("")
-          );
+          return guess && guess.map((letterGuess) => letterGuess.letter || " ").join("");
         },
         get lastWord() {
           const guess = this.guesses[this.currentGuessIndex - 1];
@@ -915,9 +757,7 @@
           return this.guessToWord(this.currentGuess);
         },
         get guessWords() {
-          return this.guesses
-            .slice(0, this.currentGuessIndex)
-            .map((guess) => this.guessToWord(guess));
+          return this.guesses.slice(0, this.currentGuessIndex).map((guess) => this.guessToWord(guess));
         },
         get guessWordDictionary() {
           return this.guessWords.reduce((acc, guessWord, i) => {
@@ -933,21 +773,14 @@
         },
         isCurrentWordComplete() {
           return (
-            this.currentWord &&
-            this.currentWord.length === this.target.length &&
-            this.currentWord.indexOf(" ") < 0
+            this.currentWord && this.currentWord.length === this.target.length && this.currentWord.indexOf(" ") < 0
           );
         },
         isCurrentWordInvalid() {
-          return (
-            (this.settings.spellChecker === "on" || this.onLastGuess) &&
-            !validWords.has(this.currentWord)
-          );
+          return (this.settings.spellChecker === "on" || this.onLastGuess) && !validWords.has(this.currentWord);
         },
         isCursor(guessIndex, letterIndex) {
-          return (
-            guessIndex === this.currentGuessIndex && letterIndex === this.cursor
-          );
+          return guessIndex === this.currentGuessIndex && letterIndex === this.cursor;
         },
         cursorAdjust(delta) {
           if (this.cursorReverse) {
@@ -958,21 +791,13 @@
         },
         get victoryEmoji() {
           const victoryEmojis =
-            this.puzzleId === 50
-              ? ["👽", "🦸‍♀️", "😻", "🥸", "🍪", "🥵"]
-              : ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
-          return (
-            victoryEmojis[this.currentGuessIndex - 1] ||
-            victoryEmojis[victoryEmojis.length - 1]
-          );
+            this.puzzleId === 50 ? ["👽", "🦸‍♀️", "😻", "🥸", "🍪", "🥵"] : ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
+          return victoryEmojis[this.currentGuessIndex - 1] || victoryEmojis[victoryEmojis.length - 1];
         },
         /** First letter provided free for 4-letter words */
         prepareFreebie() {
           const freebieIndex = this.cursorReverse ? this.target.length - 1 : 0;
-          if (
-            this.target.length <= 4 &&
-            this.guesses[0][freebieIndex].letter === ""
-          ) {
+          if (this.target.length <= 4 && this.guesses[0][freebieIndex].letter === "") {
             this.addLetter({
               type: "letter",
               label: this.target[freebieIndex],
@@ -984,12 +809,7 @@
           return this.settings.hints === "on" && this.difficulty !== "hard";
         },
         prepareHint() {
-          if (
-            this.difficulty === "hard" ||
-            this.currentGuessIndex < 2 ||
-            this.solved ||
-            this.failed
-          ) {
+          if (this.difficulty === "hard" || this.currentGuessIndex < 2 || this.solved || this.failed) {
             this.resetHint();
             return;
           }
@@ -1035,10 +855,7 @@
             presents: this.hint.letter ? [this.hint.letter] : [],
             misses: this.hint.misses || [],
           };
-          this.hintKnowledge = combineKnowledge(
-            this.hintKnowledge,
-            newKnowledge
-          );
+          this.hintKnowledge = combineKnowledge(this.hintKnowledge, newKnowledge);
           this.updateKeyboardForHints(this.hintKnowledge);
         },
         showNotice(text, type) {
@@ -1055,23 +872,16 @@
         },
         loadGameState() {
           try {
-            let initialState = this.getFromLocalStorage(
-              `game-state-${this.difficulty}`,
-              {}
-            );
+            let initialState = this.getFromLocalStorage(`game-state-${this.difficulty}`, {});
             if (initialState.puzzleId !== this.puzzleId) {
               initialState = {};
             }
             // Create a unique id for each game state so that we redraw the grid and keyboard properly
             this.gameId += 1;
-            this.level =
-              initialState.level || `${this.difficulty}-${this.puzzleId}`;
-            this.target =
-              initialState.target || getTodayPuzzles()[this.difficulty];
+            this.level = initialState.level || `${this.difficulty}-${this.puzzleId}`;
+            this.target = initialState.target || getTodayPuzzles()[this.difficulty];
 
-            this.guesses =
-              initialState.guesses ||
-              emptyGuesses(this.target.length, maxGuesses);
+            this.guesses = initialState.guesses || emptyGuesses(this.target.length, maxGuesses);
             this.solved = initialState.solved || false;
             this.failed = initialState.failed || false;
             this.repeatedGame = initialState.repeatedGame || false;
@@ -1079,9 +889,7 @@
             this.endGame = this.solved || this.failed;
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
             this.cursorReverse = this.puzzleId === 50;
-            this.cursor =
-              initialState.cursor ||
-              (this.cursorReverse ? this.target.length - 1 : 0);
+            this.cursor = initialState.cursor || (this.cursorReverse ? this.target.length - 1 : 0);
             this.cursorMode = initialState.cursorMode || false;
             this.newEmojis = initialState.newEmojis || [];
             this.hintKnowledge = initialState.hintKnowledge || {};
@@ -1100,14 +908,10 @@
           }
         },
         saveGameState() {
-          localStorage.setItem(
-            `game-state-${this.difficulty}`,
-            JSON.stringify(this.toJson())
-          );
+          localStorage.setItem(`game-state-${this.difficulty}`, JSON.stringify(this.toJson()));
         },
         loadSettings() {
-          const dayOverwrites =
-            this.puzzleId === 50 ? { sharingEmojis: "poop" } : {};
+          const dayOverwrites = this.puzzleId === 50 ? { sharingEmojis: "poop" } : {};
           this.settings = {
             ...DEFAULT_SETTINGS,
             ...this.getFromLocalStorage("settings", {}),
@@ -1147,10 +951,7 @@
               emoji,
               unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
             }));
-          const identifyEmojis = new amplitude.Identify().set(
-            "emojiCount",
-            this.unlockedEmojis.length
-          );
+          const identifyEmojis = new amplitude.Identify().set("emojiCount", this.unlockedEmojis.length);
           amplitude.getInstance().identify(identifyEmojis);
         },
         levelEnd() {
@@ -1177,17 +978,13 @@
               }, 6000);
             }
           }, this.target.length * 250 + 1000); // 1 second after last letter shows up
-          const statistics = this.getFromLocalStorage(
-            "statistics",
-            DEFAULT_STATISTICS
-          );
+          const statistics = this.getFromLocalStorage("statistics", DEFAULT_STATISTICS);
 
           if (this.solved) {
             statistics[this.difficulty].success += 1;
             statistics[this.difficulty].guesses[this.currentGuessIndex] += 1;
             statistics.solved = statistics.solved || {};
-            statistics.solved[this.puzzleId] =
-              statistics.solved[this.puzzleId] || {};
+            statistics.solved[this.puzzleId] = statistics.solved[this.puzzleId] || {};
             statistics.solved[this.puzzleId][this.difficulty] = true;
           } else {
             statistics[this.difficulty].fail += 1;
@@ -1248,26 +1045,19 @@
             // 🕸️🕸️🌻🍀🕸️
             // 🍀🍀🕸️🍀🕸️
             // 🍀🍀🍀🍀🍀
-            text = `Spellie #${this.puzzleId} (${
-              this.difficulty
-            })\n${guessesAsEmojis(this.guesses, this.settings.sharingEmojis)}`;
+            text = `Spellie #${this.puzzleId} (${this.difficulty})\n${guessesAsEmojis(
+              this.guesses,
+              this.settings.sharingEmojis
+            )}`;
             shareType = "puzzle";
-          } else if (
-            this.page === "#collection" &&
-            this.unlockedEmojis.length === 1
-          ) {
+          } else if (this.page === "#collection" && this.unlockedEmojis.length === 1) {
             // I collected my first emoji in Spellie! 👩‍🦱
             text = `I collected my first emoji in Spellie! ${this.unlockedEmojis[0].emoji}`;
             shareType = "emojis";
-          } else if (
-            this.page === "#collection" &&
-            this.unlockedEmojis.length > 1
-          ) {
+          } else if (this.page === "#collection" && this.unlockedEmojis.length > 1) {
             // I've collected 10 emojis in Spellie:
             // 🐈🐩5️⃣4️⃣👧🌳🖌️♟️🧗‍♀️👩‍🦱
-            text = `I've collected ${
-              this.unlockedEmojis.length
-            } emojis in Spellie:\n${this.unlockedEmojis
+            text = `I've collected ${this.unlockedEmojis.length} emojis in Spellie:\n${this.unlockedEmojis
               .map((e) => e.emoji)
               .join("")}`;
             shareType = "emojis";
@@ -1277,18 +1067,8 @@
             // 🕸️🌻🍀🕸️
             // 🤔🤔🤔🤔
             // ⓗⓔⓡⓞ🦸
-            const wordsMatch = [
-              [
-                { state: "miss" },
-                { state: "present" },
-                { state: "match" },
-                { state: "miss" },
-              ],
-            ];
-            const wordsEmojis = guessesAsEmojis(
-              wordsMatch,
-              this.settings.sharingEmojis
-            );
+            const wordsMatch = [[{ state: "miss" }, { state: "present" }, { state: "match" }, { state: "miss" }]];
+            const wordsEmojis = guessesAsEmojis(wordsMatch, this.settings.sharingEmojis);
             text = `Spellie\nⓦⓞⓡⓓ\n${wordsEmojis}\n🤔🤔🤔🤔\nⓗⓔⓡⓞ🦸`;
             shareType = "basic";
           }
@@ -1297,11 +1077,7 @@
             title,
             text,
           };
-          if (
-            !!navigator.canShare &&
-            navigator.canShare(shareData) &&
-            onMobile()
-          ) {
+          if (!!navigator.canShare && navigator.canShare(shareData) && onMobile()) {
             navigator.share(shareData);
           } else if (!!navigator.clipboard) {
             navigator.clipboard.writeText(shareData.text);
@@ -1361,12 +1137,8 @@
           }
           const emojiImage = `<img src="${getEmojiImage(
             emojiMatch.groups.emoji
-          )}" class="emoji-image" width="20" alt="${
-            emojiMatch.groups.emoji
-          }" />`;
-          return stripped
-            .replace(/#/g, "")
-            .replace(emojiMatch.groups.emoji, emojiImage);
+          )}" class="emoji-image" width="20" alt="${emojiMatch.groups.emoji}" />`;
+          return stripped.replace(/#/g, "").replace(emojiMatch.groups.emoji, emojiImage);
         },
       };
     }

@@ -1,19 +1,11 @@
 // @ts-check
 
 const { emojis } = require("../public/emojis");
-const {
-  getPuzzlesForDate,
-  getHolidayPuzzlePossibilities,
-  words,
-} = require("../public/puzzles");
+const { getPuzzlesForDate, getHolidayPuzzlePossibilities, words } = require("../public/puzzles");
 
 const date = new Date(2022, 2 - 1, 10, 12);
 const calendar = [];
-const days = Math.max(
-  words.easy.length,
-  words.medium.length,
-  words.hard.length
-);
+const days = Math.max(words.easy.length, words.medium.length, words.hard.length);
 for (let i = 0; i < days; i++) {
   const puzzles = getPuzzlesForDate(date);
   const puzzleEmojis = Object.values(puzzles)
