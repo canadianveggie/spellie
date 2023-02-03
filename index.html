@@ -284,25 +284,27 @@
 
         <div class="archive-list">
           <template x-for="(archivePuzzle) in archivePuzzles" :key="archivePuzzle.puzzleId">
-            <div class="archive-item">
+            <div class="archive-row">
               <div class="archive-date">
                 <span
                   x-text="getDateForPuzzleId(archivePuzzle.puzzleId).toLocaleDateString(undefined, {dateStyle:'medium'})"
                 ></span>
+              </div>
+              <div class="archive-buttons">
                 <button
-                  :class="{ 'match': archivePuzzle.easy }"
+                  :class="{ 'solved': archivePuzzle.easy, 'unsolved': !archivePuzzle.easy }"
                   @click="updateDifficulty('easy', archivePuzzle.puzzleId)"
                 >
                   Easy
                 </button>
                 <button
-                  :class="{ 'match': archivePuzzle.medium }"
+                  :class="{ 'solved': archivePuzzle.medium, 'unsolved': !archivePuzzle.medium }"
                   @click="updateDifficulty('medium', archivePuzzle.puzzleId)"
                 >
                   Medium
                 </button>
                 <button
-                  :class="{ 'match': archivePuzzle.hard }"
+                  :class="{ 'solved': archivePuzzle.hard, 'unsolved': !archivePuzzle.hard }"
                   @click="updateDifficulty('hard', archivePuzzle.puzzleId)"
                 >
                   Hard
