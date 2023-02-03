@@ -932,14 +932,24 @@
           this.loadCollection();
         },
         get gameStateVariable() {
-          return `game-state-${this.difficulty}${this.isArchiveGame() ? "-archive" : ""}`;
+          return `game-state-${this.difficulty}-${this.puzzleId}`;
+        },
+        getGameStateFromLocalStorage() {
+          const state = this.getFromLocalStorage(this.gameStateVariable, undefined);
+          if (state) {
+            return state;
+          }
+
+          // Look for the old way we stored this
+          const oldState = this.getFromLocalStorage(`game-state-${this.difficulty}`, {});
+          if (oldState.puzzleId === this.puzzleId) {
+            return oldState;
+          }
+          return {};
         },
         loadGameState() {
           try {
-            let initialState = this.getFromLocalStorage(this.gameStateVariable, {});
-            if (initialState.puzzleId !== this.puzzleId) {
-              initialState = {};
-            }
+            const initialState = this.getGameStateFromLocalStorage();
             // Create a unique id for each game state so that we redraw the grid and keyboard properly
             this.gameId += 1;
             this.level = initialState.level || `${this.difficulty}-${this.puzzleId}`;
