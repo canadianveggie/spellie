@@ -532,6 +532,16 @@ main {
   font-weight: bold;
 }
 
+.archive-title {
+  display: none;
+}
+
+@media only screen and (min-width: 350px) {
+  .archive-title {
+    display: inline;
+  }
+}
+
 .archive-row {
   display: flex;
   gap: var(--tile-spacing);
