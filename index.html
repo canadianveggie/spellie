@@ -291,22 +291,13 @@
                 <span x-text="formatArchiveDate(archivePuzzle.puzzleId)"></span>
               </div>
               <div class="archive-buttons">
-                <button
-                  :class="{ 'solved': archivePuzzle.easy, 'unsolved': !archivePuzzle.easy }"
-                  @click="updateDifficulty('easy', archivePuzzle.puzzleId)"
-                >
+                <button :class="archivePuzzle.easy" @click="updateDifficulty('easy', archivePuzzle.puzzleId)">
                   Easy
                 </button>
-                <button
-                  :class="{ 'solved': archivePuzzle.medium, 'unsolved': !archivePuzzle.medium }"
-                  @click="updateDifficulty('medium', archivePuzzle.puzzleId)"
-                >
+                <button :class="archivePuzzle.medium" @click="updateDifficulty('medium', archivePuzzle.puzzleId)">
                   Medium
                 </button>
-                <button
-                  :class="{ 'solved': archivePuzzle.hard, 'unsolved': !archivePuzzle.hard }"
-                  @click="updateDifficulty('hard', archivePuzzle.puzzleId)"
-                >
+                <button :class="archivePuzzle.hard" @click="updateDifficulty('hard', archivePuzzle.puzzleId)">
                   Hard
                 </button>
               </div>
@@ -931,25 +922,29 @@
           this.loadArchive();
           this.loadCollection();
         },
-        get gameStateVariable() {
-          return `game-state-${this.difficulty}-${this.puzzleId}`;
+        formatGameStateVariable(difficulty, puzzleId) {
+          return `game-state-${difficulty}-${puzzleId}`;
         },
-        getGameStateFromLocalStorage() {
-          const state = this.getFromLocalStorage(this.gameStateVariable, undefined);
+        get gameStateVariable() {
+          return this.formatGameStateVariable(this.difficulty, this.puzzleId);
+        },
+        getGameStateFromLocalStorage(difficulty, puzzleId) {
+          const state = this.getFromLocalStorage(this.formatGameStateVariable(difficulty, puzzleId), undefined);
           if (state) {
             return state;
           }
 
           // Look for the old way we stored this
-          const oldState = this.getFromLocalStorage(`game-state-${this.difficulty}`, {});
-          if (oldState.puzzleId === this.puzzleId) {
+          // Note: can remove after a few days
+          const oldState = this.getFromLocalStorage(`game-state-${difficulty}`, {});
+          if (oldState.puzzleId === puzzleId) {
             return oldState;
           }
           return {};
         },
         loadGameState() {
           try {
-            const initialState = this.getGameStateFromLocalStorage();
+            const initialState = this.getGameStateFromLocalStorage(this.difficulty, this.puzzleId);
             // Create a unique id for each game state so that we redraw the grid and keyboard properly
             this.gameId += 1;
             this.level = initialState.level || `${this.difficulty}-${this.puzzleId}`;
@@ -1036,10 +1031,19 @@
           for (let i = 0; i <= todaysPuzzleId; i++) {
             this.archivePuzzles[i] = {
               puzzleId: i,
-              easy: statistics && statistics.solved && statistics.solved[i] && statistics.solved[i].easy,
-              medium: statistics && statistics.solved && statistics.solved[i] && statistics.solved[i].medium,
-              hard: statistics && statistics.solved && statistics.solved[i] && statistics.solved[i].hard,
             };
+            DIFFICULTIES.forEach((difficulty) => {
+              const archivePuzzleGameState = this.getGameStateFromLocalStorage(difficulty, i);
+              let state = "unsolved";
+              if (archivePuzzleGameState.solved) {
+                state = "solved";
+              } else if (statistics && statistics.solved && statistics.solved[i] && statistics.solved[i][difficulty]) {
+                state = "solved";
+              } else if (archivePuzzleGameState.guesses && archivePuzzleGameState.guesses.length > 0) {
+                state = "in-progress";
+              }
+              this.archivePuzzles[i][difficulty] = state;
+            }, this);
           }
           this.archivePuzzles.reverse();
         },

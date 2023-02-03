@@ -566,6 +566,10 @@ main {
   background-color: var(--color-empty);
 }
 
+.archive-buttons button.in-progress {
+  background-color: var(--color-present);
+}
+
 .archive-buttons button.solved {
   background-color: var(--color-match);
 }
