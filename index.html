@@ -519,10 +519,10 @@
 
     function getInitialDifficulty() {
       const page = window.location.hash.replace("#", "");
-      const [page1] = page.split("-", 2);
+      const [difficulty] = page.split("-", 2);
 
-      if (DIFFICULTIES.includes(page1)) {
-        return page1;
+      if (DIFFICULTIES.includes(difficulty)) {
+        return difficulty;
       }
       return "easy";
     }
@@ -593,8 +593,7 @@
           misses: [],
           availables: [],
         },
-        updatePage(page) {
-          this.page = page;
+        updateTitle() {
           const titles = {
             "#easy": "Spellie | Easy",
             "#medium": "Spellie | Medium",
@@ -604,8 +603,17 @@
             "#settings": "Spellie | Settings",
             "#about": "Spellie | About",
           };
-          // TODO - archive pages
-          document.title = titles[page] || "Spellie | Wordle for Kids";
+          if (titles[this.page]) {
+            document.title = titles[this.page];
+          } else if (this.isArchiveGame()) {
+            document.title = titles[`#${this.difficulty}`] + this.archiveDate;
+          } else {
+            document.title = "Spellie | Wordle for Kids";
+          }
+        },
+        updatePage(page) {
+          this.page = page;
+          this.updateTitle();
         },
         addLetter(letterState) {
           if (this.solved || this.failed) {
@@ -920,6 +928,7 @@
           this.loadSettings();
           this.loadGameState();
           this.loadCollection();
+          this.updateTitle();
         },
         formatGameStateVariable(difficulty, puzzleId) {
           return `game-state-${difficulty}-${puzzleId}`;
