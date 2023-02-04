@@ -39,7 +39,7 @@
           <a href="#about" class="nav-link" title="About">
             <i class="material-icons">info</i>
           </a>
-          <a href="#archive" class="nav-link" title="Archive">
+          <a href="#archive" class="nav-link" title="Archive" @click="loadArchive">
             <i class="material-icons">calendar_month</i>
           </a>
         </div>
@@ -919,7 +919,6 @@
         initialLoad() {
           this.loadSettings();
           this.loadGameState();
-          this.loadArchive();
           this.loadCollection();
         },
         formatGameStateVariable(difficulty, puzzleId) {
@@ -1100,7 +1099,6 @@
             statistics[this.difficulty].fail += 1;
           }
           localStorage.setItem("statistics", JSON.stringify(statistics));
-          this.loadArchive();
         },
         get unlockedEmojis() {
           return this.emojiCollection.filter((e) => e.unlocked);
