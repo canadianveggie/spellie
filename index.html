@@ -1221,9 +1221,10 @@
         },
         get archiveDate() {
           if (this.isArchiveGame()) {
-            return (
-              " " + getDateForPuzzleId(this.puzzleId).toLocaleDateString("en-CA", { month: "short", day: "numeric" })
-            );
+            return ` ${getDateForPuzzleId(this.puzzleId).toLocaleDateString("en-CA", {
+              month: "short",
+              day: "numeric",
+            })}`;
           }
           return "";
         },
