@@ -57,6 +57,7 @@ body {
 }
 
 body.page-about,
+body.page-archive,
 body.page-collection,
 body.page-settings {
   background: var(--color-page-bg);
@@ -529,6 +530,52 @@ main {
 
 .heavy-letter {
   font-weight: bold;
+}
+
+.archive-title {
+  display: none;
+}
+
+@media only screen and (min-width: 350px) {
+  .archive-title {
+    display: inline;
+  }
+}
+
+.archive-row {
+  display: flex;
+  gap: var(--tile-spacing);
+  padding: 2px;
+}
+
+.archive-date {
+  width: 25%;
+}
+
+.archive-buttons button {
+  border: 1px solid var(--color-border);
+  padding: 4px 10px;
+  margin: 0;
+  font: inherit;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  width: 70px;
+}
+
+.archive-buttons button.unsolved {
+  background-color: var(--color-empty);
+}
+
+.archive-buttons button.in-progress {
+  background-color: var(--color-present);
+}
+
+.archive-buttons button.solved {
+  background-color: var(--color-match);
+}
+
+.archive-buttons button:hover {
+  cursor: pointer;
 }
 
 .social-links {

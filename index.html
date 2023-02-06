@@ -36,19 +36,21 @@
     <header>
       <nav>
         <div>
-          <a href="#about" class="nav-link">
+          <a href="#about" class="nav-link" title="About">
             <i class="material-icons">info</i>
           </a>
-          <a @click="share" @keyup.enter="share" tabindex="0" x-show="canShare" class="nav-link">
-            <i class="material-icons">share</i>
+          <a href="#archive" class="nav-link" title="Archive" @click="loadArchive">
+            <i class="material-icons">calendar_month</i>
           </a>
         </div>
         <div class="title">
-          <a x-bind:href="`#${difficulty}`">Spellie</a>
+          <a x-bind:href="gameUrl"
+            >Spellie<span x-cloak x-show="isArchiveGame" x-text="archiveDate" class="archive-title"></span
+          ></a>
           <span x-cloak x-show="puzzleId === 50" title="April Fools!">🙃</span>
         </div>
         <div>
-          <a href="#collection" class="nav-link">
+          <a href="#collection" class="nav-link" title="Collection">
             <span
               class="nav-notification"
               x-cloak
@@ -57,7 +59,7 @@
             ></span>
             <i class="material-icons">collections</i>
           </a>
-          <a href="#settings" class="nav-link">
+          <a href="#settings" class="nav-link" title="Settings">
             <i class="material-icons">settings</i>
           </a>
         </div>
@@ -73,7 +75,7 @@
         <div class="subhead">
           <h1>About</h1>
           <div>
-            <a x-bind:href="`#${difficulty}`">
+            <a x-bind:href="gameUrl">
               <i class="material-icons">close</i>
             </a>
           </div>
@@ -218,7 +220,7 @@
         <div class="subhead">
           <h1>Collection</h1>
           <div>
-            <a x-bind:href="`#${difficulty}`" class="close-link">
+            <a x-bind:href="gameUrl" class="close-link">
               <i class="material-icons">close</i>
             </a>
           </div>
@@ -272,11 +274,42 @@
           emojis in total...
         </p>
       </div>
+      <div class="archive-content" x-show="page === '#archive'" x-cloak>
+        <div class="subhead">
+          <h1>Archive</h1>
+          <div>
+            <a x-bind:href="gameUrl" class="close-link">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
+
+        <div class="archive-list">
+          <template x-for="(archivePuzzle) in archivePuzzles" :key="archivePuzzle.puzzleId">
+            <div class="archive-row">
+              <div class="archive-date">
+                <span x-text="formatArchiveDate(archivePuzzle.puzzleId)"></span>
+              </div>
+              <div class="archive-buttons">
+                <button :class="archivePuzzle.easy" @click="updateDifficulty('easy', archivePuzzle.puzzleId)">
+                  Easy
+                </button>
+                <button :class="archivePuzzle.medium" @click="updateDifficulty('medium', archivePuzzle.puzzleId)">
+                  Medium
+                </button>
+                <button :class="archivePuzzle.hard" @click="updateDifficulty('hard', archivePuzzle.puzzleId)">
+                  Hard
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
       <div class="settings-content" x-show="page === '#settings'" x-cloak>
         <div class="subhead">
           <h1>Settings</h1>
           <div>
-            <a x-bind:href="`#${difficulty}`" class="close-link">
+            <a x-bind:href="gameUrl" class="close-link">
               <i class="material-icons">close</i>
             </a>
           </div>
@@ -437,12 +470,12 @@
   <script src="public/mobileCheck.js"></script>
   <script src="public/dictionary.js"></script>
   <script>
-    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getEmojiImage, getHint, getTodayPuzzles, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
+    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getDateForPuzzleId, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
 
     const identify = new amplitude.Identify().set("host", window.location.hostname);
     amplitude.getInstance().identify(identify);
 
-    const puzzleId = getTodayPuzzleId();
+    const todaysPuzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
     initScalingFontSize();
 
@@ -486,10 +519,23 @@
 
     function getInitialDifficulty() {
       const page = window.location.hash.replace("#", "");
-      if (DIFFICULTIES.includes(page)) {
-        return page;
+      const [difficulty] = page.split("-", 2);
+
+      if (DIFFICULTIES.includes(difficulty)) {
+        return difficulty;
       }
       return "easy";
+    }
+
+    function getInitialPuzzleId() {
+      const page = window.location.hash.replace("#", "");
+      const [, page2] = page.split("-", 2);
+
+      const pagePuzzleId = parseInt(page2, 10);
+      if (!Number.isNaN(pagePuzzleId)) {
+        return pagePuzzleId;
+      }
+      return todaysPuzzleId;
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -524,7 +570,7 @@
         settings: {}, // placeholder until x-init
         page: window.location.hash,
         difficulty: getInitialDifficulty(),
-        puzzleId,
+        puzzleId: getInitialPuzzleId(),
         target: "",
         guesses: [],
         solved: false,
@@ -538,6 +584,7 @@
         cursor: 0,
         cursorMode: false,
         keys: initialKeys(),
+        archivePuzzles: [],
         emojiCollection: [],
         newEmojis: [],
         hintKnowledge: {
@@ -546,17 +593,27 @@
           misses: [],
           availables: [],
         },
-        updatePage(page) {
-          this.page = page;
+        updateTitle() {
           const titles = {
             "#easy": "Spellie | Easy",
             "#medium": "Spellie | Medium",
             "#hard": "Spellie | Hard",
+            "#archive": "Spellie | Archive",
             "#collection": "Spellie | Emoji Collection",
             "#settings": "Spellie | Settings",
             "#about": "Spellie | About",
           };
-          document.title = titles[page] || "Spellie | Wordle for Kids";
+          if (titles[this.page]) {
+            document.title = titles[this.page];
+          } else if (this.isArchiveGame()) {
+            document.title = titles[`#${this.difficulty}`] + this.archiveDate;
+          } else {
+            document.title = "Spellie | Wordle for Kids";
+          }
+        },
+        updatePage(page) {
+          this.page = page;
+          this.updateTitle();
         },
         addLetter(letterState) {
           if (this.solved || this.failed) {
@@ -611,6 +668,7 @@
             amplitude.getInstance().logEvent("level_start", {
               level_name: this.level,
               difficulty: this.difficulty,
+              archiveGame: this.isArchiveGame(),
               repeatedGame: this.repeatedGame,
             });
           }
@@ -843,6 +901,7 @@
             amplitude.getInstance().logEvent("show_hint", {
               level_name: this.level,
               difficulty: this.difficulty,
+              archiveGame: this.isArchiveGame(),
               repeatedGame: this.repeatedGame,
               guess: this.currentGuessIndex + 1,
               message: this.hint.message,
@@ -869,17 +928,36 @@
           this.loadSettings();
           this.loadGameState();
           this.loadCollection();
+          this.loadArchive();
+          this.updateTitle();
+        },
+        formatGameStateVariable(difficulty, puzzleId) {
+          return `game-state-${difficulty}-${puzzleId}`;
+        },
+        get gameStateVariable() {
+          return this.formatGameStateVariable(this.difficulty, this.puzzleId);
+        },
+        getGameStateFromLocalStorage(difficulty, puzzleId) {
+          const state = this.getFromLocalStorage(this.formatGameStateVariable(difficulty, puzzleId), undefined);
+          if (state) {
+            return state;
+          }
+
+          // Look for the old way we stored this
+          // Note: can remove after a few days
+          const oldState = this.getFromLocalStorage(`game-state-${difficulty}`, {});
+          if (oldState.puzzleId === puzzleId) {
+            return oldState;
+          }
+          return {};
         },
         loadGameState() {
           try {
-            let initialState = this.getFromLocalStorage(`game-state-${this.difficulty}`, {});
-            if (initialState.puzzleId !== this.puzzleId) {
-              initialState = {};
-            }
+            const initialState = this.getGameStateFromLocalStorage(this.difficulty, this.puzzleId);
             // Create a unique id for each game state so that we redraw the grid and keyboard properly
             this.gameId += 1;
             this.level = initialState.level || `${this.difficulty}-${this.puzzleId}`;
-            this.target = initialState.target || getTodayPuzzles()[this.difficulty];
+            this.target = initialState.target || getPuzzlesForId(this.puzzleId)[this.difficulty];
 
             this.guesses = initialState.guesses || emptyGuesses(this.target.length, maxGuesses);
             this.solved = initialState.solved || false;
@@ -908,7 +986,7 @@
           }
         },
         saveGameState() {
-          localStorage.setItem(`game-state-${this.difficulty}`, JSON.stringify(this.toJson()));
+          localStorage.setItem(this.gameStateVariable, JSON.stringify(this.toJson()));
         },
         loadSettings() {
           const dayOverwrites = this.puzzleId === 50 ? { sharingEmojis: "poop" } : {};
@@ -930,13 +1008,53 @@
           this.saveSettings();
           this.showNotice("Settings updated");
         },
-        isGamePage() {
-          return ["", ...DIFFICULTIES.map((d) => `#${d}`)].includes(this.page);
+        isArchiveGame() {
+          return this.puzzleId !== todaysPuzzleId;
         },
-        updateDifficulty(difficulty) {
+        get gameUrl() {
+          let hash = `#${this.difficulty}`;
+          if (this.isArchiveGame()) {
+            hash += `-${this.puzzleId}`;
+          }
+          return hash;
+        },
+        isGamePage() {
+          if (this.page === "") {
+            return true;
+          }
+          const [pageDifficulty] = this.page.split("-");
+          return DIFFICULTIES.map((d) => `#${d}`).includes(pageDifficulty);
+        },
+        updateDifficulty(difficulty, puzzleId) {
           this.difficulty = difficulty;
-          window.location.hash = `#${difficulty}`;
+          if (puzzleId !== undefined) {
+            this.puzzleId = puzzleId;
+          }
+
+          window.location.hash = this.gameUrl;
           this.loadGameState();
+        },
+        loadArchive() {
+          const statistics = this.getFromLocalStorage("statistics", DEFAULT_STATISTICS);
+          this.archivePuzzles = [];
+          for (let i = 0; i <= todaysPuzzleId; i++) {
+            this.archivePuzzles[i] = {
+              puzzleId: i,
+            };
+            DIFFICULTIES.forEach((difficulty) => {
+              const archivePuzzleGameState = this.getGameStateFromLocalStorage(difficulty, i);
+              let state = "unsolved";
+              if (archivePuzzleGameState.solved) {
+                state = "solved";
+              } else if (statistics && statistics.solved && statistics.solved[i] && statistics.solved[i][difficulty]) {
+                state = "solved";
+              } else if (archivePuzzleGameState.guesses && archivePuzzleGameState.guesses.length > 0) {
+                state = "in-progress";
+              }
+              this.archivePuzzles[i][difficulty] = state;
+            }, this);
+          }
+          this.archivePuzzles.reverse();
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
@@ -960,6 +1078,7 @@
             difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
             success: this.solved,
+            archiveGame: this.isArchiveGame(),
             repeatedGame: this.repeatedGame,
             guessWords: this.guessWords,
             newEmojis: this.newEmojis,
@@ -998,15 +1117,13 @@
           return this.unlockedEmojis.filter((e) => e.new);
         },
         resetLevel() {
-          localStorage.setItem(
-            `game-state-${this.difficulty}`,
-            JSON.stringify({ repeatedGame: true, puzzleId: this.puzzleId })
-          );
+          localStorage.setItem(this.gameStateVariable, JSON.stringify({ repeatedGame: true, puzzleId: this.puzzleId }));
           amplitude.getInstance().logEvent("level_reset", {
             level_name: this.level,
             difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
             success: this.solved,
+            archiveGame: this.isArchiveGame(),
           });
           this.loadGameState();
         },
@@ -1087,6 +1204,7 @@
             page: this.page,
             text,
             share_type: shareType,
+            archiveGame: this.isArchiveGame(),
           });
         },
         getFromLocalStorage(key, defaultValue) {
@@ -1095,6 +1213,20 @@
             return JSON.parse(value);
           }
           return defaultValue;
+        },
+        formatArchiveDate(puzzleId) {
+          if (puzzleId === todaysPuzzleId) {
+            return "Today";
+          }
+          return getDateForPuzzleId(puzzleId).toLocaleDateString("en-CA", { dateStyle: "medium" });
+        },
+        get archiveDate() {
+          if (this.isArchiveGame()) {
+            return (
+              " " + getDateForPuzzleId(this.puzzleId).toLocaleDateString("en-CA", { month: "short", day: "numeric" })
+            );
+          }
+          return "";
         },
       };
     }
