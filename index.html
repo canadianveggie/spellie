@@ -475,7 +475,7 @@
     const identify = new amplitude.Identify().set("host", window.location.hostname);
     amplitude.getInstance().identify(identify);
 
-    const todaysPuzzleId = getTodayPuzzleId();
+    let todaysPuzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
     initScalingFontSize();
 
@@ -952,6 +952,12 @@
           return {};
         },
         loadGameState() {
+          if (!this.isArchiveGame() && todaysPuzzleId !== getTodayPuzzleId()) {
+            // Update today's puzzle for stale sessions
+            todaysPuzzleId = getTodayPuzzleId();
+            this.puzzleId = todaysPuzzleId;
+          }
+
           try {
             const initialState = this.getGameStateFromLocalStorage(this.difficulty, this.puzzleId);
             // Create a unique id for each game state so that we redraw the grid and keyboard properly
