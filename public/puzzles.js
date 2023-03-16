@@ -2425,11 +2425,8 @@ function getPuzzleIdForDate(date) {
  * @returns {import("../types").DailyPuzzles}
  */
 function getPuzzlesForDate(date) {
-  return {
-    easy: getPuzzleForDateAndDifficulty(date, "easy"),
-    medium: getPuzzleForDateAndDifficulty(date, "medium"),
-    hard: getPuzzleForDateAndDifficulty(date, "hard"),
-  };
+  const id = getPuzzleIdForDate(date);
+  return getPuzzlesForId(id);
 }
 
 /**
@@ -2447,22 +2444,25 @@ function getDateForPuzzleId(id) {
  * @returns {import("../types").DailyPuzzles}
  */
 function getPuzzlesForId(id) {
-  const date = getDateForPuzzleId(id);
-  return getPuzzlesForDate(date);
+  return {
+    easy: getPuzzleForIdAndDifficulty(id, "easy"),
+    medium: getPuzzleForIdAndDifficulty(id, "medium"),
+    hard: getPuzzleForIdAndDifficulty(id, "hard"),
+  };
 }
 
 /**
- * @param {Date} date
+ * @param {number} id
  * @param {import("../types").Difficulty} difficulty
  * @returns {string}
  */
-function getPuzzleForDateAndDifficulty(date, difficulty) {
-  const index = getPuzzleIdForDate(date);
+function getPuzzleForIdAndDifficulty(id, difficulty) {
+  const date = getDateForPuzzleId(id);
   const historicalWordList = historicalWords[difficulty];
   const futureWordList = futureWords[difficulty];
 
-  if (index >= 0 && index < historicalWordList.length) {
-    return historicalWordList[index];
+  if (id >= 0 && id < historicalWordList.length) {
+    return historicalWordList[id];
   }
 
   const holidayPuzzle = getHolidayPuzzle(date, difficulty);
@@ -2470,7 +2470,7 @@ function getPuzzleForDateAndDifficulty(date, difficulty) {
     return holidayPuzzle;
   }
 
-  const futureIndex = Math.abs((index - historicalWordList.length) % futureWordList.length);
+  const futureIndex = Math.abs((id - historicalWordList.length) % futureWordList.length);
   return futureWordList[futureIndex];
 }
 
