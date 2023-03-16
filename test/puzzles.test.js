@@ -6,6 +6,7 @@ const {
   getHolidayPuzzle,
   getPuzzlesForDate,
   guessesAsEmojis,
+  getPuzzlesForId,
 } = require("../public/puzzles");
 
 describe("puzzles", () => {
@@ -41,6 +42,21 @@ describe("puzzles", () => {
         medium: "FRONT",
         hard: "SLEEK",
       });
+    });
+  });
+
+  describe("getPuzzlesForId", () => {
+    it("has no duplicates", () => {
+      const allWords = new Set();
+      for (let i = 365; i < 365 * 2; i++) {
+        const words = getPuzzlesForId(i);
+        expect(allWords).not.toContain(words.easy);
+        expect(allWords).not.toContain(words.medium);
+        expect(allWords).not.toContain(words.hard);
+        allWords.add(words.easy);
+        allWords.add(words.medium);
+        allWords.add(words.hard);
+      }
     });
   });
 
