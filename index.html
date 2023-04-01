@@ -47,7 +47,7 @@
           <a x-bind:href="gameUrl"
             >Spellie<span x-cloak x-show="isArchiveGame" x-text="archiveDate" class="archive-title"></span
           ></a>
-          <span x-cloak x-show="puzzleId === 50" title="April Fools!">🙃</span>
+          <span x-cloak x-show="isAprilFools" title="April Fools!">🙃</span>
         </div>
         <div>
           <a href="#collection" class="nav-link" title="Collection">
@@ -848,8 +848,9 @@
           }
         },
         get victoryEmoji() {
-          const victoryEmojis =
-            this.puzzleId === 50 ? ["👽", "🦸‍♀️", "😻", "🥸", "🍪", "🥵"] : ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
+          const victoryEmojis = this.isAprilFools()
+            ? ["👽", "🦸‍♀️", "😻", "🥸", "🍪", "🥵"]
+            : ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
           return victoryEmojis[this.currentGuessIndex - 1] || victoryEmojis[victoryEmojis.length - 1];
         },
         /** First letter provided free for 4-letter words */
@@ -972,7 +973,7 @@
             this.masked = this.solved || this.failed;
             this.endGame = this.solved || this.failed;
             this.currentGuessIndex = initialState.currentGuessIndex || 0;
-            this.cursorReverse = this.puzzleId === 50;
+            this.cursorReverse = this.isAprilFools();
             this.cursor = initialState.cursor || (this.cursorReverse ? this.target.length - 1 : 0);
             this.cursorMode = initialState.cursorMode || false;
             this.newEmojis = initialState.newEmojis || [];
@@ -995,7 +996,7 @@
           localStorage.setItem(this.gameStateVariable, JSON.stringify(this.toJson()));
         },
         loadSettings() {
-          const dayOverwrites = this.puzzleId === 50 ? { sharingEmojis: "poop" } : {};
+          const dayOverwrites = this.isAprilFools() ? { sharingEmojis: "poop" } : {};
           this.settings = {
             ...DEFAULT_SETTINGS,
             ...this.getFromLocalStorage("settings", {}),
@@ -1233,6 +1234,10 @@
             );
           }
           return "";
+        },
+        isAprilFools() {
+          const puzzleDate = getDateForPuzzleId(this.puzzleId);
+          return puzzleDate.getMonth() === 4 - 1 && puzzleDate.getDate() === 1;
         },
       };
     }
