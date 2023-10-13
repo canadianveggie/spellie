@@ -36,7 +36,7 @@ async function main() {
   const takenEmojis = Object.values(emojis);
   const takenKeys = Object.keys(emojis).map((key) => key.toLowerCase());
 
-  const versionBlockList = ["14.0"];
+  const versionBlockList = ["15.0"];
 
   const categoryBlockList = ["Flags", "Symbols"];
 
@@ -44,11 +44,7 @@ async function main() {
     .filter((item) => !versionBlockList.includes(item.unicode_version))
     .filter((item) => !categoryBlockList.includes(item.category))
     .filter((item) => !categoryBlockList.includes(item.category))
-    .filter((item) => !takenEmojis.includes(item.emoji))
-    .filter((item) => {
-      const keywords = item.aliases.concat(item.tags);
-      return !takenKeys.find((taken) => keywords.includes(taken));
-    });
+    .filter((item) => !takenEmojis.includes(item.emoji));
   console.log(JSON.stringify(remaining, null, 2));
 
   const suggestions = remaining.reduce(
@@ -58,7 +54,15 @@ async function main() {
     (mapping, item) => {
       item.aliases
         .concat(item.tags)
+        .reduce(
+          /**
+           * @param {string[]} words
+           */
+          (words, word) => words.concat(word.split("_")),
+          []
+        )
         .filter((word) => word.match(/^[A-Za-z]{3,6}$/))
+        .filter((word) => !takenKeys.includes(word))
         .forEach((word) => {
           mapping[word] = item.emoji;
         });
