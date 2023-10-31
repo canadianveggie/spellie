@@ -1502,6 +1502,14 @@ const futureWordsEasy = [
   "U0hJUA==",
   "TkVUUw==",
   "RFVDSw==",
+  "TEVGVA==",
+  "Q1VURQ==",
+  "V09PRA==",
+  "V0FSTg==",
+  "UE9MRQ==",
+  "UklDRQ==",
+  "V0FORA==",
+  "SEFUUw==",
 ];
 
 const futureWordsMedium = [
@@ -1990,6 +1998,21 @@ const futureWordsMedium = [
   "QkVBQ0g=",
   "Q0hPU0U=",
   "TUFQTEU=",
+  "UEhPVE8=",
+  "VEVFVEg=",
+  "VFJPTEw=",
+  "VkVHQU4=",
+  "SElLRUQ=",
+  "QUxJRU4=",
+  "U0NBUkU=",
+  "VEhPUk4=",
+  "U1dBTVA=",
+  "QklLRUQ=",
+  "U0NBUkU=",
+  "QU5HRUw=",
+  "TlVSU0U=",
+  "U0FVQ0U=",
+  "R1JBUEg=",
 ];
 
 const futureWordsHard = [
@@ -2379,6 +2402,26 @@ const futureWordsHard = [
   "QkVBVkVS",
   "Q0hBUkdF",
   "Q0xPVkVS",
+  "UEFSUk9U",
+  "UEVBTlVU",
+  "Wk9NQklF",
+  "U1BMQVNI",
+  "U0lHTkFM",
+  "VFJBSU5T",
+  "SE9DS0VZ",
+  "VE9OR1VF",
+  "UkVXSU5E",
+  "TEFEREVS",
+  "UElSQVRF",
+  "TE9USU9O",
+  "Q1JVVENI",
+  "RlVOR1VT",
+  "U0xPV0VS",
+  "REFOQ0VS",
+  "QUdFTkRB",
+  "U1RSSVBF",
+  "VE9JTEVU",
+  "UFVERExF",
 ];
 
 const historicalWords = {
@@ -2629,6 +2672,34 @@ function getHolidayPuzzlePossibilities(date) {
 }
 
 /**
+ * @return {import("../types").HolidayPuzzles}
+ */
+function getAllHolidayPuzzles() {
+  /** @type {import("../types").HolidayPuzzles} */
+  const holidayPuzzles = {
+    name: "All Holidays",
+    easy: [],
+    medium: [],
+    hard: [],
+  };
+  const date = new Date(2023, 1 - 1, 15);
+  const endDate = new Date(2027, 1 - 1, 1);
+
+  /** @type {import("../types").Difficulty[]} */
+  const difficulties = ["easy", "medium", "hard"];
+  while (date <= endDate) {
+    for (const difficulty of difficulties) {
+      const puzzle = getHolidayPuzzle(date, difficulty);
+      if (puzzle) {
+        holidayPuzzles[difficulty].push(puzzle);
+      }
+    }
+    date.setDate(date.getDate() + 1);
+  }
+  return holidayPuzzles;
+}
+
+/**
  * @param {Date} date
  * @param {import("../types").Difficulty} difficulty
  * @return {string | undefined}
@@ -2756,6 +2827,7 @@ if (typeof module !== "undefined") {
     daysBetween,
     emojiMatchThemes,
     futureWords,
+    getAllHolidayPuzzles,
     getDateForPuzzleId,
     getHolidayPuzzle,
     getHolidayPuzzlePossibilities,
