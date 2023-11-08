@@ -276,6 +276,9 @@
           <span x-text="Math.floor(Object.keys(emojis).length / 100)  * 100"></span>
           emojis in total...
         </p>
+        <div class="hint-area" x-show="unlockedEmojis.length > 50" x-cloak>
+          <button class="hint-button" @click="showEmojiHint">Need a hint? 🤔</button>
+        </div>
       </div>
       <div class="archive-content" x-show="page === '#archive'" x-cloak>
         <div class="subhead">
@@ -773,6 +776,11 @@
             this.isCurrentWordComplete() && !this.isCurrentWordInvalid() ? "available pulse-small" : "unavailable";
         },
         keyPressed(e) {
+          if (this.page === "#collection" && e.key === "?") {
+            this.showEmojiHint();
+          }
+
+          if (!this.isGamePage()) return;
           if (e.key === "Tab") return;
 
           if (e.key === "Enter" || e.key === " ") {
@@ -899,6 +907,36 @@
         resetHint() {
           clearTimeout(this.hint.timer);
           this.hint = { ...DEFAULT_HINT };
+        },
+        showEmojiHint() {
+          if (this.lockedEmojis.length === 0) {
+            return;
+          }
+
+          const collection = this.getFromLocalStorage("collection", {
+            unlocked: {},
+            hint: {},
+          });
+
+          const hintDuration = 60 * 60 * 1000; // 1 hour between collection hints
+          if (!collection.hint || !collection.hint.date || new Date() - new Date(collection.hint.date) > hintDuration) {
+            const randomEmojiIndex = Math.floor(Math.random() * this.lockedEmojis.length);
+            const randomLockedEmoji = this.lockedEmojis[randomEmojiIndex];
+            collection.hint = {
+              ...randomLockedEmoji,
+              date: new Date().toISOString(),
+            };
+            localStorage.setItem("collection", JSON.stringify(collection));
+
+            amplitude.getInstance().logEvent("show_emoji_hint", {
+              emoji: collection.hint.emoji,
+              word: collection.hint.word,
+              emojiCount: this.unlockedEmojis.length,
+            });
+          }
+
+          const blanks = Array(collection.hint.word.length).fill("_ ").join("");
+          this.showNotice(`${blanks} = #${collection.hint.emoji}#`, "hint");
         },
         showHint() {
           if (!this.hint.shown) {
@@ -1120,6 +1158,9 @@
           }
           localStorage.setItem("statistics", JSON.stringify(statistics));
         },
+        get lockedEmojis() {
+          return this.emojiCollection.filter((e) => !e.unlocked);
+        },
         get unlockedEmojis() {
           return this.emojiCollection.filter((e) => e.unlocked);
         },
@@ -1245,6 +1286,20 @@
       };
     }
 
+    function emojiReplace(text) {
+      const stripped = text.replace(/(<([^>]+)>)/gi, "");
+      // extract emoji between # characters
+      // (actually detecting with regex has too many edge cases)
+      const emojiMatch = stripped.match(/#(?<emoji>\S+)#/i);
+      if (!emojiMatch) {
+        return stripped;
+      }
+      const emojiImage = `<img src="${getEmojiImage(emojiMatch.groups.emoji)}" class="emoji-image" width="20" alt="${
+        emojiMatch.groups.emoji
+      }" />`;
+      return stripped.replace(/#/g, "").replace(emojiMatch.groups.emoji, emojiImage);
+    }
+
     // eslint-disable-next-line no-unused-vars
     function noticesHandler() {
       return {
@@ -1271,20 +1326,10 @@
           if (!this.notice) return;
 
           if (this.notice.type === "hint") {
-            return `<strong>Hint 🤔</strong><br>${this.notice.text}`;
+            return `<strong>Hint 🤔</strong><br>${emojiReplace(this.notice.text)}`;
           }
 
-          const stripped = this.notice.text.replace(/(<([^>]+)>)/gi, "");
-          // extract emoji between # characters
-          // (actually detecting with regex has too many edge cases)
-          const emojiMatch = stripped.match(/#(?<emoji>\S+)#/i);
-          if (!emojiMatch) {
-            return stripped;
-          }
-          const emojiImage = `<img src="${getEmojiImage(
-            emojiMatch.groups.emoji
-          )}" class="emoji-image" width="20" alt="${emojiMatch.groups.emoji}" />`;
-          return stripped.replace(/#/g, "").replace(emojiMatch.groups.emoji, emojiImage);
+          return emojiReplace(this.notice.text);
         },
       };
     }
