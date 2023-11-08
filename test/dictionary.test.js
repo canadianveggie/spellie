@@ -19,12 +19,10 @@ describe("validWords", () => {
         invalid.push(emojiWord);
       }
     });
-    // console.log({ valid: valid.length, invalid: invalid.length });
-    // Was { valid: 487, invalid: 13 }
-    // console.log(invalid);
-    // Invalid includes ABCD, ELSA, OLAF, TADA
-    expect(invalid.length).toBeGreaterThan(0);
-    expect(valid.length).toBeGreaterThan(invalid.length);
-    expect(invalid.length).toBeLessThan(valid.length / 5); // Less than 20% are invalid
+    expect(valid.length).toBeGreaterThan(100);
+    expect(valid.length).toBeGreaterThan(invalid.length * 0.05);
+    // grandfather in some existing invalids but try not to add any more
+    expectedInvalid = ["ABCD", "ABCS", "DANGO", "ODEN", "ROFL", "SANTA", "TADA", "WIFI", "YOYO"];
+    expect(invalid).toEqual(expectedInvalid);
   });
 });
