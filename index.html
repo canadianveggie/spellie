@@ -276,7 +276,7 @@
           <span x-text="Math.floor(Object.keys(emojis).length / 100)  * 100"></span>
           emojis in total...
         </p>
-        <div class="hint-area" x-show="unlockedEmojis.length > 50" x-cloak>
+        <div class="hint-area" x-show="unlockedEmojis.length >= 100" x-cloak>
           <button class="hint-button" @click="showEmojiHint">Need a hint? 🤔</button>
         </div>
       </div>
