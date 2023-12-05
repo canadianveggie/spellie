@@ -2008,7 +2008,6 @@ const futureWordsMedium = [
   "VEhPUk4=",
   "U1dBTVA=",
   "QklLRUQ=",
-  "U0NBUkU=",
   "QU5HRUw=",
   "TlVSU0U=",
   "U0FVQ0U=",
