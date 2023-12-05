@@ -737,8 +737,8 @@ function getUnicodeCodePoint(emoji) {
  */
 function getEmojiImage(emoji) {
   const codePoint = getUnicodeCodePoint(emoji);
-  // or png: https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f004.png
-  return `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${codePoint}.svg`;
+  // or png: https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.2/assets/72x72/1f004.png
+  return `https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.2/assets/svg/${codePoint}.svg`;
 }
 
 if (typeof module !== "undefined") {
