@@ -36,7 +36,7 @@ async function main() {
   const takenEmojis = Object.values(emojis);
   const takenKeys = Object.keys(emojis).map((key) => key.toLowerCase());
 
-  const versionBlockList = ["15.0"];
+  const versionBlockList = ["15.1", "16.0"];
 
   const categoryBlockList = ["Flags", "Symbols"];
 
