@@ -3,7 +3,7 @@ const {
   compareTargetAndGuess,
   emojiMatchThemes,
   futureWords,
-  getHolidayPuzzle,
+  getAllHolidayPuzzles,
   getPuzzlesForDate,
   guessesAsEmojis,
   getPuzzlesForId,
@@ -61,36 +61,20 @@ describe("puzzles", () => {
   });
 
   describe("holiday puzzles", () => {
-    const holidayWords = {
-      easy: [],
-      medium: [],
-      hard: [],
-    };
-    const date = new Date(2023, 1 - 1, 15);
-    const endDate = new Date(2027, 1 - 1, 1);
-
-    while (date <= endDate) {
-      for (const difficulty of Object.keys(holidayWords)) {
-        const puzzle = getHolidayPuzzle(date, difficulty);
-        if (puzzle) {
-          holidayWords[difficulty].push(puzzle);
-        }
-      }
-      date.setDate(date.getDate() + 1);
-    }
+    const holidayPuzzles = getAllHolidayPuzzles();
 
     test.each([
       ["easy", 4],
       ["medium", 5],
       ["hard", 6],
     ])("%s words are %i characters", (difficulty, length) => {
-      holidayWords[difficulty].forEach((word) => {
+      holidayPuzzles[difficulty].forEach((word) => {
         expect(word).toHaveLength(length);
       });
     });
 
     test.each([["easy"], ["medium"], ["hard"]])("unique %s words", (difficulty) => {
-      const repeats = holidayWords[difficulty].filter((i) => futureWords[difficulty].indexOf(i) >= 0);
+      const repeats = holidayPuzzles[difficulty].filter((i) => futureWords[difficulty].indexOf(i) >= 0);
       // console.log(repeats.map((word) => btoa(word)));
       expect(repeats).toHaveLength(0);
     });
