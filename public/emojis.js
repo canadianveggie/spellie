@@ -26,6 +26,7 @@ const emojis = {
   BAGS: "🛍️",
   BALD: "👨‍🦲",
   BALL: "⚾️",
+  BALLET: "🩰",
   BANANA: "🍌",
   BANG: "❗",
   BANJO: "🪕",
@@ -83,6 +84,7 @@ const emojis = {
   BROOM: "🧹",
   BROWN: "🟤",
   BRUSH: "🖌️",
+  BUBBLE: "🫧",
   BUCKET: "🪣",
   BUGS: "🪲",
   BUILD: "👷",
@@ -190,6 +192,7 @@ const emojis = {
   DOGS: "🐩",
   DOLL: "🎎",
   DOLLAR: "💲",
+  DONKEY: "🫏",
   DONUT: "🍩",
   DOOR: "🚪",
   DOVE: "🕊",
@@ -212,6 +215,7 @@ const emojis = {
   FACE: "😐",
   FAIRY: "🧚‍♀️",
   FAMILY: "👨‍👩‍👧",
+  FANS: "🪭",
   FARM: "👨‍🌾",
   FARMER: "👩‍🌾",
   FART: "💨",
@@ -236,6 +240,7 @@ const emojis = {
   FLIGHT: "🛩️",
   FLOPPY: "💾",
   FLOWER: "🌻",
+  FLUTE: "🪈",
   FOGGY: "🌫️",
   FONDUE: "🫕",
   FOOD: "🍛",
@@ -261,6 +266,7 @@ const emojis = {
   GERM: "🦠",
   GHOST: "👻",
   GIFT: "🎁",
+  GINGER: "🫚",
   GIRL: "👧",
   GLOBE: "🌍",
   GLOVE: "🧤",
@@ -270,6 +276,7 @@ const emojis = {
   GOGGLE: "🥽",
   GOLD: "🥇",
   GOLF: "⛳️",
+  GOOSE: "🪿",
   GRAPE: "🍇",
   GRAPH: "📊",
   GREEN: "🟢",
@@ -314,6 +321,7 @@ const emojis = {
   HURT: "🤕",
   HUSH: "🤐",
   JEANS: "👖",
+  JELLY: "🪼",
   JEWEL: "💎",
   JOKER: "🃏",
   JUDGE: "👩‍⚖️",
@@ -377,6 +385,7 @@ const emojis = {
   MONEY: "💰",
   MONKEY: "🐒",
   MOON: "🌛",
+  MOOSE: "🫎",
   MOSQUE: "🕌",
   MOTOR: "🏍",
   MOUSE: "🐭",
@@ -427,6 +436,7 @@ const emojis = {
   PEAK: "🏔",
   PEANUT: "🥜",
   PEAR: "🍐",
+  PEAS: "🫛",
   PENCIL: "✏️",
   PENS: "🖊",
   PEPPER: "🌶️",
@@ -472,6 +482,7 @@ const emojis = {
   PUNT: "🏈",
   PURPLE: "🟣",
   PURSE: "👛",
+  PUSH: "🫷",
   PUZZLE: "🧩",
   QUIET: "🤫",
   RABBIT: "🐇",
@@ -523,6 +534,7 @@ const emojis = {
   SEEDS: "🍉",
   SELF: "🤳",
   SEVEN: "7️⃣",
+  SHAKER: "🪇",
   SHARK: "🦈",
   SHEEP: "🐑",
   SHELL: "🐚",
@@ -530,6 +542,7 @@ const emojis = {
   SHINY: "✨",
   SHIP: "🚢",
   SHIRT: "👚",
+  SHOCK: "🫨",
   SHOE: "👟",
   SHORTS: "🩳",
   SHOWER: "🚿",
@@ -684,7 +697,8 @@ const emojis = {
   WIFI: "📶",
   WINDOW: "🪟",
   WINDY: "🌬",
-  WING: "🦋",
+  WING: "🪽",
+  WINGS: "🦋",
   WINK: "😉",
   WISH: "🧞‍♀️",
   WIZARD: "🧙‍♂️",
@@ -737,8 +751,8 @@ function getUnicodeCodePoint(emoji) {
  */
 function getEmojiImage(emoji) {
   const codePoint = getUnicodeCodePoint(emoji);
-  // or png: https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f004.png
-  return `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${codePoint}.svg`;
+  // or png: https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.2/assets/72x72/1f004.png
+  return `https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.2/assets/svg/${codePoint}.svg`;
 }
 
 if (typeof module !== "undefined") {

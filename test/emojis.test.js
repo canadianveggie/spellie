@@ -67,16 +67,16 @@ describe("emojis", () => {
 describe("getEmojiImage", () => {
   it("unicode 13 character", () => {
     const src = getEmojiImage("🪰");
-    expect(src).toBe(`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1fab0.svg`);
+    expect(src).toBe(`https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.2/assets/svg/1fab0.svg`);
   });
   it("variants", () => {
     const src = getEmojiImage("👩‍⚕️");
-    expect(src).toBe(`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f469-200d-2695-fe0f.svg`);
+    expect(src).toBe(`https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.2/assets/svg/1f469-200d-2695-fe0f.svg`);
   });
   it("trailing zero width joiner", () => {
     const src1 = getEmojiImage("⭐️");
     const src2 = getEmojiImage("\u2B50\uFE0F");
-    expect(src1).toBe(`https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/2b50.svg`);
+    expect(src1).toBe(`https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.2/assets/svg/2b50.svg`);
     expect(src2).toEqual(src1);
   });
 });
