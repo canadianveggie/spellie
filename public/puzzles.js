@@ -2421,6 +2421,7 @@ const futureWordsHard = [
   "U1RSSVBF",
   "VE9JTEVU",
   "UFVERExF",
+  "VU5XSVNF",
 ];
 
 const historicalWords = {
