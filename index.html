@@ -639,6 +639,9 @@
             if (!this.solved && !this.failed) {
               this.cursor = this.cursorReverse ? this.target.length - 1 : 0;
               this.prepareHint();
+            } else if (this.solved) {
+              // Move cursor off the page
+              this.cursor = this.target.length;
             }
             this.updateControls();
             this.saveGameState();
