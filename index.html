@@ -938,7 +938,12 @@
             });
           }
 
-          const blanks = Array(collection.hint.word.length).fill("_ ").join("");
+          let blanks = Array(collection.hint.word.length).fill("_ ").join("");
+          const foundEmoji = this.unlockedEmojis.some((entry) => entry.word === collection.hint.word);
+          if (foundEmoji) {
+            // If the emoji is since found, show the word in the hint
+            blanks = collection.hint.word;
+          }
           this.showNotice(`${blanks} = #${collection.hint.emoji}#`, "hint");
         },
         showHint() {
