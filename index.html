@@ -235,10 +235,11 @@
         <p x-show="unlockedEmojis.length === 1">
           You found your first emoji! Great job.<br />How many more can you find?
         </p>
-        <p x-show="unlockedEmojis.length > 1">
+        <p x-show="unlockedEmojis.length > 1 && lockedEmojis.length > 0">
           You've already found
           <strong x-text="unlockedEmojis.length"></strong> emojis. That's amazing!<br />Can you find any more?
         </p>
+        <p x-show="lockedEmojis.length === 0">Congratulations! 🦄 You've found every emoji! 🤩</p>
         <div class="collection-tiles">
           <div class="guesses-word" x-show="unlockedEmojis.length === 0" :class="settings.case">
             <div class="guesses-tile emoji-tile">
@@ -271,12 +272,12 @@
             </div>
           </template>
         </div>
-        <p x-show="unlockedEmojis.length > 1">
+        <p x-show="unlockedEmojis.length > 1 && lockedEmojis.length > 0">
           Psst. There are over
           <span x-text="Math.floor(Object.keys(emojis).length / 100)  * 100"></span>
           emojis in total...
         </p>
-        <div class="hint-area" x-show="unlockedEmojis.length >= 100" x-cloak>
+        <div class="hint-area" x-show="unlockedEmojis.length >= 100 && lockedEmojis.length > 0" x-cloak>
           <button class="hint-button" @click="showEmojiHint">Need a hint? 🤔</button>
         </div>
       </div>
@@ -702,7 +703,11 @@
           const emoji = emojis[this.currentWord];
           const alreadyFound = this.unlockedEmojis.some((entry) => entry.word === this.currentWord);
           if (emoji && !alreadyFound) {
-            this.showNotice(`You unlocked #${emoji}# !`);
+            if (this.lockedEmojis.length === 1) {
+              this.showNotice(`You unlocked the last emoji #${emoji}# !`);
+            } else {
+              this.showNotice(`You unlocked #${emoji}# !`);
+            }
             this.newEmojis.push(emoji);
             const collection = this.getFromLocalStorage("collection", {
               unlocked: {},
