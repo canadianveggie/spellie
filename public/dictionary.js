@@ -6061,6 +6061,7 @@ const validWords = new Set([
   "APPUI",
   "APPUY",
   "APRES",
+  "APRIL",
   "APRON",
   "APSES",
   "APSIS",
