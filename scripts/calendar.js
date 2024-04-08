@@ -5,7 +5,7 @@ const { getPuzzlesForDate, getHolidayPuzzlePossibilities, words } = require("../
 
 const date = new Date(2022, 2 - 1, 10, 12);
 const calendar = [];
-const days = Math.max(words.easy.length, words.medium.length, words.hard.length);
+const days = Math.max(words.easy.length, words.medium.length, words.hard.length) * 2;
 for (let i = 0; i < days; i++) {
   const puzzles = getPuzzlesForDate(date);
   const puzzleEmojis = Object.values(puzzles)
