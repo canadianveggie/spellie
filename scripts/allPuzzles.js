@@ -10,7 +10,9 @@ for (let i = 0; i < days; i++) {
   const id = getPuzzleIdForDate(date);
   const holiday = getHolidayPuzzlePossibilities(date);
 
-  ["easy", "medium", "hard"].forEach((difficulty) => {
+  /** @type {import("../types").Difficulty[]} */
+  const difficulties = ["easy", "medium", "hard"];
+  difficulties.forEach((difficulty) => {
     console.log([puzzles[difficulty], date.toISOString().split("T")[0], `${difficulty}-${id}`].join(","));
   });
   date.setDate(date.getDate() + 1);
