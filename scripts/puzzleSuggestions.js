@@ -20,7 +20,3 @@ console.table(
       return [word, btoa(word)];
     })
 );
-
-console.table(futureWords.easy.slice(480));
-console.table(futureWords.medium.slice(485));
-console.table(futureWords.hard.slice(386));
