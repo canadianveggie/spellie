@@ -1510,6 +1510,9 @@ const futureWordsEasy = [
   "UklDRQ==",
   "V0FORA==",
   "SEFUUw==",
+  "VFJBTQ==",
+  "SEVSQg==",
+  "Q0hFRg==",
 ];
 
 const futureWordsMedium = [
@@ -2012,6 +2015,14 @@ const futureWordsMedium = [
   "TlVSU0U=",
   "U0FVQ0U=",
   "R1JBUEg=",
+  "UFJPVUQ=",
+  "Q0FSRFM=",
+  "Q0hJUlA=",
+  "V0lOR1M=",
+  "U05PVVQ=",
+  "TUVUUk8=",
+  "RkVSUlk=",
+  "QkxVU0g=",
 ];
 
 const futureWordsHard = [
