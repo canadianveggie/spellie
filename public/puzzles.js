@@ -2656,9 +2656,17 @@ function getHolidayPuzzlePossibilities(date) {
   }
   if (
     (date.getFullYear() === 2023 && date.getMonth() === 4 - 1 && date.getDate() === 9) ||
-    (date.getFullYear() === 2024 && date.getMonth() === 4 - 1 && date.getDate() === 9) ||
-    (date.getFullYear() === 2025 && date.getMonth() === 4 - 1 && date.getDate() === 9) ||
-    (date.getFullYear() === 2026 && date.getMonth() === 4 - 1 && date.getDate() === 9)
+    // missed (date.getFullYear() === 2024 && date.getMonth() === 3 - 1 && date.getDate() === 31) ||
+    (date.getFullYear() === 2025 && date.getMonth() === 4 - 1 && date.getDate() === 20) ||
+    (date.getFullYear() === 2026 && date.getMonth() === 4 - 1 && date.getDate() === 5) ||
+    (date.getFullYear() === 2027 && date.getMonth() === 3 - 1 && date.getDate() === 28) ||
+    (date.getFullYear() === 2028 && date.getMonth() === 4 - 1 && date.getDate() === 16) ||
+    // April Fool's (date.getFullYear() === 2029 && date.getMonth() === 4 - 1 && date.getDate() === 1) ||
+    (date.getFullYear() === 2030 && date.getMonth() === 4 - 1 && date.getDate() === 21) ||
+    (date.getFullYear() === 2031 && date.getMonth() === 4 - 1 && date.getDate() === 13) ||
+    (date.getFullYear() === 2032 && date.getMonth() === 3 - 1 && date.getDate() === 28) ||
+    (date.getFullYear() === 2033 && date.getMonth() === 4 - 1 && date.getDate() === 17) ||
+    (date.getFullYear() === 2034 && date.getMonth() === 4 - 1 && date.getDate() === 9)
   ) {
     return {
       name: "Easter",
