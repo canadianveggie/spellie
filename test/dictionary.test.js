@@ -1,13 +1,21 @@
 const { validWords } = require("../public/dictionary");
 const { emojis } = require("../public/emojis");
-const { words } = require("../public/puzzles");
+const { getAllHolidayPuzzles, words } = require("../public/puzzles");
 
 describe("validWords", () => {
   it("puzzles are valid words", () => {
-    const allWords = [].concat(words.easy).concat(words.medium).concat(words.hard);
-    allWords.forEach((word) => {
-      expect(validWords.has(word)).toBe(true);
+    const holidayPuzzles = getAllHolidayPuzzles();
+    const allWords = []
+      .concat(words.easy)
+      .concat(words.medium)
+      .concat(words.hard)
+      .concat(holidayPuzzles.easy)
+      .concat(holidayPuzzles.medium)
+      .concat(holidayPuzzles.hard);
+    const notInDictionary = allWords.filter((word) => {
+      return !validWords.has(word);
     });
+    expect(notInDictionary).toHaveLength(0);
   });
   it("emojis are mostly valid words", () => {
     const valid = [];
