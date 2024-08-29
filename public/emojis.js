@@ -208,7 +208,7 @@ const emojis = {
   EGGS: "🥚",
   EIGHT: "8️⃣",
   ELVEN: "🧝",
-  EMAIL: "💌",
+  EMAIL: "📧",
   EURO: "💶",
   EVIL: "🦹",
   EYES: "👀",
