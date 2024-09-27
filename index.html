@@ -1349,9 +1349,7 @@
 
     function initScalingFontSize() {
       if ("ResizeObserver" in window === false) {
-        amplitude.getInstance().logEvent("error_encountered", {
-          message: "ResizeObserver not supported",
-        });
+        // Old browser without a ResizeObserver, leave font size as defaults
         return;
       }
 
