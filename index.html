@@ -219,6 +219,86 @@
             </template>
           </template>
         </div>
+        <div class="helpers">
+          <script>
+            function containsCharsFromArray(word, letterArray) {
+              var countOfHits = 0;
+              var hitsNeeded = word.length;
+              for (let letter of word) {
+                if (letterArray.includes(letter)) {
+                  // console.log(letter);
+                  countOfHits++;
+                }
+              }
+              if (hitsNeeded === countOfHits) {
+                return true;
+              }
+              else {
+                return false;
+              }
+            }
+
+            function generateWords() {
+              // Get what letters are correct or not.
+              var keyboard = document.querySelectorAll( '.key-letter:not(.miss)' );
+              var letters = [];
+              for( var i = 0; i < keyboard.length; i++ ) {
+                letters.push(keyboard[i]['outerText']);
+              }
+
+              // Get difficulty.
+              var difficulty = getInitialDifficulty();
+              var wordLengthToCheck = 4;
+              switch (difficulty) {
+                case 'easy':
+                  wordLengthToCheck = 4;
+                  break;
+                case 'medium':
+                  wordLengthToCheck = 5;
+                  break;
+                case 'hard':
+                  wordLengthToCheck = 6;
+                  break;
+              }
+
+              // Figure out what words are possible from the validWords dictionary.
+              var possibleWords = [];
+              for (var it = validWords.values(), val= null; val=it.next().value; ) {
+                if (val.length === wordLengthToCheck) {
+                  val = val.toLowerCase();
+                  if (containsCharsFromArray(val, letters)) {
+                    possibleWords.push(val);
+                  }
+                }
+              }
+
+              console.log(possibleWords);
+
+              // Generate 5 items from possibleWords.
+              var words = possibleWords.sort(() => Math.random() - Math.random()).slice(0, 5)
+              console.log(words);
+
+              // Display 5 items.
+              const ul = document.createElement("ul");
+              ul.setAttribute("id", "word-suggestions");
+              for (const item of words) {
+                const li = document.createElement("li");
+                li.textContent = item;
+                ul.appendChild(li);
+              }
+              // Replace UL of #word-suggestions.
+              const oldElement = document.getElementById("word-suggestions");
+              oldElement.replaceWith(ul);
+
+            }
+          </script>
+          <!-- Button to generate words -->
+          <input id="clickMe" type="button" value="Generate Words" onclick="generateWords();" />
+          <h2>Word suggestions</h2>
+          <ul id="word-suggestions"></ul>
+
+
+        </div>
       </div>
       <div class="collection-content" x-show="page === '#collection'" x-cloak>
         <div class="subhead">
@@ -479,7 +559,6 @@
   <script src="public/dictionary.js"></script>
   <script>
     /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getDateForPuzzleId, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
-
     const identify = new amplitude.Identify().set("host", window.location.hostname);
     amplitude.getInstance().identify(identify);
 
