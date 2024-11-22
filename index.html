@@ -261,7 +261,7 @@
                   break;
               }
 
-              // Figure out what words are possible from the validWords dictionary.
+              // Figure out what words are possible from the validWords dictionary set.
               var possibleWords = [];
               for (var it = validWords.values(), val= null; val=it.next().value; ) {
                 if (val.length === wordLengthToCheck) {
@@ -272,11 +272,54 @@
                 }
               }
 
-              console.log(possibleWords);
+              // Look at the prior guesses to help limit the possible words.
+              var guesses = document.querySelectorAll('.game-content .guesses-tile:not(.pending):not(.emoji-tile)' );
+
+              // Need to leverage wordLengthToCheck to figure out how many letters across there are.
+              // Then need to figure out if you have a hit in any of them.
+              // Keep track of those.
+              var correctLetters = [];
+              for( var i = 0; i < wordLengthToCheck; i++ ) {
+                correctLetters[i] = '';
+              }
+              for( var i = 0; i < guesses.length; i++ ) {
+                var currentGuess = guesses[i];
+                if (currentGuess.classList.contains('match')) {
+                  var letterPosition = i % wordLengthToCheck;
+                  correctLetters[letterPosition] = guesses[i]['outerText'];
+                }
+              }
+
+              // console.log(correctLetters);
+              var newPossibleWords = [];
+              var arrayLength = possibleWords.length;
+              for (var i = 0; i < arrayLength; i++) {
+                // console.log(possibleWords[i]);
+                //Do something
+                // possibleWords.push(val);
+                // str.charAt(0);
+                var allHits = true;
+
+                // console.log(wordLengthToCheck);
+                for( var j = 0; j < wordLengthToCheck; j++ ) {
+                  if (correctLetters[j] !== '') {
+                    // console.log('compare these letters');
+                    // console.log(correctLetters[j]);
+                    // console.log(possibleWords[i].charAt(j));
+                    // If a letter doesn't match,
+                    if (correctLetters[j] !== possibleWords[i].charAt(j)) {
+                      allHits = false;
+                    }
+                  }
+
+                }
+                if (allHits) {
+                  newPossibleWords.push(possibleWords[i]);
+                }
+              }
 
               // Generate 5 items from possibleWords.
-              var words = possibleWords.sort(() => Math.random() - Math.random()).slice(0, 5)
-              console.log(words);
+              var words = newPossibleWords.sort(() => Math.random() - Math.random()).slice(0, 5)
 
               // Display 5 items.
               const ul = document.createElement("ul");
