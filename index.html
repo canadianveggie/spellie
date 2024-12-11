@@ -1390,7 +1390,7 @@
 
     window.onerror = function onError(message, url, lineNo, columnNo, error) {
       try {
-        if (url && url.includes("extension://")) {
+        if (!url || url.includes("extension://")) {
           // Ignore problems with extensions
           return false;
         }
