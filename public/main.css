@@ -585,6 +585,10 @@ main {
   gap: 16px;
 }
 
+.social-links img {
+  height: 36px;
+}
+
 .settings-content .sharing-theme-row {
   display: flex;
   align-items: center;
