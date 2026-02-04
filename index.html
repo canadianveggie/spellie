@@ -33,6 +33,7 @@
     :class="`theme-${settings.theme} page-${page.replace('#', '')}`"
     @keyup.document="keyPressed"
     @hashchange.window="updatePage(location.hash)"
+    @scroll.window="handleArchiveScroll()"
   >
     <header>
       <nav>
@@ -296,7 +297,7 @@
         </div>
 
         <div class="archive-list">
-          <template x-for="(archivePuzzle) in archivePuzzles" :key="archivePuzzle.puzzleId">
+          <template x-for="(archivePuzzle) in visibleArchivePuzzles" :key="archivePuzzle.puzzleId">
             <div class="archive-row">
               <div class="archive-date">
                 <span x-text="formatArchiveDate(archivePuzzle.puzzleId)"></span>
@@ -596,6 +597,7 @@
         cursorMode: false,
         keys: initialKeys(),
         archivePuzzles: [],
+        visibleArchiveCount: 365,
         emojiCollection: [],
         newEmojis: [],
         hintKnowledge: {
@@ -1120,6 +1122,20 @@
             }, this);
           }
           this.archivePuzzles.reverse();
+          this.visibleArchiveCount = 365;
+        },
+        handleArchiveScroll() {
+          if (this.page !== "#archive") return;
+
+          const threshold = 100; // pixels from bottom to trigger load
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollBottom = documentHeight - scrollTop - windowHeight;
+
+          if (scrollBottom < threshold) {
+            this.loadMoreArchive();
+          }
         },
         loadCollection() {
           const collection = this.getFromLocalStorage("collection", {
@@ -1281,6 +1297,14 @@
             return JSON.parse(value);
           }
           return defaultValue;
+        },
+        get visibleArchivePuzzles() {
+          return this.archivePuzzles.slice(0, this.visibleArchiveCount);
+        },
+        loadMoreArchive() {
+          if (this.visibleArchiveCount < this.archivePuzzles.length) {
+            this.visibleArchiveCount = Math.min(this.visibleArchiveCount + 365, this.archivePuzzles.length);
+          }
         },
         formatArchiveDate(puzzleId) {
           if (puzzleId === todaysPuzzleId) {
