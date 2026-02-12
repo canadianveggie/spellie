@@ -59,7 +59,8 @@ body {
 body.page-about,
 body.page-archive,
 body.page-collection,
-body.page-settings {
+body.page-settings,
+body.page-stats {
   background: var(--color-page-bg);
 }
 

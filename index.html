@@ -465,6 +465,28 @@
           </template>
         </section>
       </div>
+      <div class="stats-content" x-show="page === '#stats'" x-cloak>
+        <div class="subhead">
+          <h1>Stats</h1>
+          <div>
+            <a x-bind:href="gameUrl" class="close-link">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
+        <section>
+          <h2>Total games completed</h2>
+          <p><!-- placeholder --></p>
+        </section>
+        <section>
+          <h2>Guesses per game</h2>
+          <p>Histogram by difficulty (placeholder).</p>
+        </section>
+        <section>
+          <h2>Emojis unlocked over time</h2>
+          <p>Timeline view (placeholder).</p>
+        </section>
+      </div>
       <div
         x-data="noticesHandler()"
         class="notice"
@@ -618,6 +640,7 @@
             "#archive": "Spellie | Archive",
             "#collection": "Spellie | Emoji Collection",
             "#settings": "Spellie | Settings",
+            "#stats": "Spellie | Stats",
             "#about": "Spellie | About",
           };
           if (titles[this.page]) {
