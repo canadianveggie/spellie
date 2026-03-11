@@ -612,6 +612,85 @@ main {
   text-decoration: underline;
 }
 
+.stats-totals {
+  margin-top: 0.5rem;
+}
+.stats-total-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+.stats-total-label {
+  margin: 0 0 1rem;
+  color: var(--color-neutral-20);
+}
+.stats-by-difficulty {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.stats-difficulty-row {
+  display: grid;
+  grid-template-columns: 4.5em 1fr 2.5em;
+  align-items: center;
+  gap: 0.5rem;
+}
+.stats-difficulty-name {
+  font-weight: 600;
+}
+.stats-bar-wrap {
+  height: 1.25rem;
+  background: var(--color-miss, rgba(0, 0, 0, 0.08));
+  border-radius: 4px;
+  overflow: hidden;
+}
+.stats-bar {
+  height: 100%;
+  min-width: 2px;
+  background: var(--color-match);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  border: 1px solid #000;
+}
+.stats-bar-fail {
+  background: var(--color-present);
+}
+.stats-difficulty-count {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-guess-histograms {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+.stats-histogram-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.stats-histogram-difficulty {
+  font-size: 1rem;
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+}
+.stats-histogram-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.stats-histogram-row.stats-difficulty-row {
+  grid-template-columns: 3em 1fr 2.5em;
+}
+.stats-guess-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
 .notice {
   position: fixed;
   top: 8%;
