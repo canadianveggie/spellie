@@ -25,6 +25,9 @@
     "lint:css": "stylelint '**/*.css'",
     "prepare": "husky install"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "axios": "^1.6.0",
