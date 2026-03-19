@@ -88,7 +88,7 @@ async function minifyJsFile(srcPath, destPath) {
 function extractInlineScriptFromIndexHtml(html) {
   // We only want the final inline <script> block (the big one),
   // leaving external scripts untouched.
-  const re = /<script\b[^>]*>([\s\S]*?)<\/script>\s*<\/html>\s*$/i;
+  const re = /<script>([\s\S]*?)<\/script>\s*<\/html>\s*$/i;
   const match = html.match(re);
   if (!match) {
     throw new Error("Could not find final inline <script> block at end of index.html");
