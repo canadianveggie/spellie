@@ -3,27 +3,47 @@
 
 const fs = require("fs/promises");
 const path = require("path");
+/** @type {import("esbuild")} */
 const esbuild = require("esbuild");
 
 const ROOT = path.resolve(__dirname, "..");
 const OUT_DIR = path.join(ROOT, "docs");
 
+/**
+ * @param {string} dir
+ */
 async function ensureEmptyDir(dir) {
   await fs.rm(dir, { recursive: true, force: true });
   await fs.mkdir(dir, { recursive: true });
 }
 
+/**
+ * @param {string} src
+ * @param {string} dest
+ */
 async function copyFileIfExists(src, dest) {
   try {
     await fs.mkdir(path.dirname(dest), { recursive: true });
     await fs.copyFile(src, dest);
   } catch (err) {
-    if (err && err.code === "ENOENT") return;
+    /** @type {NodeJS.ErrnoException} */
+    const e = /** @type {NodeJS.ErrnoException} */ (err);
+    if (e && e.code === "ENOENT") return;
     throw err;
   }
 }
 
-async function copyDirRecursive(srcDir, destDir, { filter } = {}) {
+/**
+ * @typedef {(srcPath: string, entry: import("fs").Dirent) => boolean} CopyFilter
+ */
+
+/**
+ * @param {string} srcDir
+ * @param {string} destDir
+ * @param {{ filter?: CopyFilter }} [options]
+ */
+async function copyDirRecursive(srcDir, destDir, options = {}) {
+  const { filter } = options;
   const entries = await fs.readdir(srcDir, { withFileTypes: true });
   await fs.mkdir(destDir, { recursive: true });
 
@@ -43,8 +63,13 @@ async function copyDirRecursive(srcDir, destDir, { filter } = {}) {
   );
 }
 
+/**
+ * @param {string} srcPath
+ * @param {string} destPath
+ */
 async function minifyJsFile(srcPath, destPath) {
   const code = await fs.readFile(srcPath, "utf8");
+  /** @type {import("esbuild").TransformResult} */
   const result = await esbuild.transform(code, {
     loader: "js",
     minify: true,
@@ -57,6 +82,9 @@ async function minifyJsFile(srcPath, destPath) {
   await fs.writeFile(destPath, result.code, "utf8");
 }
 
+/**
+ * @param {string} html
+ */
 function extractInlineScriptFromIndexHtml(html) {
   // We only want the final inline <script> block (the big one),
   // leaving external scripts untouched.
@@ -75,6 +103,7 @@ async function buildIndexHtml() {
   const html = await fs.readFile(srcIndexPath, "utf8");
   const { inlineJs, htmlWithoutInline } = extractInlineScriptFromIndexHtml(html);
 
+  /** @type {import("esbuild").TransformResult} */
   const minifiedInline = await esbuild.transform(inlineJs, {
     loader: "js",
     minify: true,
