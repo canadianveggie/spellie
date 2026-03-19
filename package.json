@@ -15,6 +15,7 @@
   "homepage": "https://github.com/canadianveggie/spellie#readme",
   "scripts": {
     "start": "python -m SimpleHTTPServer",
+    "build": "node scripts/build.js",
     "test": "jest --verbose --watch",
     "test:ci": "jest",
     "typecheck": "tsc --noEmit",
@@ -38,6 +39,7 @@
     "jest": "^27.4.7",
     "lint-staged": "^12.2.1",
     "prettier": "2.5.1",
+    "esbuild": "^0.19.12",
     "stylelint": "^14.5.3",
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.9.4"
