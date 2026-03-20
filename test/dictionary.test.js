@@ -29,8 +29,9 @@ describe("validWords", () => {
     });
     expect(valid.length).toBeGreaterThan(100);
     expect(valid.length).toBeGreaterThan(invalid.length * 0.05);
+
     // grandfather in some existing invalids but try not to add any more
-    expectedInvalid = ["ABCD", "ABCS", "DANGO", "ODEN", "ROFL", "SANTA", "TADA", "WIFI", "YOYO"];
+    const expectedInvalid = ["ABCD", "ABCS", "DANGO", "ODEN", "ROFL", "SANTA", "TADA", "WIFI", "YOYO"];
     expect(invalid).toEqual(expectedInvalid);
   });
 });
