@@ -589,6 +589,13 @@ main {
   height: 36px;
 }
 
+.legal {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  text-align: center;
+}
+
 .settings-content .sharing-theme-row {
   display: flex;
   align-items: center;
