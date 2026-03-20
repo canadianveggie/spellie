@@ -641,7 +641,7 @@ main {
 }
 .stats-bar-wrap {
   height: 1.25rem;
-  background: var(--color-miss, rgba(0, 0, 0, 0.08));
+  background: var(--color-miss, rgb(0 0 0 / 0.08));
   border-radius: 4px;
   overflow: hidden;
 }
