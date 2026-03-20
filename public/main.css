@@ -651,10 +651,7 @@ main {
   background: var(--color-match);
   border-radius: 4px;
   transition: width 0.3s ease;
-  border: 1px solid #000;
-}
-.stats-bar-fail {
-  background: var(--color-present);
+  border: 1px solid color-mix(in srgb, var(--color-match) 85%, black);
 }
 .stats-difficulty-count {
   text-align: right;
