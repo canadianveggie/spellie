@@ -293,6 +293,48 @@
           <button class="hint-button" @click="showEmojiHint">Need a hint? 🤔</button>
         </div>
       </div>
+      <div class="stats-content" x-show="page === '#stats'" x-cloak>
+        <div class="subhead">
+          <h1>Stats</h1>
+          <div>
+            <a x-bind:href="gameUrl" class="close-link">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
+
+        <p x-text="statsSummary && statsSummary.textHeader"></p>
+
+        <section>
+          <h2>Number of Guesses to Solve</h2>
+          <template x-if="statsSummary && statsSummary.guessHistogram">
+            <div class="stats-guess-histograms">
+              <template x-for="d in ['easy', 'medium', 'hard']" :key="d">
+                <div class="stats-histogram-block">
+                  <h3 class="stats-histogram-difficulty" x-text="d.charAt(0).toUpperCase() + d.slice(1)"></h3>
+                  <div class="stats-histogram-rows">
+                    <template x-for="row in statsSummary.guessHistogram[d]" :key="row.label">
+                      <div class="stats-difficulty-row stats-histogram-row">
+                        <span class="stats-guess-label"
+                          ><span x-text="row.label"></span> <span x-text="row.emoji"></span
+                        ></span>
+                        <div class="stats-bar-wrap">
+                          <div
+                            class="stats-bar stats-bar-guess"
+                            :style="`width: ${statsSummary.maxGuessCount ? (100 * row.count / statsSummary.maxGuessCount) : 0}%; visibility: ${row.count > 0 ? 'visible' : 'hidden'}`"
+                          ></div>
+                        </div>
+                        <span class="stats-difficulty-count" x-text="row.count"></span>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <p x-show="statsSummary && !statsSummary.guessHistogram" x-cloak>Loading…</p>
+        </section>
+      </div>
       <div class="archive-content" x-show="page === '#archive'" x-cloak>
         <div class="subhead">
           <h1>Archive</h1>
@@ -466,45 +508,6 @@
               </label>
             </div>
           </template>
-        </section>
-      </div>
-      <div class="stats-content" x-show="page === '#stats'" x-cloak>
-        <div class="subhead">
-          <h1>Stats</h1>
-          <div>
-            <a x-bind:href="gameUrl" class="close-link">
-              <i class="material-icons">close</i>
-            </a>
-          </div>
-        </div>
-        <section>
-          <h2>By Difficulty</h2>
-          <template x-if="statsSummary && statsSummary.guessHistogram">
-            <div class="stats-guess-histograms">
-              <template x-for="d in ['easy', 'medium', 'hard']" :key="d">
-                <div class="stats-histogram-block">
-                  <h3 class="stats-histogram-difficulty" x-text="d.charAt(0).toUpperCase() + d.slice(1)"></h3>
-                  <div class="stats-histogram-rows">
-                    <template x-for="row in statsSummary.guessHistogram[d]" :key="row.label">
-                      <div class="stats-difficulty-row stats-histogram-row">
-                        <span class="stats-guess-label"
-                          ><span x-text="row.label"></span> <span x-text="row.emoji"></span
-                        ></span>
-                        <div class="stats-bar-wrap">
-                          <div
-                            class="stats-bar stats-bar-guess"
-                            :style="`width: ${statsSummary.maxGuessCount ? (100 * row.count / statsSummary.maxGuessCount) : 0}%; visibility: ${row.count > 0 ? 'visible' : 'hidden'}`"
-                          ></div>
-                        </div>
-                        <span class="stats-difficulty-count" x-text="row.count"></span>
-                      </div>
-                    </template>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </template>
-          <p x-show="statsSummary && !statsSummary.guessHistogram" x-cloak>Loading…</p>
         </section>
       </div>
       <div
@@ -1210,21 +1213,29 @@
             return { label: `${i + 1}`, emoji };
           });
           const guessHistogram = {};
+          let maxCompleted = 1;
+          let maxGuessCount = 1;
           DIFFICULTIES.forEach((d) => {
             const stats = statistics[d] || {};
             byDifficulty[d] = { completed: stats.success, played: stats.success + stats.fail };
+            maxCompleted = Math.max(maxCompleted, stats.success);
             total += stats.success;
-            guessHistogram[d] = guessRowLabels.map((row, i) => {
+            guessHistogram[d] = [];
+            guessRowLabels.forEach((row, i) => {
               const count = stats.guesses[i + 1];
-              return { label: row.label, emoji: row.emoji, count };
+              guessHistogram[d][i] = { label: row.label, emoji: row.emoji, count };
+              maxGuessCount = Math.max(maxGuessCount, count);
             });
           });
-          const maxCompleted = Math.max(1, ...DIFFICULTIES.map((d) => byDifficulty[d].completed));
-          const maxGuessCount = Math.max(
-            1,
-            ...DIFFICULTIES.map((d) => Math.max(...guessHistogram[d].map((h) => h.count)))
-          );
-          this.statsSummary = { total, byDifficulty, maxCompleted, guessHistogram, maxGuessCount };
+
+          let textHeader = `You've completed ${total} games of Spellie. 👏`;
+          if (total === 0) {
+            textHeader = "Keep track of your progress as you finish each game of Spellie.";
+          } else if (total === 1) {
+            textHeader = "Congratulations on finishing your first game of Spellie.";
+          }
+
+          this.statsSummary = { total, byDifficulty, maxCompleted, guessHistogram, maxGuessCount, textHeader };
         },
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {
