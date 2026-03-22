@@ -2,6 +2,7 @@
   "name": "spellie",
   "version": "1.0.0",
   "description": "Wordle for kids!",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/canadianveggie/spellie.git"
@@ -16,6 +17,7 @@
   "scripts": {
     "start": "python -m SimpleHTTPServer",
     "start3": "python3 -m http.server 8000",
+    "build": "node scripts/build.js",
     "test": "jest --verbose --watch",
     "test:ci": "jest",
     "typecheck": "tsc --noEmit",
@@ -24,6 +26,9 @@
     "lint:prettier": "prettier --check '**/*.{css,js,html}'",
     "lint:css": "stylelint '**/*.css'",
     "prepare": "husky install"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
@@ -39,6 +44,7 @@
     "jest": "^27.4.7",
     "lint-staged": "^12.2.1",
     "prettier": "2.5.1",
+    "esbuild": "^0.19.12",
     "stylelint": "^14.5.3",
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.9.4"
