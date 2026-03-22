@@ -61,6 +61,9 @@
             ></span>
             <i class="material-icons">collections</i>
           </a>
+          <a href="#stats" class="nav-link" title="Stats">
+            <i class="material-icons">bar_chart</i>
+          </a>
           <a href="#settings" class="nav-link" title="Settings">
             <i class="material-icons">settings</i>
           </a>
@@ -289,6 +292,48 @@
         <div class="hint-area" x-show="unlockedEmojis.length >= 100 && lockedEmojis.length > 0" x-cloak>
           <button class="hint-button" @click="showEmojiHint">Need a hint? 🤔</button>
         </div>
+      </div>
+      <div class="stats-content" x-show="page === '#stats'" x-cloak>
+        <div class="subhead">
+          <h1>Stats</h1>
+          <div>
+            <a x-bind:href="gameUrl" class="close-link">
+              <i class="material-icons">close</i>
+            </a>
+          </div>
+        </div>
+
+        <p x-text="statsSummary && statsSummary.textHeader"></p>
+
+        <section>
+          <h2>Number of Guesses to Solve</h2>
+          <template x-if="statsSummary && statsSummary.guessHistogram">
+            <div class="stats-guess-histograms">
+              <template x-for="d in ['easy', 'medium', 'hard']" :key="d">
+                <div class="stats-histogram-block">
+                  <h3 class="stats-histogram-difficulty" x-text="d.charAt(0).toUpperCase() + d.slice(1)"></h3>
+                  <div class="stats-histogram-rows">
+                    <template x-for="row in statsSummary.guessHistogram[d]" :key="row.label">
+                      <div class="stats-difficulty-row stats-histogram-row">
+                        <span class="stats-guess-label"
+                          ><span x-text="row.label"></span> <span x-text="row.emoji"></span
+                        ></span>
+                        <div class="stats-bar-wrap">
+                          <div
+                            class="stats-bar stats-bar-guess"
+                            :style="`width: ${statsSummary.maxGuessCount ? (100 * row.count / statsSummary.maxGuessCount) : 0}%; visibility: ${row.count > 0 ? 'visible' : 'hidden'}`"
+                          ></div>
+                        </div>
+                        <span class="stats-difficulty-count" x-text="row.count"></span>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <p x-show="statsSummary && !statsSummary.guessHistogram" x-cloak>Loading…</p>
+        </section>
       </div>
       <div class="archive-content" x-show="page === '#archive'" x-cloak>
         <div class="subhead">
@@ -610,6 +655,7 @@
           misses: [],
           availables: [],
         },
+        statsSummary: {},
         updateTitle() {
           const titles = {
             "#easy": "Spellie | Easy",
@@ -618,6 +664,7 @@
             "#archive": "Spellie | Archive",
             "#collection": "Spellie | Emoji Collection",
             "#settings": "Spellie | Settings",
+            "#stats": "Spellie | Stats",
             "#about": "Spellie | About",
           };
           if (titles[this.page]) {
@@ -876,11 +923,11 @@
             return this.cursor + delta;
           }
         },
+        get victoryEmojis() {
+          return this.isAprilFools() ? ["👽", "🦸‍♀️", "😻", "🥸", "🍪", "🥵"] : ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
+        },
         get victoryEmoji() {
-          const victoryEmojis = this.isAprilFools()
-            ? ["👽", "🦸‍♀️", "😻", "🥸", "🍪", "🥵"]
-            : ["🏆", "🤩", "🥳", "😁", "🙂", "👍"];
-          return victoryEmojis[this.currentGuessIndex - 1] || victoryEmojis[victoryEmojis.length - 1];
+          return this.victoryEmojis[this.currentGuessIndex - 1] || this.victoryEmojis[this.victoryEmojis.length - 1];
         },
         /** First letter provided free for 4-letter words */
         prepareFreebie() {
@@ -994,6 +1041,7 @@
           this.loadGameState();
           this.loadCollection();
           this.loadArchive();
+          this.loadStatsSummary();
           this.updateTitle();
         },
         formatGameStateVariable(difficulty, puzzleId) {
@@ -1157,6 +1205,38 @@
           const identifyEmojis = new amplitude.Identify().set("emojiCount", this.unlockedEmojis.length);
           amplitude.getInstance().identify(identifyEmojis);
         },
+        loadStatsSummary() {
+          const statistics = this.getFromLocalStorage("statistics", DEFAULT_STATISTICS);
+          const byDifficulty = {};
+          let total = 0;
+          const guessRowLabels = this.victoryEmojis.map((emoji, i) => {
+            return { label: `${i + 1}`, emoji };
+          });
+          const guessHistogram = {};
+          let maxCompleted = 1;
+          let maxGuessCount = 1;
+          DIFFICULTIES.forEach((d) => {
+            const stats = statistics[d] || {};
+            byDifficulty[d] = { completed: stats.success, played: stats.success + stats.fail };
+            maxCompleted = Math.max(maxCompleted, stats.success);
+            total += stats.success;
+            guessHistogram[d] = [];
+            guessRowLabels.forEach((row, i) => {
+              const count = stats.guesses[i + 1];
+              guessHistogram[d][i] = { label: row.label, emoji: row.emoji, count };
+              maxGuessCount = Math.max(maxGuessCount, count);
+            });
+          });
+
+          let textHeader = `You've completed ${total} games of Spellie. 👏`;
+          if (total === 0) {
+            textHeader = "Keep track of your progress as you finish each game of Spellie.";
+          } else if (total === 1) {
+            textHeader = "Congratulations on finishing your first game of Spellie.";
+          }
+
+          this.statsSummary = { total, byDifficulty, maxCompleted, guessHistogram, maxGuessCount, textHeader };
+        },
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {
             level_name: this.level,
@@ -1194,6 +1274,7 @@
             statistics[this.difficulty].fail += 1;
           }
           localStorage.setItem("statistics", JSON.stringify(statistics));
+          this.loadStatsSummary();
         },
         get lockedEmojis() {
           return this.emojiCollection.filter((e) => !e.unlocked);
