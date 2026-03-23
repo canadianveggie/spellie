@@ -16,13 +16,14 @@
   "homepage": "https://github.com/canadianveggie/spellie#readme",
   "scripts": {
     "start": "python -m SimpleHTTPServer",
+    "start3": "python3 -m http.server 8000",
     "build": "node scripts/build.js",
     "test": "jest --verbose --watch",
     "test:ci": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "npm run typecheck && npm run lint:js && npm run lint:css && npm run lint:prettier",
     "lint:js": "eslint index.html public test",
-    "lint:prettier": "prettier --print-width=120 --check '**/*.{css,js,html}'",
+    "lint:prettier": "prettier --check '**/*.{css,js,html}'",
     "lint:css": "stylelint '**/*.css'",
     "prepare": "husky install"
   },
@@ -56,7 +57,7 @@
     "not dead"
   ],
   "lint-staged": {
-    "**/*": "prettier --print-width=120 --write --ignore-unknown"
+    "**/*": "prettier --write --ignore-unknown"
   },
   "jest": {
     "verbose": true,

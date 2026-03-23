@@ -872,9 +872,8 @@
         cursorAdjust(delta) {
           if (this.cursorReverse) {
             return this.cursor - delta;
-          } else {
-            return this.cursor + delta;
           }
+          return this.cursor + delta;
         },
         get victoryEmoji() {
           const victoryEmojis = this.isAprilFools()
@@ -1284,7 +1283,7 @@
           };
           if (!!navigator.canShare && navigator.canShare(shareData) && onMobile()) {
             navigator.share(shareData);
-          } else if (!!navigator.clipboard) {
+          } else if (navigator.clipboard) {
             navigator.clipboard.writeText(shareData.text);
             this.showNotice("Copied to clipboard");
           }
