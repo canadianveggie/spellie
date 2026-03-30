@@ -305,6 +305,36 @@
 
         <p x-text="statsSummary && statsSummary.textHeader"></p>
 
+        <section class="stats-completion-section">
+          <template x-if="statsSummary && statsSummary.completionChart">
+            <div class="stats-completion-chart-area">
+              <div class="stats-completion-columns">
+                <template x-for="d in ['easy', 'medium', 'hard']" :key="d">
+                  <div class="stats-completion-col">
+                    <div class="stats-completion-bar-track">
+                      <div class="stats-completion-bar" :style="statsCompletionBarStyle(d)">
+                        <div class="stats-completion-emojis">
+                          <template
+                            x-for="i in statsSummary.completionChart.byDifficulty[d].emojiSlots"
+                            :key="`${d}-${i}`"
+                          >
+                            <span class="stats-completion-emoji" aria-hidden="true">😀</span>
+                          </template>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="stats-completion-col-meta">
+                      <span class="stats-completion-label" x-text="d.charAt(0).toUpperCase() + d.slice(1)"></span>
+                      <span class="stats-completion-count" x-text="statsSummary.byDifficulty[d].completed"></span>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </template>
+          <p x-show="statsSummary && !statsSummary.completionChart" x-cloak>Loading…</p>
+        </section>
+
         <section>
           <h2>Number of Guesses to Solve</h2>
           <template x-if="statsSummary && statsSummary.guessHistogram">
@@ -678,6 +708,22 @@
         updatePage(page) {
           this.page = page;
           this.updateTitle();
+        },
+        statsCompletionBarStyle(difficulty) {
+          const s = this.statsSummary;
+          if (!s || !s.byDifficulty || !s.byDifficulty[difficulty] || !s.completionChart) {
+            return "";
+          }
+          const c = s.byDifficulty[difficulty].completed;
+          const rows = c <= 0 ? 0 : Math.ceil(c / 5);
+          const rowRem = 1;
+          const paddingRem = 0.5;
+          if (c <= 0) {
+            return `height:0`;
+          }
+          const fromEmojis = rows * rowRem + paddingRem;
+          const barRem = fromEmojis;
+          return `height:${barRem}rem`;
         },
         addLetter(letterState) {
           if (this.solved || this.failed) {
@@ -1235,7 +1281,26 @@
             textHeader = "Congratulations on finishing your first game of Spellie.";
           }
 
-          this.statsSummary = { total, byDifficulty, maxCompleted, guessHistogram, maxGuessCount, textHeader };
+          const completionByDifficulty = {};
+          DIFFICULTIES.forEach((d) => {
+            const completed = byDifficulty[d].completed;
+            completionByDifficulty[d] = {
+              completed,
+              emojiSlots: Array.from({ length: completed }, (_, i) => i),
+            };
+          });
+
+          this.statsSummary = {
+            total,
+            byDifficulty,
+            maxCompleted,
+            guessHistogram,
+            maxGuessCount,
+            textHeader,
+            completionChart: {
+              byDifficulty: completionByDifficulty,
+            },
+          };
         },
         levelEnd() {
           amplitude.getInstance().logEvent("level_end", {

@@ -688,6 +688,93 @@ main {
   gap: 0.25em;
 }
 
+/* Stats: completion bar chart */
+.stats-completion-section {
+  margin-top: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.stats-completion-section h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+}
+.stats-completion-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+.stats-completion-chart-area {
+  width: 100%;
+}
+.stats-completion-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  align-items: end;
+  padding-top: 0.25rem;
+}
+.stats-completion-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.stats-completion-bar-track {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  border-radius: 8px;
+  background: var(--color-miss, rgb(0 0 0 / 0.08));
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.stats-completion-bar {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4px 4px 5px;
+  border-radius: 6px;
+  background: var(--color-match);
+  border: 1px solid color-mix(in srgb, var(--color-match) 85%, black);
+}
+.stats-completion-emojis {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px 3px;
+  width: 100%;
+  justify-items: center;
+}
+.stats-completion-emoji {
+  font-size: clamp(0.6rem, 2.2vw, 0.8rem);
+  line-height: 1;
+  user-select: none;
+}
+.stats-completion-col-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  text-align: center;
+  width: 100%;
+}
+.stats-completion-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-neutral-20, #333);
+}
+.stats-completion-count {
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
 .notice {
   position: fixed;
   top: 8%;
