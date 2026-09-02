@@ -17,7 +17,6 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
     "strict": true,
-    // TODO: enable below
     "noImplicitAny": true,
     "strictNullChecks": true
   }
