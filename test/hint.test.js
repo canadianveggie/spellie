@@ -259,7 +259,7 @@ describe("hint", () => {
 
       const hint = getHint(target, knowledge, settings, 4);
       expect(hint).toHaveProperty("message", "It's definitely *not* these: ⓒ, ⓛ, ⓡ");
-      expect(hint).toHaveProperty("letter", undefined);
+      expect(hint).not.toHaveProperty("letter");
       expect(hint).toHaveProperty("misses", ["R", "L", "C"]);
     });
     it("unique misses on subsequent hints", () => {
