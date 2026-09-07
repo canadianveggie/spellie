@@ -24,7 +24,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link href="./public/main.css" rel="stylesheet" />
-    <script src="public/amplitude.js"></script>
+    <script src="https://cdn.amplitude.com/libs/analytics-browser-2.45.8-min.js.gz"></script>
+    <script>
+      const AMPLITUDE_SAMPLE_RATE = 0.1;
+      const AMPLITUDE_SESSION_TIMEOUT = 30 * 60 * 1000;
+      const AMPLITUDE_SESSION_STORAGE_KEY = "spellie_amplitude_session";
+
+      function getAmplitudeSession() {
+        const now = Date.now();
+        try {
+          const storedSession = JSON.parse(sessionStorage.getItem(AMPLITUDE_SESSION_STORAGE_KEY));
+          if (storedSession && now - storedSession.lastActivity < AMPLITUDE_SESSION_TIMEOUT) {
+            const session = { ...storedSession, lastActivity: now };
+            sessionStorage.setItem(AMPLITUDE_SESSION_STORAGE_KEY, JSON.stringify(session));
+            return session;
+          }
+
+          const session = { id: now, lastActivity: now };
+          sessionStorage.setItem(AMPLITUDE_SESSION_STORAGE_KEY, JSON.stringify(session));
+          return session;
+        } catch (error) {
+          // Use an in-memory session if browser storage is unavailable.
+          return { id: now, lastActivity: now };
+        }
+      }
+
+      const amplitudeSession = getAmplitudeSession();
+      const amplitudeSampled = amplitudeSession.id % 100 < AMPLITUDE_SAMPLE_RATE * 100;
+      const amplitudeEnabled = amplitudeSampled && Boolean(window.amplitude);
+
+      if (amplitudeEnabled) {
+        window.amplitude.init("a46dd2f34cf79c6973d117575467b9b4", {
+          sessionId: amplitudeSession.id,
+          fetchRemoteConfig: false,
+          autocapture: false,
+        });
+      }
+
+      window.spellieAnalytics = {
+        identify(...args) {
+          if (amplitudeEnabled) window.amplitude.identify(...args);
+        },
+        track(...args) {
+          if (amplitudeEnabled) window.amplitude.track(...args);
+        },
+      };
+    </script>
   </head>
 
   <body
@@ -479,10 +524,10 @@
   <script src="public/mobileCheck.js"></script>
   <script src="public/dictionary.js"></script>
   <script>
-    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getDateForPuzzleId, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, validWords */
+    /* global amplitude, combineKnowledge, compareTargetAndGuess, emojis, getDateForPuzzleId, getEmojiImage, getHint, getPuzzlesForId, getTodayPuzzleId, guessesAsEmojis, keysToKnowledge, onMobile, spellieAnalytics, validWords */
 
     const identify = new amplitude.Identify().set("host", window.location.hostname);
-    amplitude.getInstance().identify(identify);
+    spellieAnalytics.identify(identify);
 
     let todaysPuzzleId = getTodayPuzzleId();
     const maxGuesses = 6;
@@ -678,7 +723,7 @@
         },
         checkAnswer() {
           if (this.currentGuessIndex === 0) {
-            amplitude.getInstance().logEvent("level_start", {
+            spellieAnalytics.track("level_start", {
               level_name: this.level,
               difficulty: this.difficulty,
               archiveGame: this.isArchiveGame(),
@@ -938,7 +983,7 @@
             };
             localStorage.setItem("collection", JSON.stringify(collection));
 
-            amplitude.getInstance().logEvent("show_emoji_hint", {
+            spellieAnalytics.track("show_emoji_hint", {
               emoji: collection.hint.emoji,
               word: collection.hint.word,
               emojiCount: this.unlockedEmojis.length,
@@ -955,7 +1000,7 @@
         },
         showHint() {
           if (!this.hint.shown) {
-            amplitude.getInstance().logEvent("show_hint", {
+            spellieAnalytics.track("show_hint", {
               level_name: this.level,
               difficulty: this.difficulty,
               archiveGame: this.isArchiveGame(),
@@ -1147,10 +1192,10 @@
               unlocked: Object.keys(collection.unlocked).indexOf(word) >= 0,
             }));
           const identifyEmojis = new amplitude.Identify().set("emojiCount", this.unlockedEmojis.length);
-          amplitude.getInstance().identify(identifyEmojis);
+          spellieAnalytics.identify(identifyEmojis);
         },
         levelEnd() {
-          amplitude.getInstance().logEvent("level_end", {
+          spellieAnalytics.track("level_end", {
             level_name: this.level,
             difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
@@ -1198,7 +1243,7 @@
         },
         resetLevel() {
           localStorage.setItem(this.gameStateVariable, JSON.stringify({ repeatedGame: true, puzzleId: this.puzzleId }));
-          amplitude.getInstance().logEvent("level_reset", {
+          spellieAnalytics.track("level_reset", {
             level_name: this.level,
             difficulty: this.difficulty,
             guesses: this.solved ? this.currentGuessIndex : null,
@@ -1280,7 +1325,7 @@
             navigator.clipboard.writeText(shareData.text);
             this.showNotice("Copied to clipboard");
           }
-          amplitude.getInstance().logEvent("clicked_share", {
+          spellieAnalytics.track("clicked_share", {
             page: this.page,
             text,
             share_type: shareType,
@@ -1417,7 +1462,7 @@
           // Ignore problems with extensions
           return false;
         }
-        amplitude.getInstance().logEvent("error_encountered", {
+        spellieAnalytics.track("error_encountered", {
           message,
           url: window.location.href,
           source: `${url}:${lineNo}:${columnNo}`,
