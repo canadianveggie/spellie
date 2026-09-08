@@ -88,13 +88,14 @@ async function minifyJsFile(srcPath, destPath) {
 function extractInlineScriptFromIndexHtml(html) {
   // We only want the final inline <script> block (the big one),
   // leaving external scripts untouched.
-  const re = /<script>([\s\S]*?)<\/script>\s*<\/html>\s*$/i;
-  const match = html.match(re);
+  const re = /<script>([\s\S]*?)<\/script>/gi;
+  const matches = [...html.matchAll(re)];
+  const match = matches[matches.length - 1];
   if (!match) {
     throw new Error("Could not find final inline <script> block at end of index.html");
   }
   const inlineJs = match[1];
-  const htmlWithoutInline = html.replace(re, "</html>\n");
+  const htmlWithoutInline = `${html.slice(0, match.index)}${html.slice(match.index + match[0].length)}`;
   return { inlineJs, htmlWithoutInline };
 }
 
